@@ -1,11 +1,11 @@
 {
-  "name": "@z1g-project/chloride",
+  "name": "@z1g-project/meteor",
   "version": "1.0.0",
   "description": "A simple fast interception proxy",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/z1g-project/chloride.git"
+    "url": "git+https://github.com/z1g-project/meteor.git"
   },
   "scripts": {
     "build": "tsx build.ts",

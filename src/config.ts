@@ -2,12 +2,12 @@ import { cfg } from "./types/cfg"
 
 declare global {
     interface Window {
-        __chloride$config: cfg
+        __meteor$config: cfg
     }
 }
 
-self.__chloride$config = {
-    prefix: "/chloride/",
+self.__meteor$config = {
+    prefix: "/meteor/",
     codec: "XOR",
     config: "config.js",
     client: "client.js",
