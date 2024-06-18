@@ -1,0 +1,24 @@
+{
+  "name": "@z1g-project/chloride",
+  "version": "1.0.0",
+  "description": "A simple fast interception proxy",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/z1g-project/chloride.git"
+  },
+  "scripts": {
+    "build": "tsx build.ts",
+    "start": "tsx server.ts",
+    "release": "npm run build && npm publish --access public"
+  },
+  "keywords": [],
+  "author": "z1g Project",
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.21.5",
+    "prettier": "^3.3.2",
+    "rimraf": "^5.0.7",
+    "tsx": "^4.15.6"
+  }
+}
