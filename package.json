@@ -2,6 +2,7 @@
   "name": "@z1g-project/meteor",
   "version": "1.0.0",
   "description": "A simple fast interception proxy",
+  "type": "module",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -18,7 +19,13 @@
   "devDependencies": {
     "esbuild": "^0.21.5",
     "prettier": "^3.3.2",
-    "rimraf": "^5.0.7",
     "tsx": "^4.15.6"
+  },
+  "dependencies": {
+    "@mercuryworkshop/bare-mux": "^1.1.4",
+    "domhandler": "^5.0.3",
+    "domutils": "^3.1.0",
+    "htmlparser2": "^9.1.0",
+    "rimraf": "^5.0.7"
   }
 }

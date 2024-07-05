@@ -1,16 +1,17 @@
 // @ts-nocheck
 import { build } from "esbuild"
-import { rimraf } from "rimraf"
-import { copyFile, mkdir, readFile } from 'node:fs/promises';
-const isDevelopment = process.argv.includes('--dev');
-await rimraf('dist');
-await mkdir('dist');
+import { rimraf } from "rimraf";
+
+await rimraf("dist")
+
 await build({
     platform: 'browser',
     sourcemap: true,
-    minify: !isDevelopment,
+    minify: true,
     entryPoints: {
-        'bundle': './src/client/index.ts',
+        'bundle': './src/bundle/index.ts',
+        'client': './src/client/index.ts',
+        'worker': './src/worker.ts',
         'config': './src/config.ts'
     },
     bundle: true,

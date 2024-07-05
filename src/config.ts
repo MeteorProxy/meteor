@@ -1,15 +1,17 @@
-import { cfg } from "./types/cfg"
-
 declare global {
-    interface Window {
-        __meteor$config: cfg
-    }
+  interface Window {
+    __meteor$config: typeof config
+  }
 }
 
-self.__meteor$config = {
-    prefix: "/meteor/",
-    codec: "XOR",
-    config: "config.js",
-    client: "client.js",
-    worker: "worker.js"
+export const config = {
+  prefix: '/route/',
+  files: {
+    client: '/meteor.client.js',
+    worker: '/meteor.worker.js',
+    bundle: '/meteor.bundle.js',
+    config: '/meteor.config.js'
+  }
 }
+
+self.__meteor$config = config
