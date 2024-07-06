@@ -13,7 +13,9 @@ class MeteorServiceWorker {
     return false
   }
 
-  handleFetch(event: FetchEvent) {}
+  async handleFetch(event: FetchEvent) {
+
+  }
 }
 
 self.MeteorServiceWorker = MeteorServiceWorker
