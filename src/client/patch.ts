@@ -1,8 +1,8 @@
-type ApplyFunction = (...args: any[]) => any
-type ConstructorFunction = new (...args: any[]) => any
-type ArgProcessor<T extends any[]> = (args: T) => T
+type FunctionPatch = (...args: any[]) => any
+type ConstructorPatch = new (...args: any[]) => any
+type Arguments<T extends any[]> = (args: T) => T
 
-export function patchFunction<T extends ApplyFunction>(originalFunction: T, argProcessor: ArgProcessor<Parameters<T>>): T {
+export function patchFunction<T extends FunctionPatch>(originalFunction: T, argProcessor: Arguments<Parameters<T>>): T {
   return new Proxy(originalFunction, {
     apply(target: T, thisArg: any, argArray: Parameters<T>): ReturnType<T> {
       const processedArgs = argProcessor(argArray)
@@ -11,7 +11,7 @@ export function patchFunction<T extends ApplyFunction>(originalFunction: T, argP
   }) as T
 }
 
-export function patchConstructor<T extends ConstructorFunction>(originalClass: T, argProcessor: ArgProcessor<ConstructorParameters<T>>): T {
+export function patchConstructor<T extends ConstructorPatch>(originalClass: T, argProcessor: Arguments<ConstructorParameters<T>>): T {
   return new Proxy(originalClass, {
     construct(target: T, argArray: ConstructorParameters<T>, newTarget: T): InstanceType<T> {
       const processedArgs = argProcessor(argArray)

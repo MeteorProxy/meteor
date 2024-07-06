@@ -2,14 +2,29 @@ import DomHandler, { Element } from 'domhandler'
 import { hasAttrib } from 'domutils'
 import { ElementType, Parser } from 'htmlparser2'
 import serialize from 'dom-serializer'
-
 import { encodeURL } from './url'
 import { config } from '@/config'
+import { rewriteCss } from './css'
+import { rewriteJs } from './js'
 
-// action
-// data
-// href
-// src
+const attributes = {
+  url: ['action', 'data', 'href', 'src'],
+  html: ['srcdoc'],
+  css: ['style'],
+  js: []
+}
+
+const eventListeners: string[] = []
+const properties = Object.getOwnPropertyNames(HTMLElement.prototype)
+
+properties.forEach((prop) => {
+  if (prop.startsWith('on')) {
+    eventListeners.push(prop)
+  }
+})
+
+eventListeners.sort()
+attributes.js.push(...eventListeners)
 
 export function rewriteHtml(content: string) {
   const dom = new DomHandler()
@@ -25,9 +40,14 @@ export function rewriteHtml(content: string) {
 function rewriteAttributes(element: Element) {
   if (element.type !== ElementType.Tag) return
   const node = new ElementProxy(element)
-  node.encode('action', 'url')
-  node.encode('href', 'url')
-  node.encode('src', 'url')
+
+  attributes.url.forEach((attr) => {
+    node.encode(attr, 'url')
+  })
+
+  attributes.css.forEach((attr) => {
+    node.encode(attr, 'css')
+  })
 
   node.encodeChildren()
 
@@ -71,8 +91,11 @@ class ElementProxy {
       case 'url':
         this.element.attribs[attribute] = encodeURL(this.element.attribs[attribute])
       case 'html':
+        this.element.attribs[attribute] = rewriteHtml(this.element.attribs[attribute])
       case 'css':
+        this.element.attribs[attribute] = rewriteCss(this.element.attribs[attribute])
       case 'js':
+        this.element.attribs[attribute] = rewriteJs(this.element.attribs[attribute])
     }
   }
 

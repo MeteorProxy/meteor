@@ -1,5 +1,5 @@
 // oh boy
 
-export function rewriteJs() {
-  
+export function rewriteJs(content: string) {
+  return content
 }
