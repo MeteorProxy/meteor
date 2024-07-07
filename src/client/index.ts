@@ -3,6 +3,6 @@ import './dom'
 
 declare global {
   interface Window {
-      __location: Location;
+    __location: Location
   }
 }

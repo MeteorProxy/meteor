@@ -21,6 +21,6 @@ window.fetch = patchFunction(window.fetch, (args) => {
   } else {
     self.Meteor.rewrite.url.encode(args[0])
   }
-  
+
   return args
 })

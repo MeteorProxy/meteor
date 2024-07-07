@@ -1,3 +1,3 @@
-declare const meteorPath: string;
+declare const meteorPath: string
 
-export { meteorPath };
+export { meteorPath }

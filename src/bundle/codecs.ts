@@ -10,7 +10,9 @@ export const xor: Codec = {
       str
         .toString()
         .split('')
-        .map((char, ind) => (ind % 2 ? String.fromCharCode(char.charCodeAt(0) ^ 2) : char))
+        .map((char, ind) =>
+          ind % 2 ? String.fromCharCode(char.charCodeAt(0) ^ 2) : char
+        )
         .join('')
     )
   },
@@ -21,7 +23,9 @@ export const xor: Codec = {
     return (
       decodeURIComponent(input)
         .split('')
-        .map((char, ind) => (ind % 2 ? String.fromCharCode(char.charCodeAt(0) ^ 2) : char))
+        .map((char, ind) =>
+          ind % 2 ? String.fromCharCode(char.charCodeAt(0) ^ 2) : char
+        )
         .join('') + (search.length ? `?${search.join('?')}` : '')
     )
   }
