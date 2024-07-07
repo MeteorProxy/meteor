@@ -17,11 +17,11 @@ const attributes = {
 const eventListeners: string[] = []
 const properties = Object.getOwnPropertyNames(HTMLElement.prototype)
 
-properties.forEach((prop) => {
+for (const prop in properties) {
   if (prop.startsWith('on')) {
     eventListeners.push(prop)
   }
-})
+}
 
 eventListeners.sort()
 attributes.js.push(...eventListeners)
@@ -41,17 +41,17 @@ function rewriteAttributes(element: Element) {
   if (element.type !== ElementType.Tag) return
   const node = new ElementProxy(element)
 
-  attributes.url.forEach((attr) => {
+  for (const attr of attributes.url) {
     node.encode(attr, 'url')
-  })
+  }
 
-  attributes.css.forEach((attr) => {
+  for (const attr of attributes.css) {
     node.encode(attr, 'css')
-  })
+  }
 
   node.encodeChildren()
 
-  if (node.element.tagName == 'head') {
+  if (node.element.tagName === 'head') {
     const scripts: Element[] = []
 
     scripts.push(
@@ -90,18 +90,22 @@ class ElementProxy {
     switch (type) {
       case 'url':
         this.element.attribs[attribute] = encodeURL(this.element.attribs[attribute])
+        break
       case 'html':
         this.element.attribs[attribute] = rewriteHtml(this.element.attribs[attribute])
+        break
       case 'css':
         this.element.attribs[attribute] = rewriteCss(this.element.attribs[attribute])
+        break
       case 'js':
         this.element.attribs[attribute] = rewriteJs(this.element.attribs[attribute])
     }
   }
 
   encodeChildren() {
-    this.element.children.forEach((child) => {
-      if (child.type == ElementType.Tag) child = rewriteAttributes(child)
-    })
+    for (const i in this.element.children) {
+      const child = this.element.children[i]
+      if (child.type === ElementType.Tag) this.element.children[i] = rewriteAttributes(child)
+    }
   }
 }

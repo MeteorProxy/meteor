@@ -8,8 +8,8 @@ self.addEventListener("fetch", (event) => {
   event.respondWith((async () => {
     if (meteor.shouldRoute(event)) {
       return await meteor.fetch(event);
-    } else {
-      return await fetch(event.request);
     }
+
+    return await fetch(event.request);
   })())
 }) 

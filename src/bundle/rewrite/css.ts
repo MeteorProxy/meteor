@@ -7,10 +7,12 @@ export function rewriteCss(content: string) {
 
     if (importStatement) {
       return `@import url(${urlQuote}${encodedUrl}${urlQuote})`
-    } else if (importQuote) {
-      return `@import ${importQuote}${encodedUrl}${importQuote}`
-    } else {
-      return `url(${urlQuote}${encodedUrl}${urlQuote})`
     }
+    
+    if (importQuote) {
+      return `@import ${importQuote}${encodedUrl}${importQuote}`
+    }
+
+    return `url(${urlQuote}${encodedUrl}${urlQuote})`
   })
 }

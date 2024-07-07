@@ -16,13 +16,13 @@ export const xor: Codec = {
   },
   decode(str) {
     if (!str) return str
-    let [input, ...search] = str.split('?')
+    const [input, ...search] = str.split('?')
 
     return (
       decodeURIComponent(input)
         .split('')
         .map((char, ind) => (ind % 2 ? String.fromCharCode(char.charCodeAt(0) ^ 2) : char))
-        .join('') + (search.length ? '?' + search.join('?') : '')
+        .join('') + (search.length ? `?${search.join('?')}` : '')
     )
   }
 }
@@ -40,7 +40,7 @@ export const none: Codec = {
   encode(string) {
     return encodeURIComponent(string)
   },
-  
+
   decode(string) {
     return decodeURIComponent(string)
   }

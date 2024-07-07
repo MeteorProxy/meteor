@@ -34,7 +34,7 @@ class MeteorServiceWorker {
       redirect: request.redirect
     })
 
-    var body: string
+    let body: string
 
     if (response.body) {
       switch (request.destination) {

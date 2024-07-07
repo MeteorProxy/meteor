@@ -17,6 +17,7 @@
   "author": "z1g Project",
   "license": "MIT",
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "esbuild": "^0.21.5",
     "prettier": "^3.3.2",
     "tsx": "^4.15.6"
