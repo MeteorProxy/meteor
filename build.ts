@@ -12,6 +12,16 @@ await build({
         'bundle': './src/bundle/index.ts',
         'client': './src/client/index.ts',
         'worker': './src/worker.ts',
+    },
+    bundle: true,
+    logLevel: 'info',
+    outdir: 'dist/',
+});
+await build({
+    platform: 'browser',
+    sourcemap: false,
+    minify: false,
+    entryPoints: {
         'config': './src/config.ts'
     },
     bundle: true,
