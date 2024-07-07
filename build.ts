@@ -17,6 +17,7 @@ await build({
     logLevel: 'info',
     outdir: 'dist/',
 });
+
 await build({
     platform: 'browser',
     sourcemap: false,

@@ -1,5 +1,3 @@
-import { xor } from './bundle/codecs'
-
 declare global {
   interface Window {
     __meteor$config: typeof config
@@ -14,8 +12,7 @@ export const config = {
     bundle: '/meteor.bundle.js',
     config: '/meteor.config.js'
   },
-
-  codec: xor
+  codec: self.Meteor.codecs.xor
 }
 
 self.__meteor$config = config
