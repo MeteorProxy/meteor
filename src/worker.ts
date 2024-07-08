@@ -21,8 +21,10 @@ class MeteorServiceWorker {
 
   async handleFetch(event: FetchEvent) {
     const request = event.request
+    console.log(request.url)
 
-    const url = self.Meteor.rewrite.url.encode(request.url)
+    let url = request.url.replace(location.origin + config.prefix, null)
+    url = self.Meteor.rewrite.url.decode(url).slice(4)
 
     const response = await this.client.fetch(url, {
       method: request.method,
@@ -34,17 +36,20 @@ class MeteorServiceWorker {
       redirect: request.redirect
     })
 
-    let body: string
+    let body: ReadableStream | string
 
     if (response.body) {
       switch (request.destination) {
         case 'document':
           body = self.Meteor.rewrite.html(await response.text())
+          break
+        default:
+          body = response.body
       }
     }
 
     return new Response(body, {
-      headers: response.rawHeaders as HeadersInit,
+      headers: response.headers,
       status: response.status,
       statusText: response.statusText
     })

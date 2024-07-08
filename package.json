@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "tsx build.ts",
-    "start": "tsx server.ts",
+    "demo": "tsx server.ts",
     "release": "npm run build && npm publish --access public"
   },
   "keywords": [],
@@ -18,7 +18,11 @@
   "license": "MIT",
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
+    "@fastify/static": "^7.0.4",
+    "@tomphttp/bare-server-node": "^2.0.3",
+    "consola": "^3.2.3",
     "esbuild": "^0.21.5",
+    "fastify": "^4.28.1",
     "prettier": "^3.3.2",
     "tsx": "^4.15.6"
   },

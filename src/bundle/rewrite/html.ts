@@ -14,17 +14,17 @@ const attributes = {
   js: []
 }
 
-const eventListeners: string[] = []
-const properties = Object.getOwnPropertyNames(HTMLElement.prototype)
+// const eventListeners: string[] = []
+// const properties = Object.getOwnPropertyNames(HTMLElement.prototype)
 
-for (const prop in properties) {
-  if (prop.startsWith('on')) {
-    eventListeners.push(prop)
-  }
-}
+// properties.forEach((prop) => {
+//   if (prop.startsWith('on')) {
+//     eventListeners.push(prop)
+//   }
+// })
 
-eventListeners.sort()
-attributes.js.push(...eventListeners)
+// eventListeners.sort()
+// attributes.js.push(...eventListeners)
 
 export function rewriteHtml(content: string) {
   const dom = new DomHandler()
@@ -34,24 +34,24 @@ export function rewriteHtml(content: string) {
 
   const parsed = rewriteAttributes(dom.root as unknown as Element)
 
-  return serialize(parsed)
+  return serialize(dom.root)
 }
 
 function rewriteAttributes(element: Element) {
   if (element.type !== ElementType.Tag) return
   const node = new ElementProxy(element)
 
-  for (const attr of attributes.url) {
+  attributes.url.forEach((attr) => {
     node.encode(attr, 'url')
-  }
+  })
 
-  for (const attr of attributes.css) {
+  attributes.css.forEach((attr) => {
     node.encode(attr, 'css')
-  }
+  })
 
   node.encodeChildren()
 
-  if (node.element.tagName === 'head') {
+  if (node.element.tagName == 'head') {
     const scripts: Element[] = []
 
     scripts.push(
@@ -89,32 +89,22 @@ class ElementProxy {
 
     switch (type) {
       case 'url':
-        this.element.attribs[attribute] = encodeURL(
-          this.element.attribs[attribute]
-        )
+        this.element.attribs[attribute] = encodeURL(this.element.attribs[attribute])
         break
       case 'html':
-        this.element.attribs[attribute] = rewriteHtml(
-          this.element.attribs[attribute]
-        )
+        this.element.attribs[attribute] = rewriteHtml(this.element.attribs[attribute])
         break
       case 'css':
-        this.element.attribs[attribute] = rewriteCss(
-          this.element.attribs[attribute]
-        )
+        this.element.attribs[attribute] = rewriteCss(this.element.attribs[attribute])
         break
       case 'js':
-        this.element.attribs[attribute] = rewriteJs(
-          this.element.attribs[attribute]
-        )
+        this.element.attribs[attribute] = rewriteJs(this.element.attribs[attribute])
     }
   }
 
   encodeChildren() {
-    for (const i in this.element.children) {
-      const child = this.element.children[i]
-      if (child.type === ElementType.Tag)
-        this.element.children[i] = rewriteAttributes(child)
-    }
+    this.element.children.forEach((child) => {
+      if (child.type === ElementType.Tag) child = rewriteAttributes(child)
+    })
   }
 }
