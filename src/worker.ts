@@ -23,8 +23,7 @@ class MeteorServiceWorker {
       const request = event.request
 
       console.log('stg1', request.url, location.origin, config.prefix)
-      const url = self.Meteor.rewrite.url.decode(request.url)
-      const origin = new URL(url).origin
+      const url = new URL(self.Meteor.rewrite.url.decode(request.url))
       console.log('stg3', url)
 
       const response = await this.client.fetch(url, {
@@ -40,13 +39,13 @@ class MeteorServiceWorker {
       let body: ReadableStream | string
       const rewrittenHeaders = self.Meteor.rewrite.headers(
         response.headers,
-        origin
+        url
       )
 
       if (response.body) {
         switch (request.destination) {
           case 'document':
-            body = self.Meteor.rewrite.html(await response.text(), origin)
+            body = self.Meteor.rewrite.html(await response.text(), url)
             break
           default:
             body = response.body
@@ -78,7 +77,7 @@ class MeteorServiceWorker {
                 display: flex;
                 flex-direction: column;
               } /*  */
-            
+
               textarea {
                 font-family: monospace;
                 width: 315px;

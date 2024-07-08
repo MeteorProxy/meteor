@@ -1,4 +1,5 @@
 import { encodeURL } from './url'
+
 const tobeDeleted = [
   'cross-origin-embedder-policy',
   'cross-origin-opener-policy',
@@ -17,8 +18,10 @@ const tobeDeleted = [
   'x-powered-by',
   'x-xss-protection'
 ]
+
 const directRewrites = ['host', 'origin']
-export function rewriteHeaders(headers: Headers, origin: string) {
+
+export function rewriteHeaders(headers: Headers, origin: URL) {
   // @ts-expect-error this property does exist however
   for (const [key, value] of headers.entries())
     headers.set(key.toLowerCase(), value)
@@ -26,22 +29,13 @@ export function rewriteHeaders(headers: Headers, origin: string) {
   for (const header of tobeDeleted) headers.delete(header)
 
   for (const header of ['referer', 'location', 'content-location'])
-    headers.set(
-      header,
-      location.origin +
-        self.__meteor$config.prefix +
-        encodeURL(headers.get(header), origin)
-    )
+    headers.set(header, encodeURL(headers.get(header), origin))
 
   for (const header of directRewrites) {
     if (headers.has(header)) {
       headers.set(
         header,
-        new URL(
-          location.origin +
-            self.__meteor$config.prefix +
-            encodeURL(headers.get(header), origin)
-        )[header]
+        new URL(encodeURL(headers.get(header), origin))[header]
       )
     }
   }
@@ -53,8 +47,6 @@ export function rewriteHeaders(headers: Headers, origin: string) {
         .replace(
           /<(.*?)>/gi,
           (match) =>
-            location.origin +
-            self.__meteor$config.prefix +
             encodeURL(match, origin)
         )
     )

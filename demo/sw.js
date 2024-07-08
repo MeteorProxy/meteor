@@ -1,5 +1,5 @@
 importScripts(
-  'https://unpkg.com/@mercuryworkshop/libcurl-transport@1.3.2/dist/index.js'
+  'https://unpkg.com/@mercuryworkshop/epoxy-transport@1.1.0/dist/index.js'
 )
 importScripts('/meteor/meteor.bundle.js')
 importScripts('/meteor/meteor.config.js')
@@ -11,12 +11,7 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     (async () => {
       if (meteor.shouldRoute(event)) {
-        console.log(event)
-        const res = meteor.handleFetch(event)
-        if (res) {
-          return res
-        }
-        return new Response('oops', { status: 404 })
+        return meteor.handleFetch(event)
       }
 
       return await fetch(event.request)
