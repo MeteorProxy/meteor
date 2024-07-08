@@ -1,14 +1,17 @@
- import { encodeURL } from './url'
+import { encodeURL } from './url'
 
 export function rewriteHeaders(headers: Headers) {
-  const rewritten = new Headers()
-
-  for (const header in headers) {
-    rewritten.set(header.toLowerCase(), headers[header] as string)
-  }
-  ;['origin', 'referer', 'location', 'content-location'].forEach((header) => {
-    rewritten.set(header, encodeURL(rewritten[header]))
+  ;['referer', 'location', 'content-location'].forEach((header) => {
+    headers.set(header, encodeURL(headers[header]))
   })
 
-  return rewritten
+  if (headers['host']) {
+    headers.set('host', new URL(encodeURL(headers['host'])).host)
+  }
+
+  if (headers['origin']) {
+    headers.set('origin', new URL(encodeURL(headers['origin'])).origin)
+  }
+
+  return headers
 }
