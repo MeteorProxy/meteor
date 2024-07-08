@@ -24,10 +24,10 @@
     "@fastify/static": "^7.0.4",
     "@types/node": "^20.14.10",
     "consola": "^3.2.3",
-    "esbuild": "^0.21.5",
+    "esbuild": "^0.23.0",
     "fastify": "^4.28.1",
     "prettier": "^3.3.2",
-    "tsx": "^4.15.6",
+    "tsx": "^4.16.2",
     "wisp-server-node": "^1.1.0"
   },
   "dependencies": {
@@ -36,6 +36,6 @@
     "domhandler": "^5.0.3",
     "domutils": "^3.1.0",
     "htmlparser2": "^9.1.0",
-    "rimraf": "^5.0.7"
+    "rimraf": "^5.0.8"
   }
 }

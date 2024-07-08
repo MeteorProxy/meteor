@@ -76,7 +76,7 @@ class MeteorServiceWorker {
                 font-family: system-ui;
                 display: flex;
                 flex-direction: column;
-              } /*  */
+              }
 
               textarea {
                 font-family: monospace;
