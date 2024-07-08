@@ -1,7 +1,7 @@
 {
   "name": "@z1g-project/meteor",
   "version": "1.0.0",
-  "description": "A simple fast interception proxy",
+  "description": "The modern interception proxy you've been waiting for",
   "type": "module",
   "main": "./lib/index.cjs",
   "types": "./lib/index.d.js",

@@ -1,7 +1,11 @@
 import { config } from '../../config'
 
-export function encodeURL(string: string): string {
-  return config.codec.encode(string)
+export function encodeURL(url: string, origin: string): string {
+  return (
+    location.origin +
+    config.prefix +
+    config.codec.encode(new URL(url, origin).href)
+  )
 }
 
 export function decodeURL(string: string) {

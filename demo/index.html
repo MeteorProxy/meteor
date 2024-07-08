@@ -14,12 +14,15 @@
 <body>
   <input type="text" value="https://google.com" id="input">
   <button id="go">Go</button>
-
   <script type="module" async>
     if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(async (registrations) => {
+      for await (let registration of registrations) {
+        await registration.unregister()
+      }
       const registration = await navigator.serviceWorker.register('/sw.js')
-      await registration.update()
       BareMux.SetTransport("CurlMod.LibcurlClient", { wisp: `${location.protocol.replace("http", "ws")}//${location.host}/wisp/` })
+    })
     }
     document.querySelector("button").onclick = async () => {
       const input = document.querySelector("input")

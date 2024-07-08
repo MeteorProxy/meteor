@@ -10,7 +10,7 @@ import { consola } from 'consola'
 
 const port = Number(process.env.PORT) || 9000
 
-const app = Fastify({
+Fastify({
   serverFactory: (handler) =>
     createServer(handler).on(
       'upgrade',
@@ -18,7 +18,6 @@ const app = Fastify({
         req.url?.endsWith('/wisp/') && wisp.routeRequest(req, socket, head)
     )
 })
-await app
   .register(fastifyStatic, {
     root: fileURLToPath(new URL('./demo', import.meta.url))
   })
@@ -32,7 +31,6 @@ await app
     prefix: '/bare-mux/',
     decorateReply: false
   })
-
-app.listen({ port }, () => {
-  consola.success(`Server listening on http://localhost:${port}`)
-})
+  .listen({ port }, () => {
+    consola.success(`Server listening on http://localhost:${port}`)
+  })

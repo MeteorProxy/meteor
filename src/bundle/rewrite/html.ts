@@ -1,6 +1,5 @@
-import { config } from '@/config'
-import serialize from 'dom-serializer'
-import DomHandler, { Element } from 'domhandler'
+import { render } from 'dom-serializer'
+import DomHandler, { type Element } from 'domhandler'
 import { hasAttrib } from 'domutils'
 import { ElementType, Parser } from 'htmlparser2'
 import { rewriteCss } from './css'
@@ -8,112 +7,43 @@ import { rewriteJs } from './js'
 import { encodeURL } from './url'
 
 const attributes = {
-  url: ['action', 'data', 'href', 'src'],
+  csp: ['nonce', 'integrity', 'csp'],
+  url: ['action', 'data', 'href', 'src', 'formaction'],
   html: ['srcdoc'],
   css: ['style'],
-  js: []
+  js: ['src']
 }
 
-// const eventListeners: string[] = []
-// const properties = Object.getOwnPropertyNames(HTMLElement.prototype)
-
-// properties.forEach((prop) => {
-//   if (prop.startsWith('on')) {
-//     eventListeners.push(prop)
-//   }
-// })
-
-// eventListeners.sort()
-// attributes.js.push(...eventListeners)
-
-export function rewriteHtml(content: string) {
+export function rewriteHtml(content: string, origin: string) {
   const dom = new DomHandler()
   const parser = new Parser(dom)
   parser.write(content)
   parser.end()
 
-  const parsed = rewriteAttributes(dom.root as unknown as Element)
-
-  return serialize(dom.root)
+  return render(rewriteElement(dom.root as unknown as Element, origin))
 }
 
-function rewriteAttributes(element: Element) {
-  if (element.type !== ElementType.Tag) return
-  const node = new ElementProxy(element)
-
-  for (const attr of attributes.url) {
-    node.encode(attr, 'url')
-  }
-
-  for (const attr of attributes.css) {
-    node.encode(attr, 'css')
-  }
-
-  node.encodeChildren()
-
-  if (node.element.tagName === 'head') {
-    const scripts: Element[] = []
-
-    scripts.push(
-      new Element('script', {
-        src: config.files.bundle
-      })
-    )
-
-    scripts.push(
-      new Element('script', {
-        src: config.files.client
-      })
-    )
-
-    scripts.push(
-      new Element('script', {
-        src: config.files.config
-      })
-    )
-
-    node.element.children.push(...scripts)
-  }
-
-  return node.element
-}
-
-class ElementProxy {
-  element: Element
-  constructor(element: Element) {
-    this.element = element
-  }
-
-  encode(attribute: string, type: 'url' | 'html' | 'css' | 'js') {
-    if (!hasAttrib(this.element, attribute)) return
-
-    switch (type) {
-      case 'url':
-        this.element.attribs[attribute] = encodeURL(
-          this.element.attribs[attribute]
-        )
-        break
-      case 'html':
-        this.element.attribs[attribute] = rewriteHtml(
-          this.element.attribs[attribute]
-        )
-        break
-      case 'css':
-        this.element.attribs[attribute] = rewriteCss(
-          this.element.attribs[attribute]
-        )
-        break
-      case 'js':
-        this.element.attribs[attribute] = rewriteJs(
-          this.element.attribs[attribute]
-        )
+function rewriteElement(element: Element, origin: string) {
+  for (const attr of attributes.csp) {
+    if (hasAttrib(element, attr)) {
+      delete element.attribs[attr]
     }
   }
 
-  encodeChildren() {
-    // biome-ignore lint: this is weird
-    this.element.children.forEach((child) => {
-      if (child.type === ElementType.Tag) child = rewriteAttributes(child)
-    })
+  for (const attr of attributes.url) {
+    if (hasAttrib(element, attr)) {
+      element.attribs[attr] =
+        location.origin +
+        self.__meteor$config.prefix +
+        encodeURL(element.attribs[attr], origin)
+    }
   }
+
+  for (const child of element.children) {
+    if (child.type === ElementType.ElementType.Tag) {
+      rewriteElement(child, origin)
+    }
+  }
+
+  return element
 }

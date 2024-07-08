@@ -5,4 +5,4 @@ build.ts
 server.ts
 pnpm-lock.yaml
 package-lock.json
-static
+demo
