@@ -37,6 +37,7 @@ class MeteorServiceWorker {
     })
 
     let body: ReadableStream | string
+    const rewrittenHeaders = self.Meteor.rewrite.headers(response.headers)
 
     if (response.body) {
       switch (request.destination) {
@@ -49,7 +50,7 @@ class MeteorServiceWorker {
     }
 
     return new Response(body, {
-      headers: response.headers,
+      headers: rewrittenHeaders,
       status: response.status,
       statusText: response.statusText
     })

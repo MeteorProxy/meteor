@@ -17,7 +17,8 @@
       "recommended": true,
       "suspicious": { "noExplicitAny": "off" },
       "complexity": {
-        "noForEach": "off"
+        "noForEach": "off",
+        "useLiteralKeys": "off"
       },
       "style": {
         "noParameterAssign": "off"
