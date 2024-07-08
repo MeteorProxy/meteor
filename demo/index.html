@@ -19,7 +19,7 @@
     if ('serviceWorker' in navigator) {
       const registration = await navigator.serviceWorker.register('/sw.js')
       await registration.update()
-      BareMux.SetTransport("CurlMod.LibcurlClient", { wisp: "ws://anura.pro/" })
+      BareMux.SetTransport("CurlMod.LibcurlClient", { wisp: `${location.protocol.replace("http", "ws")}//${location.host}/wisp/` })
     }
     document.querySelector("button").onclick = async () => {
       const input = document.querySelector("input")

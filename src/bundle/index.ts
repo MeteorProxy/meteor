@@ -1,4 +1,4 @@
-import { none, base64, xor } from './codecs'
+import { base64, none, xor } from './codecs'
 import { rewriteCss } from './rewrite/css'
 import { rewriteHeaders } from './rewrite/headers'
 import { rewriteHtml } from './rewrite/html'

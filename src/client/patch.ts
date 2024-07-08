@@ -1,5 +1,8 @@
+// biome-ignore lint: types
 type FunctionPatch = (...args: any[]) => any
+// biome-ignore lint: types
 type ConstructorPatch = new (...args: any[]) => any
+// biome-ignore lint: types
 type Arguments<T extends any[]> = (args: T) => T
 
 export function patchFunction<T extends FunctionPatch>(
@@ -7,7 +10,7 @@ export function patchFunction<T extends FunctionPatch>(
   argProcessor: Arguments<Parameters<T>>
 ): T {
   return new Proxy(originalFunction, {
-    apply(target: T, thisArg: any, argArray: Parameters<T>): ReturnType<T> {
+    apply(target: T, thisArg: unknown, argArray: Parameters<T>): ReturnType<T> {
       const processedArgs = argProcessor(argArray)
       return Reflect.apply(target, thisArg, processedArgs)
     }

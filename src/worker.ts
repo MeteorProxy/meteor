@@ -1,5 +1,5 @@
-import { config } from './config'
 import { BareClient } from '@mercuryworkshop/bare-mux'
+import { config } from './config'
 
 declare global {
   interface Window {
@@ -14,46 +14,46 @@ class MeteorServiceWorker {
   }
 
   shouldRoute({ request }: FetchEvent) {
-    if (request.url.startsWith(location.origin + config.prefix)) return true
-
-    return false
+    return request.url.startsWith(location.origin + config.prefix)
   }
 
   async handleFetch(event: FetchEvent) {
-    const request = event.request
-    console.log(request.url)
+    try {
+      const request = event.request
+      console.log('stg1', request.url, location.origin, config.prefix)
+      const url = self.Meteor.rewrite.url.decode(request.url)
+      console.log('stg3', url)
+      const response = await this.client.fetch(url, {
+        method: request.method,
+        body: request.body,
+        headers: request.headers,
+        credentials: 'omit',
+        mode: request.mode === 'cors' ? request.mode : 'same-origin',
+        cache: request.cache,
+        redirect: request.redirect
+      })
 
-    let url = request.url.replace(location.origin + config.prefix, null)
-    url = self.Meteor.rewrite.url.decode(url).slice(4)
+      let body: ReadableStream | string
+      const rewrittenHeaders = self.Meteor.rewrite.headers(response.headers)
 
-    const response = await this.client.fetch(url, {
-      method: request.method,
-      body: request.body,
-      headers: request.headers,
-      credentials: 'omit',
-      mode: request.mode === 'cors' ? request.mode : 'same-origin',
-      cache: request.cache,
-      redirect: request.redirect
-    })
-
-    let body: ReadableStream | string
-    const rewrittenHeaders = self.Meteor.rewrite.headers(response.headers)
-
-    if (response.body) {
-      switch (request.destination) {
-        case 'document':
-          body = self.Meteor.rewrite.html(await response.text())
-          break
-        default:
-          body = response.body
+      if (response.body) {
+        switch (request.destination) {
+          case 'document':
+            body = self.Meteor.rewrite.html(await response.text())
+            break
+          default:
+            body = response.body
+        }
       }
-    }
 
-    return new Response(body, {
-      headers: rewrittenHeaders,
-      status: response.status,
-      statusText: response.statusText
-    })
+      return new Response(body, {
+        headers: rewrittenHeaders,
+        status: response.status,
+        statusText: response.statusText
+      })
+    } catch (error) {
+      return new Response(`ruh roh, ${error}`, { status: 500 })
+    }
   }
 }
 

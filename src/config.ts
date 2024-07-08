@@ -1,8 +1,8 @@
 import { xor } from './bundle/codecs'
-
+export type meteorConfig = typeof config
 declare global {
   interface Window {
-    __meteor$config: typeof config
+    __meteor$config: meteorConfig
   }
 }
 

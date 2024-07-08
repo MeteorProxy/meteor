@@ -1,26 +1,23 @@
-import Fastify from 'fastify'
 import fastifyStatic from '@fastify/static'
-import { createBareServer } from '@tomphttp/bare-server-node'
 import { baremuxPath } from '@mercuryworkshop/bare-mux/node'
+import Fastify from 'fastify'
+import wisp from 'wisp-server-node'
 
-import { fileURLToPath } from 'node:url'
 import { createServer } from 'node:http'
+import type { Socket } from 'node:net'
+import { fileURLToPath } from 'node:url'
 import { consola } from 'consola'
 
-const bare = createBareServer('/bare/')
 const port = Number(process.env.PORT) || 9000
 
 const app = Fastify({
   serverFactory: (handler) =>
-    createServer().on('request', (req, res) => {
-      if (bare.shouldRoute(req)) {
-        bare.routeRequest(req, res)
-      } else {
-        handler(req, res)
-      }
-    })
+    createServer(handler).on(
+      'upgrade',
+      (req, socket: Socket, head) =>
+        req.url?.endsWith('/wisp/') && wisp.routeRequest(req, socket, head)
+    )
 })
-
 await app
   .register(fastifyStatic, {
     root: fileURLToPath(new URL('./demo', import.meta.url))

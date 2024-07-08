@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { build } from 'esbuild'
 import { rimraf } from 'rimraf'
 

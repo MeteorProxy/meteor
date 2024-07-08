@@ -9,17 +9,14 @@
     "lineWidth": 80,
     "attributePosition": "auto"
   },
-  "organizeImports": { "enabled": true },
+  "organizeImports": {
+    "enabled": true
+  },
   "linter": {
     "enabled": true,
     "ignore": ["dist", "demo/*"],
     "rules": {
       "recommended": true,
-      "suspicious": { "noExplicitAny": "off" },
-      "complexity": {
-        "noForEach": "off",
-        "useLiteralKeys": "off"
-      },
       "style": {
         "noParameterAssign": "off"
       }

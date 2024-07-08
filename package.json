@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "A simple fast interception proxy",
   "type": "module",
-  "main": "index.js",
+  "main": "./lib/index.cjs",
+  "types": "./lib/index.d.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/z1g-project/meteor.git"
@@ -11,20 +12,23 @@
   "scripts": {
     "build": "tsx build.ts",
     "demo": "tsx server.ts",
-    "release": "npm run build && npm publish --access public"
+    "release": "npm run build && npm publish --access public",
+    "check": "biome check . --write"
   },
+  "files": ["dist", "lib"],
   "keywords": [],
   "author": "z1g Project",
   "license": "MIT",
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@fastify/static": "^7.0.4",
-    "@tomphttp/bare-server-node": "^2.0.3",
+    "@types/node": "^20.14.10",
     "consola": "^3.2.3",
     "esbuild": "^0.21.5",
     "fastify": "^4.28.1",
     "prettier": "^3.3.2",
-    "tsx": "^4.15.6"
+    "tsx": "^4.15.6",
+    "wisp-server-node": "^1.1.0"
   },
   "dependencies": {
     "@mercuryworkshop/bare-mux": "^1.1.4",
