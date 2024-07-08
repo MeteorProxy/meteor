@@ -44,11 +44,7 @@ export function rewriteHeaders(headers: Headers, origin: URL) {
       'link',
       headers
         .get('link')
-        .replace(
-          /<(.*?)>/gi,
-          (match) =>
-            encodeURL(match, origin)
-        )
+        .replace(/<(.*?)>/gi, (match) => encodeURL(match, origin))
     )
   }
 

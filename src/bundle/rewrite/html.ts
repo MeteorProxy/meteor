@@ -5,13 +5,15 @@ import { ElementType, Parser } from 'htmlparser2'
 import { rewriteCss } from './css'
 import { rewriteJs } from './js'
 import { encodeURL } from './url'
+import { rewriteSrcset } from './srcset'
 
 const attributes = {
   csp: ['nonce', 'integrity', 'csp'],
   url: ['action', 'data', 'href', 'src', 'formaction'],
   html: ['srcdoc'],
   css: ['style'],
-  js: ['src']
+  js: ['src'],
+  srcset: ['srcset']
 }
 
 export function rewriteHtml(content: string, origin: URL) {
@@ -20,12 +22,10 @@ export function rewriteHtml(content: string, origin: URL) {
   parser.write(content)
   parser.end()
 
-  console.log(origin)
-
   return render(rewriteElement(dom.root as unknown as Element, origin))
 }
 
-function rewriteElement(element: Element, origin: URL) {
+function rewriteElement(element: Element, origin: URL) {  
   for (const attr of attributes.csp) {
     if (hasAttrib(element, attr)) {
       delete element.attribs[attr]
@@ -34,10 +34,13 @@ function rewriteElement(element: Element, origin: URL) {
 
   for (const attr of attributes.url) {
     if (hasAttrib(element, attr)) {
-      element.attribs[attr] =
-        encodeURL(element.attribs[attr], origin)
+      element.attribs[attr] = encodeURL(element.attribs[attr], origin)
+    }
+  }
 
-      console.log(encodeURL(element.attribs[attr], origin))
+  for (const attr of attributes.srcset) {
+    if (hasAttrib(element, attr)) {
+      element.attribs[attr] = rewriteSrcset(element.attribs[attr], origin)
     }
   }
 

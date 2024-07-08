@@ -15,8 +15,7 @@ export function rewriteCss(content: string, origin: URL) {
       importContent
     ) => {
       const url = urlContent || importContent
-      const encodedUrl =
-        encodeURL(url.trim(), origin)
+      const encodedUrl = encodeURL(url.trim(), origin)
 
       if (importStatement) {
         return `@import url(${urlQuote}${encodedUrl}${urlQuote})`
