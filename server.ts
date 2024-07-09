@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url'
 import { consola } from 'consola'
 import { context } from 'esbuild'
 import copy from 'esbuild-plugin-copy'
+import { argv } from 'node:process'
 
 const port = Number(process.env.PORT) || 9000
 
@@ -69,4 +70,6 @@ const dev = await context({
   outdir: 'dist/'
 })
 
-await dev.watch()
+if (!argv.includes('--no-build')) {
+  await dev.watch()
+}

@@ -12,6 +12,7 @@
   "scripts": {
     "build": "tsx build.ts",
     "demo": "tsx server.ts",
+    "litedemo": "tsx server.ts --no-build",
     "release": "npm run build && npm publish --access public",
     "check": "biome check . --write"
   },
