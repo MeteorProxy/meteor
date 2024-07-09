@@ -3,3 +3,4 @@ dist
 lock
 cache
 demo/meteor
+demo/bare-mux.js

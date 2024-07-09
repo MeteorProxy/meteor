@@ -2,14 +2,13 @@ import fastifyStatic from '@fastify/static'
 import { baremuxPath } from '@mercuryworkshop/bare-mux/node'
 import Fastify from 'fastify'
 import wisp from 'wisp-server-node'
-import fs from 'node:fs'
 
 import { createServer } from 'node:http'
 import type { Socket } from 'node:net'
 import { fileURLToPath } from 'node:url'
 import { consola } from 'consola'
-import { resolve } from 'node:path'
 import { context } from 'esbuild'
+import copy from 'esbuild-plugin-copy'
 
 const port = Number(process.env.PORT) || 9000
 
@@ -53,6 +52,17 @@ const dev = await context({
     'meteor.worker': './src/worker.ts',
     'meteor.config': './src/config.ts'
   },
+  plugins: [
+    copy({
+      resolveFrom: 'cwd',
+      assets: [
+        {
+          from: ['./node_modules/@mercuryworkshop/bare-mux/dist/bare.cjs'],
+          to: ['./demo/bare-mux.js']
+        }
+      ]
+    })
+  ],
   bundle: true,
   logLevel: 'info',
   outdir: 'dist/'
