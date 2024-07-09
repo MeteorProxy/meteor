@@ -34,6 +34,11 @@ Fastify({
     prefix: '/bare-mux/',
     decorateReply: false
   })
+  .register(fastifyStatic, {
+    root: fileURLToPath(new URL('./assets', import.meta.url)),
+    prefix: '/assets/',
+    decorateReply: false
+  })
 
   .listen({ port }, () => {
     consola.success(`Server listening on http://localhost:${port}`)
