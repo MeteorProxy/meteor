@@ -8,6 +8,7 @@ import { rewriteJs } from './js'
 import { rewriteSrcset } from './srcset'
 import { encodeURL } from './url'
 import { log } from '../util/logger'
+import { createContext } from '../util/createContext'
 
 const attributes = {
   csp: ['nonce', 'integrity', 'csp'],
@@ -24,7 +25,16 @@ export function rewriteHtml(content: string, origin: URL) {
   parser.write(content)
   parser.end()
 
-  return render(rewriteElement(dom.root as unknown as Element, origin))
+  let rendered = render(rewriteElement(dom.root as unknown as Element, origin))
+
+  for (const plugin of config.plugins) {
+    const context = createContext(rendered)
+    plugin.inject(context)
+
+    rendered = context.getModified()
+  }
+
+  return rendered
 }
 
 function rewriteElement(element: Element, origin: URL) {
@@ -68,7 +78,7 @@ function rewriteElement(element: Element, origin: URL) {
       element.attribs[attr] = encodeURL(element.attribs[attr], origin)
     }
   }
-  
+
   for (const attr of attributes.srcset) {
     if (hasAttrib(element, attr)) {
       element.attribs[attr] = rewriteSrcset(element.attribs[attr], origin)

@@ -1,14 +1,19 @@
-import { xor } from './bundle/codecs'
-export type meteorConfig = typeof config
+import type { BareResponseFetch } from '@mercuryworkshop/bare-mux'
+import { type Codec, xor } from './bundle/codecs'
+import type { meteorConfig } from './types'
+import example from './plugins/example'
+
 declare global {
   interface Window {
     __meteor$config: meteorConfig
   }
 }
 
-export const config = {
+export const config: meteorConfig = {
   prefix: '/route/',
   codec: xor,
+
+  plugins: [example],
 
   files: {
     client: '/meteor/meteor.client.js',

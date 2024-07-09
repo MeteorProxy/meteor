@@ -31,7 +31,7 @@ class MeteorServiceWorker {
         return new Response(response.body)
       }
 
-      const response = await this.client.fetch(url, {
+      let response = await this.client.fetch(url, {
         method: request.method,
         body: request.body,
         headers: request.headers,
@@ -52,6 +52,12 @@ class MeteorServiceWorker {
           case 'document':
             body = self.Meteor.rewrite.html(await response.text(), url)
             break
+          case 'iframe':
+            body = self.Meteor.rewrite.html(await response.text(), url)
+            break
+          case 'frame':
+            body = self.Meteor.rewrite.html(await response.text(), url)
+            break
           case 'style':
             body = self.Meteor.rewrite.css(await response.text(), url)
             break
@@ -63,7 +69,11 @@ class MeteorServiceWorker {
         }
       }
 
-      // await new Promise(r => setTimeout(r, 99999));
+      // await new Promise(r => setTimeout(r, 99999)); Debugging purposes
+
+      for (const plugin of config.plugins) {
+        if ('onRequest' in plugin) response = await plugin.onRequest(response)
+      }
 
       return new Response(body, {
         headers: rewrittenHeaders,
