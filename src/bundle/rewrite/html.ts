@@ -3,12 +3,12 @@ import { render } from 'dom-serializer'
 import DomHandler, { Element } from 'domhandler'
 import { hasAttrib } from 'domutils'
 import { ElementType, Parser } from 'htmlparser2'
+import { createContext } from '../util/createContext'
+import { log } from '../util/logger'
 import { rewriteCss } from './css'
 import { rewriteJs } from './js'
 import { rewriteSrcset } from './srcset'
 import { encodeURL } from './url'
-import { log } from '../util/logger'
-import { createContext } from '../util/createContext'
 
 const attributes = {
   csp: ['nonce', 'integrity', 'csp'],

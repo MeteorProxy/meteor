@@ -1,9 +1,9 @@
 import './apis/requests'
+import './apis/storage'
 import './dom'
-import './storage'
 
 declare global {
   interface Window {
-    __location: Location
+    $location: Location
   }
 }

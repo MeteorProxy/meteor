@@ -1,44 +1,53 @@
 const STORAGE_PREFIX = 'meteor$'
-function webStorage(storage: Storage) {
-  const filterForWebsite = () =>
+
+function createStorageProxy(storage: Storage) {
+  const filterBySite = () =>
     Object.keys(storage).filter((key) =>
-      key.startsWith(STORAGE_PREFIX + window.__location.host)
+      key.startsWith(STORAGE_PREFIX + window.$location.host)
     )
+
   return new Proxy(storage, {
     get(target, key) {
       switch (key) {
         case 'setItem':
           return (key: string, value: string) =>
             target.setItem(
-              `${STORAGE_PREFIX}${window.__location.host}@${key}`,
+              `${STORAGE_PREFIX}${window.$location.host}@${key}`,
               value
             )
+
         case 'getItem':
           return (key: string) =>
-            target.getItem(`${STORAGE_PREFIX}${window.__location.host}@${key}`)
+            target.getItem(`${STORAGE_PREFIX}${window.$location.host}@${key}`)
+
         case 'removeItem':
           return (key: string) =>
             target.removeItem(
-              `${STORAGE_PREFIX}${window.__location.host}@${key}`
+              `${STORAGE_PREFIX}${window.$location.host}@${key}`
             )
+
         case 'clear':
           return () => {
-            for (const key of filterForWebsite()) {
+            for (const key of filterBySite()) {
               target.removeItem(key)
             }
           }
+
         case 'length':
-          return filterForWebsite().length
+          return filterBySite().length
+
         case 'key':
-          return (index: number) => target[filterForWebsite()[index]]
+          return (index: number) => target[filterBySite()[index]]
       }
     }
   })
 }
 
-const ls = webStorage(localStorage)
-const ss = webStorage(sessionStorage)
+const ls = createStorageProxy(window.localStorage)
+const ss = createStorageProxy(window.sessionStorage)
+
 window.localStorage = undefined
-window.sessionStorage = undefined
 window.localStorage = ls
+
+window.sessionStorage = undefined
 window.sessionStorage = ss

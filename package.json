@@ -15,10 +15,7 @@
     "release": "npm run build && npm publish --access public",
     "check": "biome check . --write"
   },
-  "files": [
-    "dist",
-    "lib"
-  ],
+  "files": ["dist", "lib"],
   "keywords": [],
   "author": "z1g Project",
   "license": "MIT",

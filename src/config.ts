@@ -1,7 +1,7 @@
 import type { BareResponseFetch } from '@mercuryworkshop/bare-mux'
 import { type Codec, xor } from './bundle/codecs'
-import type { meteorConfig } from './types'
 import example from './plugins/example'
+import type { meteorConfig } from './types'
 
 declare global {
   interface Window {
