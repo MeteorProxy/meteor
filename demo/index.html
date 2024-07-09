@@ -23,7 +23,7 @@
         }
 
         const registration = await navigator.serviceWorker.register('/sw.js')
-        BareMux.SetTransport("EpxMod.EpoxyClient", { wisp: `${location.protocol === "http:" ? 'ws:' : 'wss:'}//${location.host}/wisp/` })
+        BareMux.SetTransport("EpxMod.EpoxyClient", { wisp: localStorage.getItem("wisp") || `${location.protocol === "http:" ? 'ws:' : 'wss:'}//${location.host}/wisp/` })
       })
     }
     document.querySelector("button").onclick = async () => {
