@@ -15,28 +15,31 @@
     "release": "npm run build && npm publish --access public",
     "check": "biome check . --write"
   },
-  "files": ["dist", "lib"],
+  "files": [
+    "dist",
+    "lib"
+  ],
   "keywords": [],
   "author": "z1g Project",
   "license": "MIT",
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@fastify/static": "^7.0.4",
+    "@mercuryworkshop/epoxy-transport": "^2.1.1",
     "@types/node": "^20.14.10",
     "consola": "^3.2.3",
     "esbuild-plugin-copy": "^2.1.1",
     "fastify": "^4.28.1",
     "prettier": "^3.3.2",
     "tsx": "^4.16.2",
-    "wisp-server-node": "^1.1.0",
-    "@mercuryworkshop/epoxy-transport": "^2.1.1"
+    "wisp-server-node": "^1.1.0"
   },
   "dependencies": {
     "@mercuryworkshop/bare-mux": "^1.1.4",
-    "esbuild": "^0.23.0",
     "dom-serializer": "^2.0.0",
     "domhandler": "^5.0.3",
     "domutils": "^3.1.0",
+    "esbuild": "^0.23.0",
     "htmlparser2": "^9.1.0",
     "rimraf": "^5.0.8"
   }

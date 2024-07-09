@@ -11,9 +11,6 @@ importers:
       '@mercuryworkshop/bare-mux':
         specifier: ^1.1.4
         version: 1.1.4
-      '@mercuryworkshop/epoxy-transport':
-        specifier: ^2.1.1
-        version: 2.1.1(typescript@5.5.3)
       dom-serializer:
         specifier: ^2.0.0
         version: 2.0.0
@@ -23,6 +20,9 @@ importers:
       domutils:
         specifier: ^3.1.0
         version: 3.1.0
+      esbuild:
+        specifier: ^0.23.0
+        version: 0.23.0
       htmlparser2:
         specifier: ^9.1.0
         version: 9.1.0
@@ -36,15 +36,15 @@ importers:
       '@fastify/static':
         specifier: ^7.0.4
         version: 7.0.4
+      '@mercuryworkshop/epoxy-transport':
+        specifier: ^2.1.1
+        version: 2.1.1(typescript@5.5.3)
       '@types/node':
         specifier: ^20.14.10
         version: 20.14.10
       consola:
         specifier: ^3.2.3
         version: 3.2.3
-      esbuild:
-        specifier: ^0.23.0
-        version: 0.23.0
       esbuild-plugin-copy:
         specifier: ^2.1.1
         version: 2.1.1(esbuild@0.23.0)
