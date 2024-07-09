@@ -1,11 +1,12 @@
 import { render } from 'dom-serializer'
-import DomHandler, { type Element } from 'domhandler'
+import DomHandler, { Element } from 'domhandler'
 import { hasAttrib } from 'domutils'
 import { ElementType, Parser } from 'htmlparser2'
 import { rewriteCss } from './css'
 import { rewriteJs } from './js'
 import { encodeURL } from './url'
 import { rewriteSrcset } from './srcset'
+import { config } from '@/config'
 
 const attributes = {
   csp: ['nonce', 'integrity', 'csp'],
@@ -25,7 +26,7 @@ export function rewriteHtml(content: string, origin: URL) {
   return render(rewriteElement(dom.root as unknown as Element, origin))
 }
 
-function rewriteElement(element: Element, origin: URL) {  
+function rewriteElement(element: Element, origin: URL) {
   for (const attr of attributes.csp) {
     if (hasAttrib(element, attr)) {
       delete element.attribs[attr]
@@ -42,6 +43,21 @@ function rewriteElement(element: Element, origin: URL) {
     if (hasAttrib(element, attr)) {
       element.attribs[attr] = rewriteSrcset(element.attribs[attr], origin)
     }
+  }
+
+  if (element.name === 'head') {
+    const scriptsToPush = ['bundle', 'config', 'client']
+    const clientScripts = []
+
+    for (const script of scriptsToPush) {
+      clientScripts.push(
+        new Element('script', {
+          src: config.files[script]
+        })
+      )
+    }
+
+    element.children.push(...clientScripts)
   }
 
   for (const child of element.children) {

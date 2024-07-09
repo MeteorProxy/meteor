@@ -4,7 +4,16 @@ window.fetch = patchFunction(window.fetch, (args) => {
   if (args[0] instanceof Request) {
     const request = args[0]
     args[0] = new Request(
-      self.Meteor.rewrite.url.encode(request.url, new URL(location.origin)),
+      self.Meteor.rewrite.url.encode(
+        request.url,
+        new URL(
+          self.__meteor$config.codec.decode(
+            location.href.slice(
+              (location.origin + self.__meteor$config.prefix).length
+            )
+          )
+        )
+      ),
       {
         method: request.method,
         headers: request.headers,
@@ -23,15 +32,50 @@ window.fetch = patchFunction(window.fetch, (args) => {
     args[0] = new URL(
       self.Meteor.rewrite.url.encode(
         args[0].toString(),
-        new URL(self.Meteor.rewrite.url.decode(location.origin))
+        new URL(
+          self.__meteor$config.codec.decode(
+            location.href.slice(
+              (location.origin + self.__meteor$config.prefix).length
+            )
+          )
+        )
       )
     )
   } else {
-    self.Meteor.rewrite.url.encode(
+    args[0] = self.Meteor.rewrite.url.encode(
       args[0],
-      new URL(self.Meteor.rewrite.url.decode(location.origin))
+      new URL(
+        self.__meteor$config.codec.decode(
+          location.href.slice(
+            (location.origin + self.__meteor$config.prefix).length
+          )
+        )
+      )
     )
   }
 
+  console.log(args[0])
+
   return args
 })
+
+window.XMLHttpRequest.prototype.open = patchFunction(
+  XMLHttpRequest.prototype.open,
+  (args) => {
+    if (args[1] instanceof URL) {
+      args[1] = new URL(
+        self.Meteor.rewrite.url.encode(
+          args[0].toString(),
+          new URL(self.Meteor.rewrite.url.decode(location.origin))
+        )
+      )
+    } else {
+      args[1] = self.Meteor.rewrite.url.encode(
+        args[1],
+        new URL(self.Meteor.rewrite.url.decode(location.origin))
+      )
+    }
+
+    return args
+  }
+)

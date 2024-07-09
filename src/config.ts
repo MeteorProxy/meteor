@@ -9,10 +9,10 @@ declare global {
 export const config = {
   prefix: '/route/',
   files: {
-    client: '/meteor.client.js',
-    worker: '/meteor.worker.js',
-    bundle: '/meteor.bundle.js',
-    config: '/meteor.config.js'
+    client: '/meteor/meteor.client.js',
+    worker: '/meteor/meteor.worker.js',
+    bundle: '/meteor/meteor.bundle.js',
+    config: '/meteor/meteor.config.js'
   },
   codec: xor
 }
