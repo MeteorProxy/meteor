@@ -68,9 +68,8 @@ function rewriteElement(element: Element, origin: URL) {
       element.attribs[attr] = encodeURL(element.attribs[attr], origin)
     }
   }
-
+  
   for (const attr of attributes.srcset) {
-    log(`${attr}`)
     if (hasAttrib(element, attr)) {
       element.attribs[attr] = rewriteSrcset(element.attribs[attr], origin)
     }
