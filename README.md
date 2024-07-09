@@ -5,7 +5,7 @@
 ---
 
 > [!WARNING]
-> Meteor is in a very early stage of development. Mainstream site support is not guaranteed.
+> Meteor is in a very early stage of development. Mainstream site support is not guaranteed. You can see our roadmap [here](TODO.md).
 
 The modern interception proxy you've been waiting for.
 

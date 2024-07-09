@@ -1,7 +1,8 @@
-# TODO List
+# Meteor To-Do
 
-Updated 7/8/2024 (Meteor Dev Builds)
-
-- Add JS Rewriting
-- Patch Client APIS
-- Add Attributes better
+- [ ] Add JS Rewriting
+- [ ] Patch more client APIs
+- [ ] CORS Emulation
+- [ ] Module system
+- [ ] More efficient rewriting
+- [ ] Wiki pages
