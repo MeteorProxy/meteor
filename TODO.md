@@ -2,8 +2,10 @@
 
 - [ ] Add JS Rewriting
 - [ ] Patch more client APIs
-- [ ] data: url handling
+- [x] data: url handling
 - [ ] Custom UA
 - [ ] Module system
 - [ ] More efficient rewriting
+- [ ] Fix Iframes
+- [x] Fix weird data problem
 - [ ] Wiki pages
