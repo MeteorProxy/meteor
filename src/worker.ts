@@ -65,6 +65,8 @@ class MeteorServiceWorker {
         }
       }
 
+      // await new Promise(r => setTimeout(r, 99999));
+
       return new Response(body, {
         headers: rewrittenHeaders,
         status: response.status,

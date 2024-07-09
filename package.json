@@ -24,16 +24,16 @@
     "@fastify/static": "^7.0.4",
     "@types/node": "^20.14.10",
     "consola": "^3.2.3",
-    "esbuild": "^0.23.0",
     "esbuild-plugin-copy": "^2.1.1",
     "fastify": "^4.28.1",
     "prettier": "^3.3.2",
     "tsx": "^4.16.2",
-    "wisp-server-node": "^1.1.0"
+    "wisp-server-node": "^1.1.0",
+    "@mercuryworkshop/epoxy-transport": "^2.1.1"
   },
   "dependencies": {
     "@mercuryworkshop/bare-mux": "^1.1.4",
-    "@mercuryworkshop/epoxy-transport": "^2.1.1",
+    "esbuild": "^0.23.0",
     "dom-serializer": "^2.0.0",
     "domhandler": "^5.0.3",
     "domutils": "^3.1.0",

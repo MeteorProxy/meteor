@@ -48,8 +48,8 @@ window.XMLHttpRequest.prototype.open = patchFunction(
     return args
   }
 )
-// biome-ignore lint: types
-Request = patchConstructor(Request, (args) => {
+
+window.Request = patchConstructor(Request, (args) => {
   if (typeof args[0] === 'string')
     args[0] = self.Meteor.rewrite.url.encode(
       args[0],

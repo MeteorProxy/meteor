@@ -28,22 +28,21 @@ export function rewriteHtml(content: string, origin: URL) {
 
 function rewriteElement(element: Element, origin: URL) {
   for (const child of element.children) {
-    if (child.type === ElementType.Script) {
-      rewriteElement(child, origin)
-    }
-    if (child.type === ElementType.Style) {
+    if (child.type === 'style') {
       ;(child.children[0] as { data: string }).data = rewriteCss(
         (child.children[0] as { data: string }).data,
         origin
       )
     }
-    if (child.type === ElementType.Script) {
+
+    if (child.type === 'script' && child.children[0]) {
       ;(child.children[0] as { data: string }).data = rewriteJs(
         (child.children[0] as { data: string }).data,
         origin
       )
     }
   }
+
   for (const attr of attributes.csp) {
     if (hasAttrib(element, attr)) {
       delete element.attribs[attr]

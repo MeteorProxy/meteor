@@ -14,7 +14,7 @@
   },
   "linter": {
     "enabled": true,
-    "ignore": ["dist", "demo/*"],
+    "ignore": ["dist", "demo/*", "node_modules"],
     "rules": {
       "recommended": true,
       "style": {
