@@ -28,8 +28,7 @@
     }
     document.querySelector("button").onclick = async () => {
       const input = document.querySelector("input")
-      console.log(__meteor$config.codec.encode(input.value))
-      window.location.href = "/route/" + __meteor$config.codec.encode(input.value)
+      window.location.href = Meteor.util.formatUrl(input.value)
     }
 
     console.log(__meteor$config)

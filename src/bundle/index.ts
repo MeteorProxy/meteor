@@ -6,6 +6,7 @@ import { rewriteHtml } from './rewrite/html'
 import { rewriteJs } from './rewrite/js'
 import { decodeURL, encodeURL } from './rewrite/url'
 import { createOrigin } from './util/createOrigin'
+import { formatUrl } from './util/formatUrl'
 
 declare global {
   interface Window {
@@ -34,7 +35,8 @@ const meteorBundle = {
   },
 
   util: {
-    createOrigin
+    createOrigin,
+    formatUrl
   }
 }
 
