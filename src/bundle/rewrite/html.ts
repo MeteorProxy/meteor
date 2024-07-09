@@ -7,6 +7,7 @@ import { rewriteCss } from './css'
 import { rewriteJs } from './js'
 import { rewriteSrcset } from './srcset'
 import { encodeURL } from './url'
+import { log } from '../util/logger'
 
 const attributes = {
   csp: ['nonce', 'integrity', 'csp'],
@@ -28,14 +29,27 @@ export function rewriteHtml(content: string, origin: URL) {
 
 function rewriteElement(element: Element, origin: URL) {
   for (const child of element.children) {
-    if (child.type === 'style') {
+    if (child.type === ElementType.Script) {
+      rewriteElement(child, origin)
+    }
+
+    if (
+      child.type === 'style' &&
+      child.children[0] &&
+      'data' in child.children[0]
+    ) {
       ;(child.children[0] as { data: string }).data = rewriteCss(
         (child.children[0] as { data: string }).data,
         origin
       )
     }
 
-    if (child.type === 'script' && child.children[0]) {
+    if (
+      child.type === 'script' &&
+      child.children[0] &&
+      'data' in child.children[0]
+    ) {
+      rewriteElement(child, origin)
       ;(child.children[0] as { data: string }).data = rewriteJs(
         (child.children[0] as { data: string }).data,
         origin
@@ -56,6 +70,7 @@ function rewriteElement(element: Element, origin: URL) {
   }
 
   for (const attr of attributes.srcset) {
+    log(`${attr}`)
     if (hasAttrib(element, attr)) {
       element.attribs[attr] = rewriteSrcset(element.attribs[attr], origin)
     }

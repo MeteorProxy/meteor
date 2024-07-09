@@ -1,12 +1,15 @@
 import { config } from '@/config'
 import { base64, none, xor } from './codecs'
+
 import { rewriteCss } from './rewrite/css'
 import { rewriteHeaders } from './rewrite/headers'
 import { rewriteHtml } from './rewrite/html'
 import { rewriteJs } from './rewrite/js'
 import { decodeURL, encodeURL } from './rewrite/url'
+
 import { createOrigin } from './util/createOrigin'
 import { formatUrl } from './util/formatUrl'
+import { log } from './util/logger'
 
 declare global {
   interface Window {
@@ -36,7 +39,8 @@ const meteorBundle = {
 
   util: {
     createOrigin,
-    formatUrl
+    formatUrl,
+    log
   }
 }
 

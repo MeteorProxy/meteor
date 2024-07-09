@@ -22,10 +22,8 @@ class MeteorServiceWorker {
     try {
       const request = event.request
 
-      console.log('stg1', request.url, location.origin, config.prefix)
-
       const url = new URL(self.Meteor.rewrite.url.decode(request.url))
-      console.log('stg3', url)
+      self.Meteor.util.log(`Processing request for ${url.href}`)
 
       if (url.href.startsWith('data:')) {
         const response = await fetch(url)
