@@ -15,7 +15,7 @@ export const config = {
     worker: '/meteor/meteor.worker.js',
     bundle: '/meteor/meteor.bundle.js',
     config: '/meteor/meteor.config.js'
-  },
+  }
 }
 
 self.__meteor$config = config

@@ -1,5 +1,4 @@
-
-importScripts('https://unpkg.com/@mercuryworkshop/epoxy-transport@2.0.6/dist/index.js')
+importScripts('/epoxy/index.js')
 importScripts('/meteor/meteor.bundle.js')
 importScripts('/meteor/meteor.config.js')
 importScripts('/meteor/meteor.worker.js')

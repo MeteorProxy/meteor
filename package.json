@@ -15,10 +15,7 @@
     "release": "npm run build && npm publish --access public",
     "check": "biome check . --write"
   },
-  "files": [
-    "dist",
-    "lib"
-  ],
+  "files": ["dist", "lib"],
   "keywords": [],
   "author": "z1g Project",
   "license": "MIT",
@@ -36,6 +33,7 @@
   },
   "dependencies": {
     "@mercuryworkshop/bare-mux": "^1.1.4",
+    "@mercuryworkshop/epoxy-transport": "^2.1.1",
     "dom-serializer": "^2.0.0",
     "domhandler": "^5.0.3",
     "domutils": "^3.1.0",

@@ -1,5 +1,4 @@
-import { patchFunction } from './patch'
-
+import { patchConstructor, patchFunction } from './patch'
 window.fetch = patchFunction(window.fetch, (args) => {
   if (args[0] instanceof Request) {
     const request = args[0]
@@ -49,3 +48,12 @@ window.XMLHttpRequest.prototype.open = patchFunction(
     return args
   }
 )
+// biome-ignore lint: types
+Request = patchConstructor(Request, (args) => {
+  if (typeof args[0] === 'string')
+    args[0] = self.Meteor.rewrite.url.encode(
+      args[0],
+      self.Meteor.util.createOrigin()
+    )
+  return args
+})

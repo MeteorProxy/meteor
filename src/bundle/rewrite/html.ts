@@ -1,12 +1,12 @@
+import { config } from '@/config'
 import { render } from 'dom-serializer'
 import DomHandler, { Element } from 'domhandler'
 import { hasAttrib } from 'domutils'
 import { ElementType, Parser } from 'htmlparser2'
 import { rewriteCss } from './css'
 import { rewriteJs } from './js'
-import { encodeURL } from './url'
 import { rewriteSrcset } from './srcset'
-import { config } from '@/config'
+import { encodeURL } from './url'
 
 const attributes = {
   csp: ['nonce', 'integrity', 'csp'],
@@ -27,6 +27,23 @@ export function rewriteHtml(content: string, origin: URL) {
 }
 
 function rewriteElement(element: Element, origin: URL) {
+  for (const child of element.children) {
+    if (child.type === ElementType.Script) {
+      rewriteElement(child, origin)
+    }
+    if (child.type === ElementType.Style) {
+      ;(child.children[0] as { data: string }).data = rewriteCss(
+        (child.children[0] as { data: string }).data,
+        origin
+      )
+    }
+    if (child.type === ElementType.Script) {
+      ;(child.children[0] as { data: string }).data = rewriteJs(
+        (child.children[0] as { data: string }).data,
+        origin
+      )
+    }
+  }
   for (const attr of attributes.csp) {
     if (hasAttrib(element, attr)) {
       delete element.attribs[attr]
@@ -56,7 +73,6 @@ function rewriteElement(element: Element, origin: URL) {
         })
       )
     }
-
     element.children.push(...clientScripts)
   }
 

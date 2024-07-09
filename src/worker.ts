@@ -24,17 +24,15 @@ class MeteorServiceWorker {
 
       console.log('stg1', request.url, location.origin, config.prefix)
 
-
-      
       const url = new URL(self.Meteor.rewrite.url.decode(request.url))
       console.log('stg3', url)
-      
+
       if (url.href.startsWith('data:')) {
         const response = await fetch(url)
 
         return new Response(response.body)
       }
-      
+
       const response = await this.client.fetch(url, {
         method: request.method,
         body: request.body,
@@ -55,6 +53,12 @@ class MeteorServiceWorker {
         switch (request.destination) {
           case 'document':
             body = self.Meteor.rewrite.html(await response.text(), url)
+            break
+          case 'style':
+            body = self.Meteor.rewrite.css(await response.text(), url)
+            break
+          case 'script':
+            body = self.Meteor.rewrite.js(await response.text(), url)
             break
           default:
             body = response.body
@@ -97,7 +101,7 @@ class MeteorServiceWorker {
           <body>
             <h1>Something went wrong</h1>
             <p>Uh oh - something occured that prevented Meteor from processing your request.</p>
-            <textarea readonly style="font-family: monospace;"> ${error}</textarea>
+            <textarea readonly> ${error}</textarea>
             <p>Meteor ${version}</p>
           </body>
         </html>

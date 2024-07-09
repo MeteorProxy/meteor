@@ -1,5 +1,6 @@
 import fastifyStatic from '@fastify/static'
-import { baremuxPath } from '@mercuryworkshop/bare-mux/node'
+// @ts-expect-error not typed lol
+import { epoxyPath } from '@mercuryworkshop/epoxy-transport'
 import Fastify from 'fastify'
 import wisp from 'wisp-server-node'
 
@@ -29,8 +30,8 @@ Fastify({
     decorateReply: false
   })
   .register(fastifyStatic, {
-    root: baremuxPath,
-    prefix: '/bare-mux/',
+    root: epoxyPath,
+    prefix: '/epoxy/',
     decorateReply: false
   })
   .register(fastifyStatic, {
