@@ -1,4 +1,4 @@
-import './apis'
+import './apis/requests'
 import './dom'
 import './storage'
 

@@ -1,4 +1,5 @@
-import { patchConstructor, patchFunction } from './patch'
+import { patchConstructor, patchFunction } from '../patch'
+
 window.fetch = patchFunction(window.fetch, (args) => {
   if (args[0] instanceof Request) {
     const request = args[0]
@@ -23,8 +24,6 @@ window.fetch = patchFunction(window.fetch, (args) => {
     )
   }
 
-  console.log(args[0])
-
   return args
 })
 
@@ -34,7 +33,7 @@ window.XMLHttpRequest.prototype.open = patchFunction(
     if (args[1] instanceof URL) {
       args[1] = new URL(
         self.Meteor.rewrite.url.encode(
-          args[0].toString(),
+          args[1].href,
           self.Meteor.util.createOrigin()
         )
       )
@@ -50,10 +49,18 @@ window.XMLHttpRequest.prototype.open = patchFunction(
 )
 
 window.Request = patchConstructor(Request, (args) => {
-  if (typeof args[0] === 'string')
+  if (args[0] instanceof URL) {
+    args[0] = new URL(
+      self.Meteor.rewrite.url.encode(
+        args[0].toString(),
+        self.Meteor.util.createOrigin()
+      )
+    )
+  } else if (typeof args[0] === 'string') {
     args[0] = self.Meteor.rewrite.url.encode(
       args[0],
       self.Meteor.util.createOrigin()
     )
+  }
   return args
 })
