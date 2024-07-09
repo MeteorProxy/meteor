@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meteor iFrame Demo</title>
+  <link rel="shortcut icon" href="./assets/icon.png" type="image/png">
+  <script src="/bare-mux.js"></script>
+  <script src="/epoxy/index.js"></script>
+  <script src="/meteor/meteor.bundle.js"></script>
+  <script src="/meteor/meteor.config.js"></script>
+</head>
+
+<body>
+  <script type="module">
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(async (registrations) => {
+        for await (const registration of registrations) {
+          await registration.unregister()
+        }
+
+        const registration = await navigator.serviceWorker.register('/sw.js')
+        BareMux.SetTransport("EpxMod.default", { wisp: localStorage.getItem("wisp") || `${location.protocol === "http:" ? 'ws:' : 'wss:'}//${location.host}/wisp/` })
+      })
+    }
+    const el = document.createElement("iframe")
+    el.src = "route/" + __meteor$config.codec.encode("https://google.com")
+    document.body.appendChild(el)
+    Object.assign(el.style, {
+      width: "100%",
+      height: "100%",
+      border: "none",
+      outline: "none",
+      top: "0",
+      bottom: "0",
+      left: "0",
+      right: "0",
+      position: "fixed",
+    });
+
+    console.log(__meteor$config)
+  </script>
+</body>
+
+</html>
