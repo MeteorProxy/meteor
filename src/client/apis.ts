@@ -8,19 +8,7 @@ window.fetch = patchFunction(window.fetch, (args) => {
         request.url,
         self.Meteor.util.createOrigin()
       ),
-      {
-        method: request.method,
-        headers: request.headers,
-        body: request.body,
-        referrer: request.referrer,
-        referrerPolicy: request.referrerPolicy,
-        mode: request.mode,
-        credentials: request.credentials,
-        cache: request.cache,
-        redirect: request.redirect,
-        integrity: request.integrity,
-        signal: request.signal
-      }
+      request
     )
   } else if (args[0] instanceof URL) {
     args[0] = new URL(
