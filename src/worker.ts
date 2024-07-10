@@ -18,10 +18,8 @@ class MeteorServiceWorker {
     return request.url.startsWith(location.origin + config.prefix)
   }
 
-  async handleFetch(event: FetchEvent) {
+  async handleFetch({ request }: FetchEvent) {
     try {
-      const request = event.request
-
       const url = new URL(self.Meteor.rewrite.url.decode(request.url))
       self.Meteor.util.log(`Processing request for ${url.href}`)
 
@@ -61,6 +59,7 @@ class MeteorServiceWorker {
           case 'style':
             body = self.Meteor.rewrite.css(await response.text(), url)
             break
+          case 'worker':
           case 'script':
             body = self.Meteor.rewrite.js(await response.text(), url)
             break

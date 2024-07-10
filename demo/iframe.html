@@ -11,9 +11,9 @@
   <script src="/meteor/meteor.bundle.js"></script>
   <script src="/meteor/meteor.config.js"></script>
 </head>
-
 <body>
   <script type="module">
+    const searchParams = new URLSearchParams(location.search)
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistrations().then(async (registrations) => {
         for await (const registration of registrations) {
@@ -25,7 +25,7 @@
       })
     }
     const el = document.createElement("iframe")
-    el.src = "route/" + __meteor$config.codec.encode("https://google.com")
+    el.src = "route/" + searchParams.get("query") || __meteor$config.codec.encode("https://google.com")
     document.body.appendChild(el)
     Object.assign(el.style, {
       width: "100%",

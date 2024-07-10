@@ -19,21 +19,29 @@
 
     * {
       font-family: 'Inter', sans-serif
-    }
+    };
   </style>
 </head>
 
 <body>
-  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center flex-col gap-8">
+  <div class="h-screen flex items-center justify-center flex-col gap-8">
     <img src="/assets/icon.png" class="h-48">
     <div class="flex items-center join">
-      <input placeholder="Enter a URL or search query" type="text" value="https://google.com" id="input"
-        class="input bg-base-300 w-96 join-item">
+      <input placeholder="Enter a URL or search query" type="text" value="https://google.com" id="input" class="input bg-base-300 w-96 join-item">
       <button id="go" class="btn bg-base-300 join-item">Go</button>
     </div>
+    <section class="flex flex-row gap-4">
+    <label for="method">iframe?</label>
+    <input type="checkbox" id="method" class="toggle-success toggle">
+    </section>
   </div>
 
   <script>
+    const checkbox = document.getElementById("method")
+    checkbox.checked = localStorage.getItem("method") === "true"
+    checkbox.addEventListener("change", () => {
+      localStorage.setItem("method", checkbox.checked)
+    })
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistrations().then(async (registrations) => {
         for await (const registration of registrations) {
@@ -46,8 +54,8 @@
       })
     }
     document.querySelector("button").onclick = async () => {
-      const input = document.querySelector("input")
-      window.location.href = Meteor.util.formatUrl(input.value)
+      const input = document.getElementById("input")
+      window.location.href = localStorage.getItem("method") === "true" ? `/iframe.html?query=${Meteor.util.formatUrl(input.value).replace("/route/", "")}` : Meteor.util.formatUrl(input.value)
     }
 
     console.log(__meteor$config)

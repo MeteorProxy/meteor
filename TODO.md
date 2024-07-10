@@ -8,4 +8,4 @@
 - [ ] More efficient rewriting
 - [ ] Fix Iframes
 - [x] Fix weird data problem
-- [ ] Wiki pages
+- [ ] Docs pages
