@@ -22,7 +22,6 @@ class MeteorServiceWorker {
     try {
       const url = new URL(self.Meteor.rewrite.url.decode(request.url))
       self.Meteor.util.log(`Processing request for ${url.href}`)
-
       if (url.href.startsWith('data:')) {
         const response = await fetch(url)
 
@@ -68,7 +67,7 @@ class MeteorServiceWorker {
         }
       }
 
-      // await new Promise(r => setTimeout(r, 99999)); Debugging purposes
+      // await new Promise(r => setTimeout(r, 99999));
 
       for (const plugin of config.plugins) {
         if ('onRequest' in plugin) response = await plugin.onRequest(response)
