@@ -9,7 +9,6 @@
   <script src="/bare-mux.js"></script>
   <script src="/epoxy/index.js"></script>
   <script src="/meteor/meteor.bundle.js"></script>
-  <script src="/meteor/meteor.config.js"></script>
 
   <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
   <script src="https://cdn.tailwindcss.com"></script>
@@ -50,12 +49,12 @@
 
         await navigator.serviceWorker.register('/sw.js')
         BareMux.SetTransport("EpxMod.default", { wisp: localStorage.getItem("wisp") || `${location.protocol === "http:" ? 'ws:' : 'wss:'}//${location.host}/wisp/` })
-        self.Meteor.util.log("Service worker registered successfully", "cornflowerblue")
+        self.$meteor.util.log("Service worker registered successfully", "cornflowerblue")
       })
     }
     document.querySelector("button").onclick = async () => {
       const input = document.getElementById("input")
-      window.location.href = localStorage.getItem("method") === "true" ? `/iframe.html?query=${Meteor.util.formatUrl(input.value).replace("/route/", "")}` : Meteor.util.formatUrl(input.value)
+      window.location.href = localStorage.getItem("method") === "true" ? `/iframe.html?query=${self.$meteor.util.formatUrl(input.value).replace("/route/", "")}` : Meteor.util.formatUrl(input.value)
     }
 
     console.log(__meteor$config)

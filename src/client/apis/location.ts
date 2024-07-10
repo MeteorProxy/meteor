@@ -3,56 +3,56 @@ window.$location = Object.create(window.location)
 Object.defineProperties(window.$location, {
   href: {
     get() {
-      return self.Meteor.rewrite.url.decode(location.href)
+      return self.$meteor.rewrite.url.decode(location.href)
     },
     set(value) {
-      self.Meteor.rewrite.url.encode(value, self.Meteor.util.createOrigin())
+      self.$meteor.rewrite.url.encode(value, self.$meteor.util.createOrigin())
     }
   },
   origin: {
     get() {
-      return self.Meteor.util.createOrigin().origin
+      return self.$meteor.util.createOrigin().origin
     }
   },
   search: {
     get() {
-      return self.Meteor.util.createOrigin().search
+      return self.$meteor.util.createOrigin().search
     },
     set(value) {
-      window.$location.search = self.Meteor.config.codec.encode(value)
+      window.$location.search = self.$meteor.config.codec.encode(value)
     }
   },
   hash: {
     get() {
-      return self.Meteor.util.createOrigin().hash
+      return self.$meteor.util.createOrigin().hash
     }
   },
   pathname: {
     get() {
-      return self.Meteor.util.createOrigin().pathname
+      return self.$meteor.util.createOrigin().pathname
     },
     set() {}
   },
   protocol: {
     get() {
-      return self.Meteor.util.createOrigin().protocol
+      return self.$meteor.util.createOrigin().protocol
     },
     set() {}
   },
   host: {
     get() {
-      return self.Meteor.util.createOrigin().host
+      return self.$meteor.util.createOrigin().host
     },
     set(value) {
       window.location.host = new URL(
-        self.Meteor.rewrite.url.encode(value, self.Meteor.util.createOrigin())
+        self.$meteor.rewrite.url.encode(value, self.$meteor.util.createOrigin())
       ).host
     }
   },
   replace: {
     value(url: string) {
       location.replace(
-        self.Meteor.rewrite.url.encode(url, self.Meteor.util.createOrigin())
+        self.$meteor.rewrite.url.encode(url, self.$meteor.util.createOrigin())
       )
     }
   }

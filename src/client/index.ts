@@ -9,6 +9,6 @@ declare global {
   }
 }
 
-for (const plugin of self.Meteor.config.plugins) {
+for (const plugin of self.$meteor.config.plugins) {
   if ('handleClient' in plugin) plugin.handleClient(window)
 }

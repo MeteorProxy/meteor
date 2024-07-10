@@ -10,6 +10,6 @@ export function encodeURL(url: string, origin: URL): string {
 
 export function decodeURL(string: string) {
   return config.codec.decode(
-    string.slice((location.origin + self.Meteor.config.prefix).length)
+    string.slice((location.origin + self.$meteor.config.prefix).length)
   )
 }

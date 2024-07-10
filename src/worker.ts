@@ -20,8 +20,8 @@ class MeteorServiceWorker {
 
   async handleFetch({ request }: FetchEvent) {
     try {
-      const url = new URL(self.Meteor.rewrite.url.decode(request.url))
-      self.Meteor.util.log(`Processing request for ${url.href}`)
+      const url = new URL(self.$meteor.rewrite.url.decode(request.url))
+      self.$meteor.util.log(`Processing request for ${url.href}`)
       if (url.href.startsWith('data:')) {
         const response = await fetch(url)
 
@@ -39,7 +39,7 @@ class MeteorServiceWorker {
       })
 
       let body: ReadableStream | string
-      const rewrittenHeaders = self.Meteor.rewrite.headers(
+      const rewrittenHeaders = self.$meteor.rewrite.headers(
         response.headers,
         url
       )
@@ -47,20 +47,20 @@ class MeteorServiceWorker {
       if (response.body) {
         switch (request.destination) {
           case 'document':
-            body = self.Meteor.rewrite.html(await response.text(), url)
+            body = self.$meteor.rewrite.html(await response.text(), url)
             break
           case 'iframe':
-            body = self.Meteor.rewrite.html(await response.text(), url)
+            body = self.$meteor.rewrite.html(await response.text(), url)
             break
           case 'frame':
-            body = self.Meteor.rewrite.html(await response.text(), url)
+            body = self.$meteor.rewrite.html(await response.text(), url)
             break
           case 'style':
-            body = self.Meteor.rewrite.css(await response.text(), url)
+            body = self.$meteor.rewrite.css(await response.text(), url)
             break
           case 'worker':
           case 'script':
-            body = self.Meteor.rewrite.js(await response.text(), url)
+            body = self.$meteor.rewrite.js(await response.text(), url)
             break
           default:
             body = response.body

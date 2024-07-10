@@ -18,9 +18,9 @@ for (const [attr, elms] of Object.entries(attributes)) {
         descriptors.get.call(this)
       },
       set: (value) => {
-        value = self.Meteor.rewrite.url.encode(
+        value = self.$meteor.rewrite.url.encode(
           value,
-          self.Meteor.util.createOrigin()
+          self.$meteor.util.createOrigin()
         )
         descriptors.set.call(this, value)
       }

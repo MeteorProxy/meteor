@@ -13,7 +13,7 @@ import { log } from './util/logger'
 
 declare global {
   interface Window {
-    Meteor: typeof meteorBundle
+    $meteor: typeof meteorBundle
   }
 }
 
@@ -44,4 +44,4 @@ const meteorBundle = {
   }
 }
 
-self.Meteor = meteorBundle
+self.$meteor = meteorBundle

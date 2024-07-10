@@ -3,16 +3,10 @@ import { replace, type VisitorOption } from 'estraverse'
 import type { Node } from 'estree'
 import { parseModule, parse } from 'meriyah'
 import { encodeURL } from './url'
-type StupidExtensionOfNode = Node & {
-  source?: { value: string }
-  property?: { name: string }
-  object?: { name: string }
-}
 
 export function rewriteJs(content: string, origin: URL) {
   try {
-    console.log(content)
-    const tree = parseModule(content, { module: true })
+    const tree = parseModule(content, { module: true, webcompat: true })
 
     replace(tree as Node, {
       enter: (node): Node | VisitorOption => {
@@ -39,7 +33,8 @@ export function rewriteJs(content: string, origin: URL) {
 
         if (
           (node.type === 'ImportDeclaration' ||
-            node.type === 'ExportNamedDeclaration') &&
+            node.type === 'ExportNamedDeclaration' ||
+            node.type === 'ExportAllDeclaration') &&
           node.source
         ) {
           console.log(String(node.source.value), origin)
@@ -61,15 +56,28 @@ export function rewriteJs(content: string, origin: URL) {
             }
           } as Node
         }
+
+        if (
+          node.type === 'ImportExpression' &&
+          node.source &&
+          node.source.type === 'Literal'
+        ) {
+          const encodedSource = encodeURL(String(node.source.value), origin)
+
+          return {
+            ...node,
+            source: {
+              ...node.source,
+              value: encodedSource
+            }
+          } as Node
+        }
       }
     })
 
-    console.log(tree)
-    console.log('we win these')
-
     return generate(tree)
   } catch ({ message }) {
-    self.Meteor.util.log(`Error parsing JS: ${message}`)
+    self.$meteor.util.log(`Error parsing JS: ${message}`)
     return content
   }
 }
