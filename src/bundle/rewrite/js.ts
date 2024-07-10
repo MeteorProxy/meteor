@@ -1,52 +1,72 @@
 import { generate } from 'astring'
-import { traverse } from 'estraverse'
+import { replace, type VisitorOption } from 'estraverse'
 import type { Node } from 'estree'
-import { parseModule } from 'meriyah'
+import { parseModule, parse } from 'meriyah'
+import { encodeURL } from './url'
 type StupidExtensionOfNode = Node & {
   source?: { value: string }
   property?: { name: string }
   object?: { name: string }
 }
 
-// ImportDeclaration
 export function rewriteJs(content: string, origin: URL) {
   try {
     console.log(content)
-    const tree = parseModule(content, {
-      module: true,
-      webcompat: true
-    })
+    const tree = parseModule(content, { module: true })
 
-    console.log(tree)
-    traverse(tree as Node, {
-      leave(node: StupidExtensionOfNode) {
-        // TODO: This is a very shitty method
+    replace(tree as Node, {
+      enter: (node): Node | VisitorOption => {
         if (
           node.type === 'MemberExpression' &&
+          node.object.type === 'Identifier' &&
           node.object.name === 'window' &&
+          node.property.type === 'Identifier' &&
           node.property.name === 'location'
         ) {
-          node.object.name = '$location'
+          return {
+            type: 'MemberExpression',
+            object: {
+              type: 'Identifier',
+              name: 'window'
+            },
+            property: {
+              type: 'Identifier',
+              name: '$location'
+            },
+            computed: false
+          } as Node
         }
-        if (node.type === 'Identifier' && node.name === 'location') {
-          node.name = '$location'
-        }
+
         if (
-          [
-            'ImportDeclaration',
-            'ImportExpression',
-            'ExportAllDeclaration',
-            'ExportNamedDeclaration'
-          ].includes(node.type)
+          (node.type === 'ImportDeclaration' ||
+            node.type === 'ExportNamedDeclaration') &&
+          node.source
         ) {
-          if (node.source)
-            node.source.value = self.Meteor.rewrite.url.encode(
-              node.source.value,
-              origin
-            )
+          console.log(String(node.source.value), origin)
+          const encodedSource = encodeURL(String(node.source.value), origin)
+
+          console.log(encodedSource, {
+            ...node,
+            source: {
+              ...node.source,
+              value: encodedSource
+            }
+          })
+
+          return {
+            ...node,
+            source: {
+              ...node.source,
+              value: encodedSource
+            }
+          } as Node
         }
       }
     })
+
+    console.log(tree)
+    console.log('we win these')
+
     return generate(tree)
   } catch ({ message }) {
     self.Meteor.util.log(`Error parsing JS: ${message}`)

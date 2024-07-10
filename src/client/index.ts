@@ -10,5 +10,5 @@ declare global {
 }
 
 for (const plugin of self.Meteor.config.plugins) {
-  plugin.handleClient(window)
+  if ('handleClient' in plugin) plugin.handleClient(window)
 }

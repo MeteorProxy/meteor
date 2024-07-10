@@ -67,7 +67,12 @@ class MeteorServiceWorker {
         }
       }
 
-      // await new Promise(r => setTimeout(r, 99999));
+      if (
+        new URLSearchParams(new URL(request.url).searchParams).get('hold') ===
+        'yes'
+      ) {
+        await new Promise((r) => setTimeout(r, 99999))
+      }
 
       for (const plugin of config.plugins) {
         if ('onRequest' in plugin) response = await plugin.onRequest(response)
