@@ -8,3 +8,7 @@ declare global {
     $location: Location
   }
 }
+
+for (const plugin of self.Meteor.config.plugins) {
+  plugin.handleClient(window)
+}
