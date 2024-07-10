@@ -54,7 +54,7 @@
     }
     document.querySelector("button").onclick = async () => {
       const input = document.getElementById("input")
-      window.location.href = localStorage.getItem("method") === "true" ? `/iframe.html?query=${self.$meteor.util.formatUrl(input.value).replace("/route/", "")}` : Meteor.util.formatUrl(input.value)
+      window.location.href = localStorage.getItem("method") === "true" ? `/iframe.html?query=${self.$meteor.util.formatUrl(input.value).replace("/route/", "")}` : self.$meteor.util.formatUrl(input.value)
     }
 
     console.log(__meteor$config)
