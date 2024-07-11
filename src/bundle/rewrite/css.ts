@@ -1,5 +1,3 @@
-import { encodeURL } from './url'
-
 export function rewriteCss(content: string, origin: URL) {
   const regex =
     /(@import\s+(?!url\())?\s*url\(\s*(['"]?)([^'")]+)\2\s*\)|@import\s+(['"])([^'"]+)\4/g
@@ -15,7 +13,7 @@ export function rewriteCss(content: string, origin: URL) {
       importContent
     ) => {
       const url = urlContent || importContent
-      const encodedUrl = encodeURL(url.trim(), origin)
+      const encodedUrl = self.$meteor.rewrite.url.encode(url.trim(), origin)
 
       if (importStatement) {
         return `@import url(${urlQuote}${encodedUrl}${urlQuote})`

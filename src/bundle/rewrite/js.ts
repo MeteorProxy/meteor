@@ -2,7 +2,6 @@ import { generate } from 'astring'
 import { replace } from 'estraverse'
 import type { Node } from 'estree'
 import { parseModule } from 'meriyah'
-import { encodeURL } from './url'
 
 export function rewriteJs(content: string, origin: URL) {
   try {
@@ -13,7 +12,7 @@ export function rewriteJs(content: string, origin: URL) {
         if (
           node.type === 'MemberExpression' &&
           node.object.type === 'Identifier' &&
-          node.object.name === 'window' &&
+          ['window', 'self'].includes(node.object.name) &&
           node.property.type === 'Identifier' &&
           node.property.name === 'location'
         ) {
@@ -21,7 +20,7 @@ export function rewriteJs(content: string, origin: URL) {
             type: 'MemberExpression',
             object: {
               type: 'Identifier',
-              name: 'window'
+              name: node.object.name
             },
             property: {
               type: 'Identifier',
@@ -38,7 +37,10 @@ export function rewriteJs(content: string, origin: URL) {
             node.type === 'ExportAllDeclaration') &&
           node.source
         ) {
-          const encodedSource = encodeURL(String(node.source.value), origin)
+          const encodedSource = self.$meteor.rewrite.url.encode(
+            String(node.source.value),
+            origin
+          )
 
           return {
             ...node,
@@ -54,13 +56,36 @@ export function rewriteJs(content: string, origin: URL) {
           node.source &&
           node.source.type === 'Literal'
         ) {
-          const encodedSource = encodeURL(String(node.source.value), origin)
           return {
             ...node,
             source: {
               ...node.source,
-              value: encodedSource
+              value: self.$meteor.rewrite.url.encode(
+                String(node.source.value),
+                origin
+              )
             }
+          }
+        }
+        if (
+          node.type === 'CallExpression' &&
+          'name' in node.callee &&
+          node.callee.name === 'importScripts'
+        ) {
+          return {
+            ...node,
+            arguments: node.arguments.map((arg) => {
+              if (arg.type === 'Literal') {
+                return {
+                  ...arg,
+                  value: self.$meteor.rewrite.url.encode(
+                    String(arg.value),
+                    origin
+                  )
+                }
+              }
+              return arg
+            })
           }
         }
       }

@@ -1,6 +1,17 @@
 import type { BareResponseFetch } from '@mercuryworkshop/bare-mux'
 import type { Codec } from './bundle/codecs'
 
+declare global {
+  interface Window {
+    __meteor$config: meteorConfig
+  }
+}
+declare global {
+  interface ServiceWorkerGlobalScope {
+    __meteor$config: meteorConfig
+  }
+}
+
 export interface Plugin {
   name: string
   onRequest?: (
@@ -14,6 +25,7 @@ export interface meteorConfig {
   prefix: string
   codec: Codec
   plugins: Plugin[]
+  errorPageCss?: string
   files: {
     client: string
     worker: string

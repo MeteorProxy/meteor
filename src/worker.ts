@@ -1,6 +1,5 @@
 import { BareClient } from '@mercuryworkshop/bare-mux'
 import { version } from '../package.json'
-import { config } from './config'
 
 declare global {
   interface Window {
@@ -13,9 +12,8 @@ class MeteorServiceWorker {
   constructor() {
     this.client = new BareClient()
   }
-
   shouldRoute({ request }: FetchEvent) {
-    return request.url.startsWith(location.origin + config.prefix)
+    return request.url.startsWith(location.origin + self.__meteor$config.prefix)
   }
 
   async handleFetch({ request }: FetchEvent) {
@@ -59,6 +57,8 @@ class MeteorServiceWorker {
             body = self.$meteor.rewrite.css(await response.text(), url)
             break
           case 'worker':
+            body = self.$meteor.rewrite.js(await response.text(), url)
+            break
           case 'script':
             body = self.$meteor.rewrite.js(await response.text(), url)
             break
@@ -66,15 +66,17 @@ class MeteorServiceWorker {
             body = response.body
         }
       }
-
-      if (
-        new URLSearchParams(new URL(request.url).searchParams).get('hold') ===
-        'yes'
-      ) {
-        await new Promise((r) => setTimeout(r, 99999))
+      const searchParams = new URLSearchParams(request.url)
+      if (searchParams.get('hold') === 'yes') {
+        await new Promise((r) =>
+          setTimeout(
+            r,
+            Number.parseInt(searchParams.get('holdDuration')) || 99999
+          )
+        )
       }
 
-      for (const plugin of config.plugins) {
+      for (const plugin of self.__meteor$config.plugins) {
         if ('onRequest' in plugin) response = await plugin.onRequest(response)
       }
 
@@ -103,17 +105,17 @@ class MeteorServiceWorker {
                 display: flex;
                 flex-direction: column;
               }
-
               textarea {
                 font-family: monospace;
                 width: 315px;
                 height: 100px;
               }
+              ${self.__meteor$config.errorPageCss}
             </style>
           </head>
           <body>
             <h1>Something went wrong</h1>
-            <p>Uh oh - something occured that prevented Meteor from processing your request.</p>
+            <h3>Uh oh - something occured that prevented Meteor from processing your request.</h3>
             <textarea readonly> ${error}</textarea>
             <p>Meteor ${version}</p>
           </body>

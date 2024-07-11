@@ -24,7 +24,7 @@ Object.defineProperties(window.$location, {
       return self.$meteor.util.createOrigin().search || ''
     },
     set(value) {
-      window.location.search = self.$meteor.config.codec.encode(value)
+      window.location.search = self.__meteor$config.codec.encode(value)
     }
   },
   hash: {

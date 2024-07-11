@@ -1,5 +1,3 @@
-import { config } from '@/config'
-
 export function formatUrl(
   input: string,
   template = 'https://google.com/search?q=%s'
@@ -19,5 +17,7 @@ export function formatUrl(
       ? `http://${input}`
       : template.replace('%s', encodeURIComponent(input))
 
-  return config.prefix + config.codec.encode(formatted)
+  return (
+    self.__meteor$config.prefix + self.__meteor$config.codec.encode(formatted)
+  )
 }

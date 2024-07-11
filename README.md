@@ -44,6 +44,30 @@ Fastify()
   })
 ```
 
+You can also use the path with Vite, or anything based off Vite, such as Astro. Install the `vite-plugin-static-copy` plugin and use the path in the plugin's configuration.
+
+```js
+import { defineConfig } from 'vite'
+import { meteorPath } from '@z1g-project/meteor'
+import { viteStaticCopy } from 'vite-plugin-static-copy'
+
+export default defineConfig({
+  plugins: [
+    viteStaticCopy({
+      targets: [
+				{
+					src: `${meteorPath}/meteor.*`.replace(/\\/g, "/"),
+					dest: "meteor",
+					overwrite: false,
+				},
+				// you can do the same with transports!!
+			],
+    })
+  ]
+  // other config
+})
+```
+
 ## Usage
 Once you have the scripts served, register your service worker and set your transport on your frontend.
 
@@ -53,7 +77,7 @@ if ('serviceWorker' in navigator) {
     BareMux.SetTransport(
       "EpxMod.EpoxyClient", // replace with your transport
       { wisp: `wss://wisp-server-here.com` } // replace with the url of your wisp server
-    ) 
+    )
   })
 }
 

@@ -1,4 +1,3 @@
-import { config } from '@/config'
 import { render } from 'dom-serializer'
 import DomHandler, { Element } from 'domhandler'
 import { hasAttrib } from 'domutils'
@@ -7,7 +6,6 @@ import { createContext } from '../util/createContext'
 import { rewriteCss } from './css'
 import { rewriteJs } from './js'
 import { rewriteSrcset } from './srcset'
-import { encodeURL } from './url'
 
 const attributes = {
   csp: ['nonce', 'integrity', 'csp'],
@@ -26,7 +24,7 @@ export function rewriteHtml(content: string, origin: URL) {
 
   let rendered = render(rewriteElement(dom.root as unknown as Element, origin))
 
-  for (const plugin of config.plugins) {
+  for (const plugin of self.__meteor$config.plugins) {
     const context = createContext(rendered)
     plugin.inject(context)
 
@@ -68,13 +66,10 @@ function rewriteElement(element: Element, origin: URL) {
 
   for (const attr of attributes.url) {
     if (hasAttrib(element, attr)) {
-      element.attribs[attr] =
-        element.attribs[attr].startsWith('/') &&
-        !element.attribs[attr].startsWith('//')
-          ? encodeURL(origin.origin + element.attribs[attr], origin)
-          : element.attribs[attr].startsWith('//')
-            ? encodeURL(`https:${element.attribs[attr]}`, origin)
-            : encodeURL(element.attribs[attr], origin)
+      element.attribs[attr] = self.$meteor.rewrite.url.encode(
+        element.attribs[attr],
+        origin
+      )
     }
   }
 
@@ -91,11 +86,12 @@ function rewriteElement(element: Element, origin: URL) {
     for (const script of scriptsToPush) {
       clientScripts.push(
         new Element('script', {
-          src: config.files[script]
+          src: self.__meteor$config.files[script]
         })
       )
     }
-    element.children.push(...clientScripts)
+
+    element.children.unshift(...clientScripts)
   }
 
   for (const child of element.children) {

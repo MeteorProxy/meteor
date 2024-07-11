@@ -1,4 +1,4 @@
-// DO NOT MODIFY THE ORDER OF THESE IMPORTS UNLESS YOU KNOW WHAT YOU'RE DOING!!!111import './dom'
+// DO NOT MODIFY THE ORDER OF THESE IMPORTS UNLESS YOU KNOW WHAT YOU'RE DOING!!!111
 import './dom'
 import './apis/location'
 import './apis/requests'
@@ -10,6 +10,6 @@ declare global {
   }
 }
 
-for (const plugin of self.$meteor.config.plugins) {
+for (const plugin of self.__meteor$config.plugins) {
   if ('handleClient' in plugin) plugin.handleClient(window)
 }

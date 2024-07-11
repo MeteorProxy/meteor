@@ -1,4 +1,3 @@
-import { config } from '@/config'
 import { base64, none, xor } from './codecs'
 
 import { rewriteCss } from './rewrite/css'
@@ -23,8 +22,6 @@ const meteorBundle = {
     base64,
     xor
   },
-
-  config,
 
   rewrite: {
     html: rewriteHtml,

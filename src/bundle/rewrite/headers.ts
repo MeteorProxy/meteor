@@ -1,5 +1,3 @@
-import { encodeURL } from './url'
-
 const tobeDeleted = [
   'cross-origin-embedder-policy',
   'cross-origin-opener-policy',
@@ -29,13 +27,18 @@ export function rewriteHeaders(headers: Headers, origin: URL) {
   for (const header of tobeDeleted) headers.delete(header)
 
   for (const header of ['referer', 'location', 'content-location'])
-    headers.set(header, encodeURL(headers.get(header), origin))
+    headers.set(
+      header,
+      self.$meteor.rewrite.url.encode(headers.get(header), origin)
+    )
 
   for (const header of directRewrites) {
     if (headers.has(header)) {
       headers.set(
         header,
-        new URL(encodeURL(headers.get(header), origin))[header]
+        new URL(self.$meteor.rewrite.url.encode(headers.get(header), origin))[
+          header
+        ]
       )
     }
   }
@@ -44,7 +47,9 @@ export function rewriteHeaders(headers: Headers, origin: URL) {
       'link',
       headers
         .get('link')
-        .replace(/<(.*?)>/gi, (match) => encodeURL(match, origin))
+        .replace(/<(.*?)>/gi, (match) =>
+          self.$meteor.rewrite.url.encode(match, origin)
+        )
     )
   }
 

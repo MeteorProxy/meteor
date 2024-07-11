@@ -9,3 +9,5 @@
 - [x] Fix Iframes
 - [x] Fix weird data problem
 - [ ] Docs pages
+- [ ] Websocket support
+- [ ] Bootstrapper

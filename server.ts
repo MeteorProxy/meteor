@@ -51,8 +51,7 @@ const dev = await context({
   entryPoints: {
     'meteor.bundle': './src/bundle/index.ts',
     'meteor.client': './src/client/index.ts',
-    'meteor.worker': './src/worker.ts',
-    'meteor.config': './src/config.ts'
+    'meteor.worker': './src/worker.ts'
   },
   plugins: [
     copy({

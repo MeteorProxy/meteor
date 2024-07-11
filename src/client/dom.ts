@@ -8,8 +8,8 @@ const attributes: Record<string, (new (...args: unknown[]) => HTMLElement)[]> =
 
 for (const [attr, elms] of Object.entries(attributes)) {
   for (const elm of elms) {
-    const descriptors = Object.getOwnPropertyDescriptor(elm, attr)
-    Object.defineProperty(elm, attr, {
+    const descriptors = Object.getOwnPropertyDescriptor(elm.prototype, attr)
+    Object.defineProperty(elm.prototype, attr, {
       get() {
         return descriptors.get.call(this)
       },
