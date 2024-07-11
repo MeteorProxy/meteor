@@ -1,7 +1,7 @@
 import { generate } from 'astring'
-import { replace, type VisitorOption } from 'estraverse'
+import { replace } from 'estraverse'
 import type { Node } from 'estree'
-import { parseModule, parse } from 'meriyah'
+import { parseModule } from 'meriyah'
 import { encodeURL } from './url'
 
 export function rewriteJs(content: string, origin: URL) {
@@ -9,7 +9,7 @@ export function rewriteJs(content: string, origin: URL) {
     const tree = parseModule(content, { module: true, webcompat: true })
 
     replace(tree as Node, {
-      enter: (node): Node | VisitorOption => {
+      enter(node) {
         if (
           node.type === 'MemberExpression' &&
           node.object.type === 'Identifier' &&
@@ -27,8 +27,9 @@ export function rewriteJs(content: string, origin: URL) {
               type: 'Identifier',
               name: '$location'
             },
-            computed: false
-          } as Node
+            computed: false,
+            optional: false
+          }
         }
 
         if (
@@ -37,16 +38,7 @@ export function rewriteJs(content: string, origin: URL) {
             node.type === 'ExportAllDeclaration') &&
           node.source
         ) {
-          console.log(String(node.source.value), origin)
           const encodedSource = encodeURL(String(node.source.value), origin)
-
-          console.log(encodedSource, {
-            ...node,
-            source: {
-              ...node.source,
-              value: encodedSource
-            }
-          })
 
           return {
             ...node,
@@ -54,7 +46,7 @@ export function rewriteJs(content: string, origin: URL) {
               ...node.source,
               value: encodedSource
             }
-          } as Node
+          }
         }
 
         if (
@@ -63,14 +55,13 @@ export function rewriteJs(content: string, origin: URL) {
           node.source.type === 'Literal'
         ) {
           const encodedSource = encodeURL(String(node.source.value), origin)
-
           return {
             ...node,
             source: {
               ...node.source,
               value: encodedSource
             }
-          } as Node
+          }
         }
       }
     })

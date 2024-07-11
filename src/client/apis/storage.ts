@@ -45,9 +45,10 @@ function createStorageProxy(storage: Storage) {
 
 const ls = createStorageProxy(window.localStorage)
 const ss = createStorageProxy(window.sessionStorage)
+// biome-ignore lint: you need to delete it like this, setting as undefined does NOT work
+delete window.localStorage
+// biome-ignore lint: ^
+delete window.sessionStorage
 
-window.localStorage = undefined
 window.localStorage = ls
-
-window.sessionStorage = undefined
 window.sessionStorage = ss

@@ -1,13 +1,16 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
+    "skipLibCheck": true,
     "lib": ["ES2022", "dom", "webworker"],
     "target": "ES2022",
     "module": "ES2022",
     "moduleResolution": "Bundler",
     "noEmit": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }

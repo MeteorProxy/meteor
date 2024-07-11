@@ -5,7 +5,9 @@ export function rewriteSrcset(srcset: string, origin: URL) {
       return set
         .split(' ')
         .map((url, index) => {
-          return index === 0 ? self.$meteor.rewrite.url.encode(url, origin) : url
+          return index === 0
+            ? self.$meteor.rewrite.url.encode(url, origin)
+            : url
         })
         .join(' ')
     })

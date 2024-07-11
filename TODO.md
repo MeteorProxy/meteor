@@ -6,6 +6,6 @@
 - [ ] Custom UA
 - [ ] Module system
 - [ ] More efficient rewriting
-- [ ] Fix Iframes
+- [x] Fix Iframes
 - [x] Fix weird data problem
 - [ ] Docs pages

@@ -12,9 +12,10 @@
   "scripts": {
     "build": "tsx build.ts",
     "demo": "tsx server.ts",
-    "litedemo": "tsx server.ts --no-build",
-    "release": "npm run build && npm publish --access public",
-    "check": "biome check . --write"
+    "demo:lite": "tsx server.ts --no-build",
+    "release": "tsc && npm run build && npm publish --access public",
+    "check": "biome check . --write",
+    "typecheck": "tsc"
   },
   "files": ["dist", "lib"],
   "keywords": [],
@@ -31,6 +32,7 @@
     "fastify": "^4.28.1",
     "prettier": "^3.3.2",
     "tsx": "^4.16.2",
+    "typescript": "^5.5.3",
     "wisp-server-node": "^1.1.0"
   },
   "dependencies": {

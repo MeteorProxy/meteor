@@ -1,6 +1,11 @@
 window.$location = Object.create(window.location)
 // ohh boy time to add everything
 Object.defineProperties(window.$location, {
+  toString: {
+    get() {
+      return () => self.$meteor.util.createOrigin().toString()
+    }
+  },
   href: {
     get() {
       return self.$meteor.rewrite.url.decode(location.href)
@@ -16,10 +21,10 @@ Object.defineProperties(window.$location, {
   },
   search: {
     get() {
-      return self.$meteor.util.createOrigin().search
+      return self.$meteor.util.createOrigin().search || ''
     },
     set(value) {
-      window.$location.search = self.$meteor.config.codec.encode(value)
+      window.location.search = self.$meteor.config.codec.encode(value)
     }
   },
   hash: {

@@ -68,9 +68,13 @@ function rewriteElement(element: Element, origin: URL) {
 
   for (const attr of attributes.url) {
     if (hasAttrib(element, attr)) {
-      element.attribs[attr] = element.attribs[attr].startsWith('/')
-        ? encodeURL(origin.origin + element.attribs[attr], origin)
-        : encodeURL(element.attribs[attr], origin)
+      element.attribs[attr] =
+        element.attribs[attr].startsWith('/') &&
+        !element.attribs[attr].startsWith('//')
+          ? encodeURL(origin.origin + element.attribs[attr], origin)
+          : element.attribs[attr].startsWith('//')
+            ? encodeURL(`https:${element.attribs[attr]}`, origin)
+            : encodeURL(element.attribs[attr], origin)
     }
   }
 
