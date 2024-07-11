@@ -56,6 +56,7 @@ function rewriteElement(element: Element, origin: URL) {
     ) {
       child.children[0].data = rewriteJs(child.children[0].data, origin)
     }
+    
   }
 
   for (const attr of attributes.csp) {

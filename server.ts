@@ -22,6 +22,9 @@ Fastify({
         req.url?.endsWith('/wisp/') && wisp.routeRequest(req, socket, head)
     )
 })
+  .setNotFoundHandler(function (req, reply) {
+    reply.code(404).sendFile("404.html", "./demo/")
+  })
   .register(fastifyStatic, {
     root: fileURLToPath(new URL('./demo', import.meta.url))
   })
