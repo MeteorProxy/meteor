@@ -21,11 +21,12 @@ export interface Plugin {
   inject?: (ctx: Context) => void
 }
 
-export interface meteorConfig {
+export interface Config {
   prefix: string
   codec: Codec
   plugins: Plugin[]
   errorPageCss?: string
+  debug: boolean
   files: {
     client: string
     worker: string
