@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Meteor Demo</title>
     <link rel="shortcut icon" href="./assets/icon.png" type="image/png" />
-    <script src="/bare-mux.js"></script>
-    <script src="/epoxy/index.js"></script>
     <script src="/meteor/meteor.bundle.js"></script>
     <script src="/meteor/meteor.config.js"></script>
 
@@ -39,18 +37,9 @@
         />
         <button id="go" class="btn bg-base-300 join-item">Go</button>
       </div>
-      <section class="flex flex-row gap-4 mt-8">
-        <label for="method">iframe?</label>
-        <input type="checkbox" id="method" class="toggle-success toggle" />
-      </section>
     </div>
 
     <script>
-      const checkbox = document.getElementById("method")
-      checkbox.checked = localStorage.getItem("method") === "true"
-      checkbox.addEventListener("change", () => {
-        localStorage.setItem("method", checkbox.checked)
-      })
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker
           .getRegistrations()
@@ -60,11 +49,6 @@
             }
 
             await navigator.serviceWorker.register("/sw.js")
-            BareMux.SetTransport("EpxMod.default", {
-              wisp:
-                localStorage.getItem("wisp") ||
-                `${location.protocol === "http:" ? "ws:" : "wss:"}//${location.host}/wisp/`,
-            })
             self.$meteor.util.log(
               "Service worker registered successfully",
               "cornflowerblue"
@@ -73,10 +57,7 @@
       }
       document.querySelector("button").onclick = async () => {
         const input = document.getElementById("input")
-        window.location.href =
-          localStorage.getItem("method") === "true"
-            ? `/iframe.html?query=${self.$meteor.util.formatUrl(input.value).replace("/route/", "")}`
-            : self.$meteor.util.formatUrl(input.value)
+        window.location.href = `/iframe.html?query=${self.$meteor.util.formatUrl(input.value).replace("/route/", "")}`
       }
 
       console.log(self.$meteor.config)

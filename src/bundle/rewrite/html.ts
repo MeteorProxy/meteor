@@ -25,10 +25,13 @@ export function rewriteHtml(content: string, origin: URL) {
   let rendered = render(rewriteElement(dom.root as unknown as Element, origin))
 
   for (const plugin of self.$meteor.config.plugins) {
-    const context = createContext(rendered)
-    plugin.inject(context)
+    if (plugin.filter.test(origin.href)) {
+      self.$meteor.util.log(`Running inject for ${plugin.name}`, 'teal')
+      const context = createContext(rendered)
+      plugin.inject(context)
 
-    rendered = context.getModified()
+      rendered = context.getModified()
+    }
   }
 
   return rendered
@@ -80,7 +83,7 @@ function rewriteElement(element: Element, origin: URL) {
   }
 
   if (element.name === 'head') {
-    /* 
+    /*
       !! WARNING !!
       The bundle script must be listed last, since t order of scripts is inserted in reverse order
      */

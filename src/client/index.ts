@@ -20,5 +20,10 @@ declare global {
 }
 
 for (const plugin of self.$meteor.config.plugins) {
-  if ('handleClient' in plugin) plugin.handleClient(window)
+  if (plugin.filter.test(window.$location.href)) {
+    if ('handleClient' in plugin) {
+      self.$meteor.util.log(`Running handleClient for ${plugin.name}`, "teal")
+      plugin.handleClient(window)
+    }
+  }
 }

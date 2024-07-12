@@ -1,6 +1,7 @@
 import fastifyStatic from '@fastify/static'
 // @ts-expect-error not typed lol
 import { epoxyPath } from '@mercuryworkshop/epoxy-transport'
+import { baremuxPath } from '@mercuryworkshop/bare-mux/node'
 import Fastify from 'fastify'
 import { rimraf } from 'rimraf'
 import wisp from 'wisp-server-node'
@@ -35,6 +36,11 @@ Fastify({
     decorateReply: false
   })
   .register(fastifyStatic, {
+    root: baremuxPath,
+    prefix: '/baremux/',
+    decorateReply: false
+  })
+  .register(fastifyStatic, {
     root: epoxyPath,
     prefix: '/epoxy/',
     decorateReply: false
@@ -60,17 +66,7 @@ const dev = await context({
     'meteor.worker': './src/worker.ts',
     'meteor.config': './src/config.ts'
   },
-  plugins: [
-    copy({
-      resolveFrom: 'cwd',
-      assets: [
-        {
-          from: ['./node_modules/@mercuryworkshop/bare-mux/dist/bare.cjs'],
-          to: ['./demo/bare-mux.js']
-        }
-      ]
-    })
-  ],
+  plugins: [],
   bundle: true,
   logLevel: 'info',
   outdir: 'dist/'

@@ -20,6 +20,11 @@ class MeteorServiceWorker {
     try {
       const url = new URL(self.$meteor.rewrite.url.decode(request.url))
       self.$meteor.util.log(`Processing request for ${url.href}`)
+      for (const plugin of self.$meteor.config.plugins) {
+        if (plugin.filter.test(url.href)) {
+          self.$meteor.util.log(`Plugin ${plugin.name} loaded for this page`, "teal")
+        }
+      }
       if (url.href.startsWith('data:')) {
         const response = await fetch(url)
 
@@ -41,7 +46,6 @@ class MeteorServiceWorker {
         response.headers,
         url
       )
-      // todo: get downloads working
       if (response.body) {
         switch (request.destination) {
           case 'iframe':
@@ -65,28 +69,26 @@ class MeteorServiceWorker {
             body = response.body
         }
       }
-      if (response.headers.has('content-disposition')) {
-        const disposition = response.headers.get('content-disposition')
-        const filename = response.finalURL.split('/').pop()
-        rewrittenHeaders.set(
-          'content-disposition',
-          `${
-            /^\s*?attachment/i.test(disposition) ? 'attachment' : 'inline'
-          }; filename="${filename}"`
-        )
-      }
-      const searchParams = new URLSearchParams(request.url)
-      if (searchParams.get('hold') === 'yes') {
-        await new Promise((r) =>
-          setTimeout(
-            r,
-            Number.parseInt(searchParams.get('holdDuration')) || 99999
-          )
-        )
+      // skidded from uv lol
+      if (["document", "iframe"].includes(request.destination)) {
+        const header = response.headers.get('content-disposition');
+
+        if (!/\s*?((inline|attachment);\s*?)filename=/i.test(header)) {
+          const type = /^\s*?attachment/i.test(header)
+            ? 'attachment'
+            : 'inline';
+          const [filename] = response.finalURL.split('/').reverse();
+          response.headers.set('Content-Disposition', `${type}; filename=${JSON.stringify(filename)}`);
+        }
       }
 
       for (const plugin of self.$meteor.config.plugins) {
-        if ('onRequest' in plugin) response = await plugin.onRequest(response)
+        if (plugin.filter.test(url.href)) {
+          if ('onRequest' in plugin) {
+            self.$meteor.util.log(`Running onRequest for ${plugin.name}`, "teal")
+            response = await plugin.onRequest(response)
+          }
+        }
       }
 
       return new Response(body, {
@@ -101,12 +103,14 @@ class MeteorServiceWorker {
 
   renderError(error: string, version: string) {
     return new Response(
-      `
+      typeof self.$meteor.config.errorPage === 'string' ? self.$meteor.config.errorPage :
+        `
         <!DOCTYPE html>
         <html lang="en">
           <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            ${self.$meteor.config.errorPage?.head}
             <title>Error</title>
             <style>
               body {
@@ -119,13 +123,13 @@ class MeteorServiceWorker {
                 width: 315px;
                 height: 100px;
               }
-              ${self.$meteor.config.errorPageCss}
+              ${self.$meteor.config.errorPage?.css}
             </style>
           </head>
           <body>
             <h1>Something went wrong</h1>
             <h3>Uh oh - something occured that prevented Meteor from processing your request.</h3>
-            <textarea readonly> ${error}</textarea>
+            <textarea readonly>${error}</textarea>
             <p>Meteor ${version}</p>
           </body>
         </html>

@@ -6,23 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Meteor iFrame Demo</title>
   <link rel="shortcut icon" href="./assets/icon.png" type="image/png">
-  <script src="/bare-mux.js"></script>
-  <script src="/epoxy/index.js"></script>
+  <script src="/baremux/index.js"></script>
   <script src="/meteor/meteor.bundle.js"></script>
 </head>
 <body>
   <script type="module">
+    let connection = new BareMux.BareMuxConnection("/baremux/worker.js")
+    await connection.setTransport("/epoxy/index.mjs", [{
+          wisp: localStorage.getItem("wisp") ||
+          `${location.protocol === "http:" ? "ws:" : "wss:"}//${location.host}/wisp/`,
+      }])
     const searchParams = new URLSearchParams(location.search)
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then(async (registrations) => {
-        for await (const registration of registrations) {
-          await registration.unregister()
-        }
-
-        const registration = await navigator.serviceWorker.register('/sw.js')
-        BareMux.SetTransport("EpxMod.default", { wisp: localStorage.getItem("wisp") || `${location.protocol === "http:" ? 'ws:' : 'wss:'}//${location.host}/wisp/` })
-      })
-    }
     const el = document.createElement("iframe")
     el.src = "route/" + searchParams.get("query") || self.$meteor.config.codec.encode("https://google.com")
     document.body.appendChild(el)

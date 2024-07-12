@@ -1,4 +1,3 @@
-importScripts('/epoxy/index.js')
 importScripts('/meteor/meteor.bundle.js')
 importScripts('/meteor/meteor.config.js')
 importScripts('/meteor/meteor.worker.js')
