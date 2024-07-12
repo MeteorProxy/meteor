@@ -6,29 +6,29 @@ type ConstructorPatch = new (...args: any[]) => any
 type Arguments<T extends any[]> = (args: T) => T
 
 export function patchFunction<T extends FunctionPatch>(
-  originalFunction: T,
-  argProcessor: Arguments<Parameters<T>>
+  target: T,
+  proxy: Arguments<Parameters<T>>
 ): T {
-  return new Proxy(originalFunction, {
+  return new Proxy(target, {
     apply(target: T, thisArg: unknown, argArray: Parameters<T>): ReturnType<T> {
-      const processedArgs = argProcessor(argArray)
-      return Reflect.apply(target, thisArg, processedArgs)
+      const proxiedArgs = proxy(argArray)
+      return Reflect.apply(target, thisArg, proxiedArgs)
     }
   }) as T
 }
 
 export function patchConstructor<T extends ConstructorPatch>(
-  originalClass: T,
-  argProcessor: Arguments<ConstructorParameters<T>>
+  target: T,
+  proxy: Arguments<ConstructorParameters<T>>
 ): T {
-  return new Proxy(originalClass, {
+  return new Proxy(target, {
     construct(
       target: T,
       argArray: ConstructorParameters<T>,
       newTarget: T
     ): InstanceType<T> {
-      const processedArgs = argProcessor(argArray)
-      return Reflect.construct(target, processedArgs, newTarget)
+      const proxiedArgs = proxy(argArray)
+      return Reflect.construct(target, proxiedArgs, newTarget)
     }
   }) as T
 }

@@ -1,12 +1,15 @@
-// import { BareClient } from "@mercuryworkshop/bare-mux"
-
-// class ProxiedWs {
-//       constructor(url: string | URL, protocols?: string | string[]) {
-//       const client = new BareClient().createWebSocket(url, protocols, WebSocket, undefined, ArrayBuffer)
-//       return client
-//    }
-// }
-// // biome-ignore lint:
-// delete globalThis.WebSocket
-
-// globalThis.WebSocket = ProxiedWs
+// boken, "there are no bare clients"
+import BareClient from '@mercuryworkshop/bare-mux'
+globalThis.WebSocket = new Proxy(globalThis.WebSocket, {
+  construct(_target, args) {
+    return new BareClient().createWebSocket(
+      args[0],
+      args[1],
+      WebSocket,
+      {
+        'User-Agent': navigator.userAgent
+      },
+      ArrayBuffer
+    )
+  }
+})

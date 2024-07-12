@@ -1,11 +1,11 @@
-import { copyFile, mkdir } from 'node:fs/promises'
+import { mkdir, writeFile } from 'node:fs/promises'
 import { build } from 'esbuild'
 import { rimraf } from 'rimraf'
 
 await rimraf('dist')
 await mkdir('dist')
 // await copyFile('src/meteor.config.js', 'dist/meteor.config.js')
-await build({
+const buildResult = await build({
   sourcemap: true,
   minify: process.env.NODE_ENV !== 'development',
   entryPoints: {
@@ -15,8 +15,10 @@ await build({
   },
   bundle: true,
   logLevel: 'info',
-  outdir: 'dist/'
+  outdir: 'dist/',
+  metafile: true
 })
+
 await build({
   sourcemap: false,
   minify: false,
@@ -27,3 +29,6 @@ await build({
   logLevel: 'info',
   outdir: 'dist/'
 })
+
+if (buildResult.metafile)
+  writeFile('./dist/metafile.json', JSON.stringify(buildResult.metafile))

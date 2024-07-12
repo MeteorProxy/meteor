@@ -44,27 +44,36 @@ class MeteorServiceWorker {
       // todo: get downloads working
       if (response.body) {
         switch (request.destination) {
-          case 'document':
-            body = self.$meteor.rewrite.html(await response.text(), url)
-            break
           case 'iframe':
-            body = self.$meteor.rewrite.html(await response.text(), url)
-            break
           case 'frame':
-            body = self.$meteor.rewrite.html(await response.text(), url)
+          case 'document':
+            if (response.headers.get('content-type').includes('text/html')) {
+              body = self.$meteor.rewrite.html(await response.text(), url)
+            } else {
+              body = response.body
+            }
             break
           case 'style':
             body = self.$meteor.rewrite.css(await response.text(), url)
             break
           case 'worker':
-            body = self.$meteor.rewrite.js(await response.text(), url)
-            break
+          case 'sharedworker':
           case 'script':
             body = self.$meteor.rewrite.js(await response.text(), url)
             break
           default:
             body = response.body
         }
+      }
+      if (response.headers.has('content-disposition')) {
+        const disposition = response.headers.get('content-disposition')
+        const filename = response.finalURL.split('/').pop()
+        rewrittenHeaders.set(
+          'content-disposition',
+          `${
+            /^\s*?attachment/i.test(disposition) ? 'attachment' : 'inline'
+          }; filename="${filename}"`
+        )
       }
       const searchParams = new URLSearchParams(request.url)
       if (searchParams.get('hold') === 'yes') {

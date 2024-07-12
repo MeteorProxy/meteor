@@ -4,3 +4,4 @@ lock
 cache
 demo/meteor
 demo/bare-mux.js
+metafile.json
