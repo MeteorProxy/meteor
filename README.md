@@ -20,12 +20,12 @@ Build Meteor's scripts by first cloning the repository, installing packages (`pn
 
 2. Serving a static path with a backend framework
 
-`meteorPath` is exported from the `@z1g-project/meteor` [NPM package](https://npmjs.com/package/@z1g-project/meteor), which resolves to a path in `node_modules` of built Meteor scripts. You can use this however you serve static directories in your backend framework.
+`meteorPath` is exported from the `meteorproxy` [NPM package](https://npmjs.com/package/meteorproxy), which resolves to a path in `node_modules` of built Meteor scripts. You can use this however you serve static directories in your backend framework.
 
 Express:
 ```js
 import express from 'express'
-import { meteorPath } from '@z1g-project/meteor'
+import { meteorPath } from 'meteorproxy'
 
 const app = express()
 app.use("/meteor/", express.static(meteorPath)
@@ -35,7 +35,7 @@ Fastify:
 ```js
 import Fastify from 'fastify'
 import fastifyStatic from '@fastify/static'
-import { meteorPath } from '@z1g-project/meteor'
+import { meteorPath } from 'meteorproxy'
 
 Fastify()
   .register(fastifyStatic, {
@@ -48,19 +48,18 @@ You can also use the path with Vite, or anything based off Vite, such as Astro. 
 
 ```js
 import { defineConfig } from 'vite'
-import { meteorPath } from '@z1g-project/meteor'
+import { meteorPath } from 'meteorproxy'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 export default defineConfig({
   plugins: [
     viteStaticCopy({
       targets: [
-				{
-					src: `${meteorPath}/meteor.*`.replace(/\\/g, "/"),
-					dest: "meteor",
-					overwrite: false,
-				},
-				// you can do the same with transports!!
+        {
+          src: `${meteorPath}/meteor.*`.replace(/\\/g, "/"),
+        	dest: "meteor",
+        	overwrite: false,
+        },
 			],
     })
   ]

@@ -20,9 +20,9 @@ const tobeDeleted = [
 const directRewrites = ['host', 'origin']
 
 export function rewriteHeaders(headers: Headers, origin: URL) {
-  // @ts-expect-error this property does exist however
-  for (const [key, value] of headers.entries())
-    headers.set(key.toLowerCase(), value)
+  // // @ts-expect-error this property does exist however
+  // for (const [key, value] of headers.entries())
+  //   headers.set(key.toLowerCase(), value)
 
   for (const header of tobeDeleted) headers.delete(header)
 

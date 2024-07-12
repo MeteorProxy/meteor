@@ -1,5 +1,6 @@
 import { BareClient } from '@mercuryworkshop/bare-mux'
 import { version } from '../package.json'
+import { getCookies, setCookies } from './bundle/util/cookies'
 
 declare global {
   interface Window {
@@ -33,15 +34,24 @@ class MeteorServiceWorker {
 
         return new Response(response.body)
       }
-
+      console.log(
+        'contenttype for',
+        url.href,
+        request.headers.get('content-type')
+      )
       let response = await this.client.fetch(url, {
         method: request.method,
         body: request.body,
-        headers: request.headers,
+        headers: {
+          ...request.headers,
+          cookie: (await getCookies(url.host)).join('')
+        },
         credentials: 'omit',
         mode: request.mode === 'cors' ? request.mode : 'same-origin',
         cache: request.cache,
-        redirect: request.redirect
+        redirect: request.redirect,
+        // @ts-expect-error lol
+        duplex: 'half'
       })
 
       let body: ReadableStream | string
@@ -49,6 +59,7 @@ class MeteorServiceWorker {
         response.headers,
         url
       )
+      await setCookies(response.rawHeaders['set-cookie'], url.host)
       if (response.body) {
         switch (request.destination) {
           case 'iframe':
@@ -104,6 +115,7 @@ class MeteorServiceWorker {
         statusText: response.statusText
       })
     } catch (error) {
+      self.$meteor.util.log(error, '#FF5757')
       return this.renderError(error, version)
     }
   }
@@ -118,7 +130,7 @@ class MeteorServiceWorker {
           <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            ${self.$meteor.config.errorPage?.head}
+            ${self.$meteor.config.errorPage?.head || ''}
             <title>Error</title>
             <style>
               body {
@@ -131,7 +143,7 @@ class MeteorServiceWorker {
                 width: 315px;
                 height: 100px;
               }
-              ${self.$meteor.config.errorPage?.css}
+              ${self.$meteor.config.errorPage?.css || ''}
             </style>
           </head>
           <body>

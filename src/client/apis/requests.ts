@@ -15,20 +15,6 @@ window.fetch = patchFunction(window.fetch, (args) => {
     args[0] = rewriteStringOrUrl(args[0])
   }
 
-  // else if (args[0] instanceof URL) {
-  //   args[0] = new URL(
-  //     self.$meteor.rewrite.url.encode(
-  //       args[0].toString(),
-  //       self.$meteor.util.createOrigin()
-  //     )
-  //   )
-  // } else {
-  //   args[0] = self.$meteor.rewrite.url.encode(
-  //     args[0],
-  //     self.$meteor.util.createOrigin()
-  //   )
-  // }
-
   return args
 })
 

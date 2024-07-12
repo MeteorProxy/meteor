@@ -40,27 +40,11 @@
     </div>
 
     <script>
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker
-          .getRegistrations()
-          .then(async (registrations) => {
-            for await (const registration of registrations) {
-              await registration.unregister()
-            }
-
-            await navigator.serviceWorker.register("/sw.js")
-            self.$meteor.util.log(
-              "Service worker registered successfully",
-              "cornflowerblue"
-            )
-          })
-      }
       document.querySelector("button").onclick = async () => {
         const input = document.getElementById("input")
-        window.location.href = `/iframe.html?query=${self.$meteor.util.formatUrl(input.value).replace("/route/", "")}`
+        sessionStorage.setItem("site", self.$meteor.util.formatUrl(input.value))
+        window.location.href = "/iframe.html"
       }
-
-      console.log(self.$meteor.config)
     </script>
   </body>
 </html>

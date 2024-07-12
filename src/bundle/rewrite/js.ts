@@ -12,7 +12,9 @@ export function rewriteJs(content: string, origin: URL) {
         if (
           node.type === 'MemberExpression' &&
           node.object.type === 'Identifier' &&
-          ['window', 'self'].includes(node.object.name) &&
+          ['window', 'self', 'document', 'globalThis'].includes(
+            node.object.name
+          ) &&
           node.property.type === 'Identifier' &&
           node.property.name === 'location'
         ) {
