@@ -1,6 +1,6 @@
 # Meteor To-Do
 
-- [ ] Add JS Rewriting
+- [ ] Add JS Rewriting [In Progress]
 - [ ] Patch more client APIs
 - [x] data: url handling
 - [ ] Custom UA
@@ -13,5 +13,5 @@
 - [ ] Add Media Element rewriting (video/audio elements etc)
 - [ ] Fix inline styles
 - [ ] Docs pages
-- [ ] Websocket support [In Progress]
+- [x] Websocket support [Stubbed, May not fully be working]
 - [ ] Bootstrapper (future)
