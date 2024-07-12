@@ -82,7 +82,7 @@ if ('serviceWorker' in navigator) {
 }
 
 // After a button click or other event:
-window.location.href = __meteor$config.prefix + __meteor$config.codec.encode("https://example.com") // replace url with the (full) url you want to navigate to
+window.location.href = self.$meteor.config.prefix + self.$meteor.config.codec.encode("https://example.com") // replace url with the (full) url you want to navigate to
 ```
 
 More in-depth usage and configuration can be found in the Wiki.

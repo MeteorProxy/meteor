@@ -1,5 +1,4 @@
 window.$location = Object.create(window.location)
-// ohh boy time to add everything
 Object.defineProperties(window.$location, {
   toString: {
     get() {
@@ -8,7 +7,7 @@ Object.defineProperties(window.$location, {
   },
   href: {
     get() {
-      return self.$meteor.rewrite.url.decode(location.href)
+      return self.$meteor.util.createOrigin().href
     },
     set(value) {
       self.$meteor.rewrite.url.encode(value, self.$meteor.util.createOrigin())
@@ -24,7 +23,7 @@ Object.defineProperties(window.$location, {
       return self.$meteor.util.createOrigin().search || ''
     },
     set(value) {
-      window.location.search = self.__meteor$config.codec.encode(value)
+      window.location.search = self.$meteor.config.codec.encode(value)
     }
   },
   hash: {
@@ -49,10 +48,20 @@ Object.defineProperties(window.$location, {
       return self.$meteor.util.createOrigin().host
     },
     set(value) {
-      window.location.host = new URL(
-        self.$meteor.rewrite.url.encode(value, self.$meteor.util.createOrigin())
-      ).host
+      self.$meteor.util.log('cocaine')
+      const url = self.$meteor.util.createOrigin()
+      url.host = value
+      window.location.pathname = self.$meteor.rewrite.url.encode(
+        url.toString(),
+        url
+      )
     }
+  },
+  hostname: {
+    get() {
+      return self.$meteor.util.createOrigin().hostname
+    },
+    set() {}
   },
   replace: {
     value(url: string) {
@@ -62,3 +71,4 @@ Object.defineProperties(window.$location, {
     }
   }
 })
+globalThis.$location = window.$location

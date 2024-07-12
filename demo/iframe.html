@@ -24,7 +24,7 @@
       })
     }
     const el = document.createElement("iframe")
-    el.src = "route/" + searchParams.get("query") || self.__meteor$config.codec.encode("https://google.com")
+    el.src = "route/" + searchParams.get("query") || self.$meteor.config.codec.encode("https://google.com")
     document.body.appendChild(el)
     Object.assign(el.style, {
       width: "100%",
@@ -38,7 +38,7 @@
       position: "fixed",
     });
 
-    console.log(self.__meteor$config)
+    console.log(self.$meteor.config)
   </script>
 </body>
 

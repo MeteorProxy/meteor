@@ -1,12 +1,7 @@
 import { xor } from './bundle/codecs'
-import example from './plugins/example'
 import type { Config } from './types'
 
-declare global {
-  interface Window {
-    __meteor$config: Config
-  }
-}
+import example from './plugins/example'
 
 export const config: Config = {
   prefix: '/route/',
@@ -22,5 +17,3 @@ export const config: Config = {
     config: '/meteor/meteor.config.js'
   }
 }
-
-self.__meteor$config = config

@@ -1,19 +1,19 @@
-import { render } from 'dom-serializer'
-import DomHandler, { Element } from 'domhandler'
-import { hasAttrib } from 'domutils'
-import { ElementType, Parser } from 'htmlparser2'
-import { createContext } from '../util/createContext'
-import { rewriteCss } from './css'
-import { rewriteJs } from './js'
-import { rewriteSrcset } from './srcset'
+import { render } from "dom-serializer"
+import DomHandler, { Element } from "domhandler"
+import { hasAttrib } from "domutils"
+import { ElementType, Parser } from "htmlparser2"
+import { createContext } from "../util/createContext"
+import { rewriteCss } from "./css"
+import { rewriteJs } from "./js"
+import { rewriteSrcset } from "./srcset"
 
 const attributes = {
-  csp: ['nonce', 'integrity', 'csp'],
-  url: ['action', 'data', 'href', 'src', 'formaction'],
-  html: ['srcdoc'],
-  css: ['style'],
-  js: ['src'],
-  srcset: ['srcset']
+  csp: ["nonce", "integrity", "csp"],
+  url: ["action", "data", "href", "src", "formaction"],
+  html: ["srcdoc"],
+  css: ["style"],
+  js: ["src"],
+  srcset: ["srcset"],
 }
 
 export function rewriteHtml(content: string, origin: URL) {
@@ -24,7 +24,7 @@ export function rewriteHtml(content: string, origin: URL) {
 
   let rendered = render(rewriteElement(dom.root as unknown as Element, origin))
 
-  for (const plugin of self.__meteor$config.plugins) {
+  for (const plugin of self.$meteor.config.plugins) {
     const context = createContext(rendered)
     plugin.inject(context)
 
@@ -42,21 +42,20 @@ function rewriteElement(element: Element, origin: URL) {
     }
 
     if (
-      child.type === 'style' &&
+      child.type === "style" &&
       child.children[0] &&
-      'data' in child.children[0]
+      "data" in child.children[0]
     ) {
       child.children[0].data = rewriteCss(child.children[0].data, origin)
     }
 
     if (
-      child.type === 'script' &&
+      child.type === "script" &&
       child.children[0] &&
-      'data' in child.children[0]
+      "data" in child.children[0]
     ) {
       child.children[0].data = rewriteJs(child.children[0].data, origin)
     }
-    
   }
 
   for (const attr of attributes.csp) {
@@ -80,19 +79,24 @@ function rewriteElement(element: Element, origin: URL) {
     }
   }
 
-  if (element.name === 'head') {
-    const scriptsToPush = ['bundle', 'config', 'client']
-    const clientScripts = []
+  if (element.name === "head") {
+    /* 
+      !! WARNING !!
+      The bundle script must be listed last, since t order of scripts is inserted in reverse order
+     */
+    const scriptsToPush = ["client", "config", "bundle"]
 
     for (const script of scriptsToPush) {
-      clientScripts.push(
-        new Element('script', {
-          src: self.__meteor$config.files[script]
+      element.children.unshift(
+        new Element("script", {
+          src: self.$meteor.config.files[script],
         })
       )
     }
+  }
 
-    element.children.unshift(...clientScripts)
+  if (element.name === "video") {
+    self.$meteor.util.log("Vid Detected")
   }
 
   for (const child of element.children) {

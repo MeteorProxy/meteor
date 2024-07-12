@@ -1,65 +1,85 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="night">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meteor Demo</title>
+    <link rel="shortcut icon" href="./assets/icon.png" type="image/png" />
+    <script src="/bare-mux.js"></script>
+    <script src="/epoxy/index.js"></script>
+    <script src="/meteor/meteor.bundle.js"></script>
+    <script src="/meteor/meteor.config.js"></script>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meteor Demo</title>
-  <link rel="shortcut icon" href="./assets/icon.png" type="image/png">
-  <script src="/bare-mux.js"></script>
-  <script src="/epoxy/index.js"></script>
-  <script src="/meteor/meteor.bundle.js"></script>
-  <script src="/meteor/meteor.config.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
 
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
-  <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+      * {
+        font-family: "Inter", sans-serif;
+      }
+    </style>
+  </head>
 
-    * {
-      font-family: 'Inter', sans-serif
-    };
-  </style>
-</head>
-
-<body>
-  <div class="h-screen flex items-center justify-center flex-col gap-8">
-    <img src="/assets/icon.png" class="h-48">
-    <div class="flex items-center join">
-      <input placeholder="Enter a URL or search query" type="text" value="https://google.com" id="input" class="input bg-base-300 w-96 join-item">
-      <button id="go" class="btn bg-base-300 join-item">Go</button>
+  <body>
+    <div class="h-screen flex items-center justify-center flex-col">
+      <img src="/assets/meteor.png" class="h-60" />
+      <div class="flex items-center join">
+        <input
+          placeholder="Enter a URL or search query"
+          type="text"
+          value="https://google.com"
+          id="input"
+          class="input bg-base-300 w-96 join-item"
+        />
+        <button id="go" class="btn bg-base-300 join-item">Go</button>
+      </div>
+      <section class="flex flex-row gap-4 mt-8">
+        <label for="method">iframe?</label>
+        <input type="checkbox" id="method" class="toggle-success toggle" />
+      </section>
     </div>
-    <section class="flex flex-row gap-4">
-    <label for="method">iframe?</label>
-    <input type="checkbox" id="method" class="toggle-success toggle">
-    </section>
-  </div>
 
-  <script>
-    const checkbox = document.getElementById("method")
-    checkbox.checked = localStorage.getItem("method") === "true"
-    checkbox.addEventListener("change", () => {
-      localStorage.setItem("method", checkbox.checked)
-    })
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then(async (registrations) => {
-        for await (const registration of registrations) {
-          await registration.unregister()
-        }
-
-        await navigator.serviceWorker.register('/sw.js')
-        BareMux.SetTransport("EpxMod.default", { wisp: localStorage.getItem("wisp") || `${location.protocol === "http:" ? 'ws:' : 'wss:'}//${location.host}/wisp/` })
-        self.$meteor.util.log("Service worker registered successfully", "cornflowerblue")
+    <script>
+      const checkbox = document.getElementById("method")
+      checkbox.checked = localStorage.getItem("method") === "true"
+      checkbox.addEventListener("change", () => {
+        localStorage.setItem("method", checkbox.checked)
       })
-    }
-    document.querySelector("button").onclick = async () => {
-      const input = document.getElementById("input")
-      window.location.href = localStorage.getItem("method") === "true" ? `/iframe.html?query=${self.$meteor.util.formatUrl(input.value).replace("/route/", "")}` : self.$meteor.util.formatUrl(input.value)
-    }
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .getRegistrations()
+          .then(async (registrations) => {
+            for await (const registration of registrations) {
+              await registration.unregister()
+            }
 
-    console.log(__meteor$config)
-  </script>
-</body>
+            await navigator.serviceWorker.register("/sw.js")
+            BareMux.SetTransport("EpxMod.default", {
+              wisp:
+                localStorage.getItem("wisp") ||
+                `${location.protocol === "http:" ? "ws:" : "wss:"}//${location.host}/wisp/`,
+            })
+            self.$meteor.util.log(
+              "Service worker registered successfully",
+              "cornflowerblue"
+            )
+          })
+      }
+      document.querySelector("button").onclick = async () => {
+        const input = document.getElementById("input")
+        window.location.href =
+          localStorage.getItem("method") === "true"
+            ? `/iframe.html?query=${self.$meteor.util.formatUrl(input.value).replace("/route/", "")}`
+            : self.$meteor.util.formatUrl(input.value)
+      }
 
+      console.log(self.$meteor.config)
+    </script>
+  </body>
 </html>

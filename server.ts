@@ -2,6 +2,7 @@ import fastifyStatic from '@fastify/static'
 // @ts-expect-error not typed lol
 import { epoxyPath } from '@mercuryworkshop/epoxy-transport'
 import Fastify from 'fastify'
+import { rimraf } from 'rimraf'
 import wisp from 'wisp-server-node'
 
 import { createServer } from 'node:http'
@@ -22,8 +23,8 @@ Fastify({
         req.url?.endsWith('/wisp/') && wisp.routeRequest(req, socket, head)
     )
 })
-  .setNotFoundHandler(function (req, reply) {
-    reply.code(404).sendFile("404.html", "./demo/")
+  .setNotFoundHandler((req, reply) => {
+    reply.code(404).sendFile('404.html', './demo/')
   })
   .register(fastifyStatic, {
     root: fileURLToPath(new URL('./demo', import.meta.url))
@@ -48,13 +49,16 @@ Fastify({
     consola.success(`Server listening on http://localhost:${port}`)
   })
 
+await rimraf('dist')
+
 const dev = await context({
   sourcemap: true,
   minify: process.env.NODE_ENV !== 'development',
   entryPoints: {
     'meteor.bundle': './src/bundle/index.ts',
     'meteor.client': './src/client/index.ts',
-    'meteor.worker': './src/worker.ts'
+    'meteor.worker': './src/worker.ts',
+    'meteor.config': './src/config.ts'
   },
   plugins: [
     copy({

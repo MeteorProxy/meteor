@@ -6,6 +6,7 @@ import { rewriteHtml } from './rewrite/html'
 import { rewriteJs } from './rewrite/js'
 import { decodeURL, encodeURL } from './rewrite/url'
 
+import { config } from '@/config'
 import { createOrigin } from './util/createOrigin'
 import { formatUrl } from './util/formatUrl'
 import { log } from './util/logger'
@@ -17,6 +18,7 @@ declare global {
 }
 
 const meteorBundle = {
+  config,
   codecs: {
     none,
     base64,

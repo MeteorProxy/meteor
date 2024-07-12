@@ -3,12 +3,7 @@ export function formatUrl(
   template = 'https://google.com/search?q=%s'
 ): string {
   function isValidUrl(url: string) {
-    try {
-      new URL(url)
-      return true
-    } catch {
-      return false
-    }
+    return URL.canParse(url)
   }
 
   const formatted = isValidUrl(input)
@@ -18,6 +13,6 @@ export function formatUrl(
       : template.replace('%s', encodeURIComponent(input))
 
   return (
-    self.__meteor$config.prefix + self.__meteor$config.codec.encode(formatted)
+    self.$meteor.config.prefix + self.$meteor.config.codec.encode(formatted)
   )
 }

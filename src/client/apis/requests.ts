@@ -1,4 +1,5 @@
 import { patchConstructor, patchFunction } from '../patch'
+import { rewriteStringOrUrl } from '../rewrite'
 
 window.fetch = patchFunction(window.fetch, (args) => {
   if (args[0] instanceof Request) {
@@ -10,19 +11,23 @@ window.fetch = patchFunction(window.fetch, (args) => {
       ),
       request
     )
-  } else if (args[0] instanceof URL) {
-    args[0] = new URL(
-      self.$meteor.rewrite.url.encode(
-        args[0].toString(),
-        self.$meteor.util.createOrigin()
-      )
-    )
   } else {
-    args[0] = self.$meteor.rewrite.url.encode(
-      args[0],
-      self.$meteor.util.createOrigin()
-    )
+    args[0] = rewriteStringOrUrl(args[0])
   }
+
+  // else if (args[0] instanceof URL) {
+  //   args[0] = new URL(
+  //     self.$meteor.rewrite.url.encode(
+  //       args[0].toString(),
+  //       self.$meteor.util.createOrigin()
+  //     )
+  //   )
+  // } else {
+  //   args[0] = self.$meteor.rewrite.url.encode(
+  //     args[0],
+  //     self.$meteor.util.createOrigin()
+  //   )
+  // }
 
   return args
 })

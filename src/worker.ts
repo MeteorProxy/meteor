@@ -1,5 +1,5 @@
-import { BareClient } from '@mercuryworkshop/bare-mux'
-import { version } from '../package.json'
+import { BareClient } from "@mercuryworkshop/bare-mux"
+import { version } from "../package.json"
 
 declare global {
   interface Window {
@@ -13,14 +13,14 @@ class MeteorServiceWorker {
     this.client = new BareClient()
   }
   shouldRoute({ request }: FetchEvent) {
-    return request.url.startsWith(location.origin + self.__meteor$config.prefix)
+    return request.url.startsWith(location.origin + self.$meteor.config.prefix)
   }
 
   async handleFetch({ request }: FetchEvent) {
     try {
       const url = new URL(self.$meteor.rewrite.url.decode(request.url))
       self.$meteor.util.log(`Processing request for ${url.href}`)
-      if (url.href.startsWith('data:')) {
+      if (url.href.startsWith("data:")) {
         const response = await fetch(url)
 
         return new Response(response.body)
@@ -30,10 +30,10 @@ class MeteorServiceWorker {
         method: request.method,
         body: request.body,
         headers: request.headers,
-        credentials: 'omit',
-        mode: request.mode === 'cors' ? request.mode : 'same-origin',
+        credentials: "omit",
+        mode: request.mode === "cors" ? request.mode : "same-origin",
         cache: request.cache,
-        redirect: request.redirect
+        redirect: request.redirect,
       })
 
       let body: ReadableStream | string
@@ -41,25 +41,25 @@ class MeteorServiceWorker {
         response.headers,
         url
       )
-
+      // todo: get downloads working
       if (response.body) {
         switch (request.destination) {
-          case 'document':
+          case "document":
             body = self.$meteor.rewrite.html(await response.text(), url)
             break
-          case 'iframe':
+          case "iframe":
             body = self.$meteor.rewrite.html(await response.text(), url)
             break
-          case 'frame':
+          case "frame":
             body = self.$meteor.rewrite.html(await response.text(), url)
             break
-          case 'style':
+          case "style":
             body = self.$meteor.rewrite.css(await response.text(), url)
             break
-          case 'worker':
+          case "worker":
             body = self.$meteor.rewrite.js(await response.text(), url)
             break
-          case 'script':
+          case "script":
             body = self.$meteor.rewrite.js(await response.text(), url)
             break
           default:
@@ -67,23 +67,23 @@ class MeteorServiceWorker {
         }
       }
       const searchParams = new URLSearchParams(request.url)
-      if (searchParams.get('hold') === 'yes') {
+      if (searchParams.get("hold") === "yes") {
         await new Promise((r) =>
           setTimeout(
             r,
-            Number.parseInt(searchParams.get('holdDuration')) || 99999
+            Number.parseInt(searchParams.get("holdDuration")) || 99999
           )
         )
       }
 
-      for (const plugin of self.__meteor$config.plugins) {
-        if ('onRequest' in plugin) response = await plugin.onRequest(response)
+      for (const plugin of self.$meteor.config.plugins) {
+        if ("onRequest" in plugin) response = await plugin.onRequest(response)
       }
 
       return new Response(body, {
         headers: rewrittenHeaders,
         status: response.status,
-        statusText: response.statusText
+        statusText: response.statusText,
       })
     } catch (error) {
       return this.renderError(error, version)
@@ -110,7 +110,7 @@ class MeteorServiceWorker {
                 width: 315px;
                 height: 100px;
               }
-              ${self.__meteor$config.errorPageCss}
+              ${self.$meteor.config.errorPageCss}
             </style>
           </head>
           <body>
@@ -124,8 +124,8 @@ class MeteorServiceWorker {
       {
         status: 500,
         headers: {
-          'Content-Type': 'text/html'
-        }
+          "Content-Type": "text/html",
+        },
       }
     )
   }
