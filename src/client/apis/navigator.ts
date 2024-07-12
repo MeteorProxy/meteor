@@ -1,9 +1,9 @@
-import { patchFunction } from "../patch"
-import { rewriteStringOrUrl } from "../rewrite"
+import { patchFunction } from '../patch'
+import { rewriteStringOrUrl } from '../rewrite'
 
 Object.defineProperties(window.navigator, {})
 
-if ("serviceWorker" in globalThis.navigator) {
+if ('serviceWorker' in globalThis.navigator) {
   globalThis.navigator.serviceWorker.register = patchFunction(
     globalThis.navigator.serviceWorker.register,
     (args) => {

@@ -1,19 +1,19 @@
-import { render } from "dom-serializer"
-import DomHandler, { Element } from "domhandler"
-import { hasAttrib } from "domutils"
-import { ElementType, Parser } from "htmlparser2"
-import { createContext } from "../util/createContext"
-import { rewriteCss } from "./css"
-import { rewriteJs } from "./js"
-import { rewriteSrcset } from "./srcset"
+import { render } from 'dom-serializer'
+import DomHandler, { Element } from 'domhandler'
+import { hasAttrib } from 'domutils'
+import { ElementType, Parser } from 'htmlparser2'
+import { createContext } from '../util/createContext'
+import { rewriteCss } from './css'
+import { rewriteJs } from './js'
+import { rewriteSrcset } from './srcset'
 
 const attributes = {
-  csp: ["nonce", "integrity", "csp"],
-  url: ["action", "data", "href", "src", "formaction"],
-  html: ["srcdoc"],
-  css: ["style"],
-  js: ["src"],
-  srcset: ["srcset"],
+  csp: ['nonce', 'integrity', 'csp'],
+  url: ['action', 'data', 'href', 'src', 'formaction'],
+  html: ['srcdoc'],
+  css: ['style'],
+  js: ['src'],
+  srcset: ['srcset']
 }
 
 export function rewriteHtml(content: string, origin: URL) {
@@ -42,17 +42,17 @@ function rewriteElement(element: Element, origin: URL) {
     }
 
     if (
-      child.type === "style" &&
+      child.type === 'style' &&
       child.children[0] &&
-      "data" in child.children[0]
+      'data' in child.children[0]
     ) {
       child.children[0].data = rewriteCss(child.children[0].data, origin)
     }
 
     if (
-      child.type === "script" &&
+      child.type === 'script' &&
       child.children[0] &&
-      "data" in child.children[0]
+      'data' in child.children[0]
     ) {
       child.children[0].data = rewriteJs(child.children[0].data, origin)
     }
@@ -79,24 +79,24 @@ function rewriteElement(element: Element, origin: URL) {
     }
   }
 
-  if (element.name === "head") {
+  if (element.name === 'head') {
     /* 
       !! WARNING !!
       The bundle script must be listed last, since t order of scripts is inserted in reverse order
      */
-    const scriptsToPush = ["client", "config", "bundle"]
+    const scriptsToPush = ['client', 'config', 'bundle']
 
     for (const script of scriptsToPush) {
       element.children.unshift(
-        new Element("script", {
-          src: self.$meteor.config.files[script],
+        new Element('script', {
+          src: self.$meteor.config.files[script]
         })
       )
     }
   }
 
-  if (element.name === "video") {
-    self.$meteor.util.log("Vid Detected")
+  if (element.name === 'video') {
+    self.$meteor.util.log('Vid Detected')
   }
 
   for (const child of element.children) {

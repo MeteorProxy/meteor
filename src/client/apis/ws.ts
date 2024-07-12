@@ -6,7 +6,7 @@
 //       return client
 //    }
 // }
-// // biome-ignore lint: 
+// // biome-ignore lint:
 // delete globalThis.WebSocket
 
 // globalThis.WebSocket = ProxiedWs
