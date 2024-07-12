@@ -1,7 +1,7 @@
 import fastifyStatic from '@fastify/static'
+import { baremuxPath } from '@mercuryworkshop/bare-mux/node'
 // @ts-expect-error not typed lol
 import { epoxyPath } from '@mercuryworkshop/epoxy-transport'
-import { baremuxPath } from '@mercuryworkshop/bare-mux/node'
 import Fastify from 'fastify'
 import { rimraf } from 'rimraf'
 import wisp from 'wisp-server-node'

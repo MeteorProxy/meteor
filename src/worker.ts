@@ -22,7 +22,10 @@ class MeteorServiceWorker {
       self.$meteor.util.log(`Processing request for ${url.href}`)
       for (const plugin of self.$meteor.config.plugins) {
         if (plugin.filter.test(url.href)) {
-          self.$meteor.util.log(`Plugin ${plugin.name} loaded for this page`, "teal")
+          self.$meteor.util.log(
+            `Plugin ${plugin.name} loaded for this page`,
+            'teal'
+          )
         }
       }
       if (url.href.startsWith('data:')) {
@@ -70,22 +73,26 @@ class MeteorServiceWorker {
         }
       }
       // skidded from uv lol
-      if (["document", "iframe"].includes(request.destination)) {
-        const header = response.headers.get('content-disposition');
+      if (['document', 'iframe'].includes(request.destination)) {
+        const header = response.headers.get('content-disposition')
 
         if (!/\s*?((inline|attachment);\s*?)filename=/i.test(header)) {
-          const type = /^\s*?attachment/i.test(header)
-            ? 'attachment'
-            : 'inline';
-          const [filename] = response.finalURL.split('/').reverse();
-          response.headers.set('Content-Disposition', `${type}; filename=${JSON.stringify(filename)}`);
+          const type = /^\s*?attachment/i.test(header) ? 'attachment' : 'inline'
+          const [filename] = response.finalURL.split('/').reverse()
+          response.headers.set(
+            'Content-Disposition',
+            `${type}; filename=${JSON.stringify(filename)}`
+          )
         }
       }
 
       for (const plugin of self.$meteor.config.plugins) {
         if (plugin.filter.test(url.href)) {
           if ('onRequest' in plugin) {
-            self.$meteor.util.log(`Running onRequest for ${plugin.name}`, "teal")
+            self.$meteor.util.log(
+              `Running onRequest for ${plugin.name}`,
+              'teal'
+            )
             response = await plugin.onRequest(response)
           }
         }
@@ -103,8 +110,9 @@ class MeteorServiceWorker {
 
   renderError(error: string, version: string) {
     return new Response(
-      typeof self.$meteor.config.errorPage === 'string' ? self.$meteor.config.errorPage :
-        `
+      typeof self.$meteor.config.errorPage === 'string'
+        ? self.$meteor.config.errorPage
+        : `
         <!DOCTYPE html>
         <html lang="en">
           <head>

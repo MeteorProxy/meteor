@@ -2,8 +2,8 @@ import type { BareResponseFetch } from '@mercuryworkshop/bare-mux'
 import type { Codec } from './bundle/codecs'
 
 export interface Plugin {
-  name: string,
-  filter: RegExp,
+  name: string
+  filter: RegExp
   onRequest?: (
     request: BareResponseFetch
   ) => Promise<undefined | BareResponseFetch>
@@ -15,10 +15,12 @@ export interface Config {
   prefix: string
   codec: Codec
   plugins: Plugin[]
-  errorPage?: {
-    css?: string
-    head?: string
-  } | string,
+  errorPage?:
+    | {
+        css?: string
+        head?: string
+      }
+    | string
   debug: boolean
   files: {
     client: string

@@ -12,10 +12,9 @@ export default {
   },
   handleClient(window) {
     window.console.log('Meteor is running on the client!')
-    const ws = new WebSocket("wss://echo.websocket.org/")
+    const ws = new WebSocket('wss://echo.websocket.org/')
     ws.onmessage = (event) => {
       console.log(`Message from server: ${event.data}`)
     }
-
   }
 } satisfies Plugin
