@@ -17,7 +17,10 @@
     "check": "biome check . --write",
     "typecheck": "tsc"
   },
-  "files": ["dist", "lib"],
+  "files": [
+    "dist",
+    "lib"
+  ],
   "keywords": [],
   "author": "z1g Project",
   "license": "MIT",
@@ -39,6 +42,7 @@
   },
   "dependencies": {
     "@mercuryworkshop/bare-mux": "^2.0.1",
+    "@mercuryworkshop/wisp-js": "^0.1.0",
     "@types/estree": "^1.0.5",
     "@webreflection/idb-map": "^0.3.1",
     "astring": "^1.8.6",

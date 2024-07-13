@@ -1,18 +1,18 @@
-import fastifyStatic from '@fastify/static'
-import { baremuxPath } from '@mercuryworkshop/bare-mux/node'
-// @ts-expect-error not typed lol
-import { epoxyPath } from '@mercuryworkshop/epoxy-transport'
 import Fastify from 'fastify'
-import { rimraf } from 'rimraf'
-import wisp from 'wisp-server-node'
+import fastifyStatic from '@fastify/static'
+import { server as wisp } from '@mercuryworkshop/wisp-js'
 
 import { createServer } from 'node:http'
 import type { Socket } from 'node:net'
 import { argv } from 'node:process'
 import { fileURLToPath } from 'node:url'
-import { consola } from 'consola'
+
 import { context } from 'esbuild'
-import copy from 'esbuild-plugin-copy'
+import { rimraf } from 'rimraf'
+import { baremuxPath } from '@mercuryworkshop/bare-mux/node'
+// @ts-expect-error
+import { epoxyPath } from '@mercuryworkshop/epoxy-transport'
+import { consola } from 'consola'
 
 const port = Number(process.env.PORT) || 9000
 
@@ -66,7 +66,6 @@ const dev = await context({
     'meteor.worker': './src/worker.ts',
     'meteor.config': './src/config.ts'
   },
-  plugins: [],
   bundle: true,
   logLevel: 'info',
   outdir: 'dist/'
