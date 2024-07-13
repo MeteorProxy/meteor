@@ -12,6 +12,10 @@
 <body>
   <script type="module">
     let connection = new BareMux.BareMuxConnection("/baremux/worker.js")
+    if (window.location.origin.includes('pages.dev')) {
+      // For the demo
+      localStorage.setItem('wisp', 'wss://anura.pro')
+    }
     await connection.setTransport("/epoxy/index.mjs", [{
           wisp: localStorage.getItem("wisp") ||
           `${location.protocol === "http:" ? "ws:" : "wss:"}//${location.host}/wisp/`,
