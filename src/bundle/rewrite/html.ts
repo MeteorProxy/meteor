@@ -63,6 +63,7 @@ function rewriteElement(element: Element, origin: URL) {
 
   for (const attr of attributes.csp) {
     if (hasAttrib(element, attr)) {
+      self.$meteor.util.log(`${element.attribs[attr]}`, 'blue')
       delete element.attribs[attr]
     }
   }

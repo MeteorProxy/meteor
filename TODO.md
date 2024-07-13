@@ -13,5 +13,5 @@
 - [ ] Add Media Element rewriting (video/audio elements etc)
 - [ ] Fix inline styles
 - [ ] Docs pages
-- [x] Websocket support [Stubbed, May not fully be working]
+- [x] Websocket support
 - [ ] Bootstrapper (future)

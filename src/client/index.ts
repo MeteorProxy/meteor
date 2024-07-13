@@ -7,6 +7,7 @@ import './apis/location'
 import './apis/requests'
 import './apis/workers'
 import './apis/ws'
+import './apis/navigator'
 import './apis/storage'
 
 declare global {
