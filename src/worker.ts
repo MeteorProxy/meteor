@@ -29,21 +29,19 @@ class MeteorServiceWorker {
           )
         }
       }
-      if (!request.headers.get('content-type')) {
-        //request.headers.set('content-type', 'text/plain'); it wont fucking set, anyways im tried so one of you can try this ig
-        self.$meteor.util.log(`No Content Type was found, Setting to: text/plain`, 'teal');
-      }
       if (url.href.startsWith('data:')) {
         const response = await fetch(url)
 
         return new Response(response.body)
       }
-      self.$meteor.util.log(`ContentType for: ${url.href} ${request.headers.get('content-type')}`, 'teal')
       let response = await this.client.fetch(url, {
         method: request.method,
         body: request.body,
         headers: {
           ...request.headers,
+          'content-type': request.headers.has('content-type')
+            ? request.headers.get('content-type')
+            : 'text/plain',
           cookie: (await getCookies(url.host)).join('')
         },
         credentials: 'omit',
