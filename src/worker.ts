@@ -41,7 +41,9 @@ class MeteorServiceWorker {
           ...request.headers,
           'content-type': request.headers.has('content-type')
             ? request.headers.get('content-type')
-            : 'text/plain',
+            : url.pathname.endsWith('.js')
+              ? 'application/javascript'
+              : 'text/plain',
           cookie: (await getCookies(url.host)).join('')
         },
         credentials: 'omit',

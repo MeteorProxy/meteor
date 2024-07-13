@@ -1,12 +1,22 @@
-const attributes: Record<string, (new (...args: unknown[]) => HTMLElement)[]> =
-  {
-    src: [HTMLScriptElement, HTMLVideoElement, HTMLImageElement],
-    href: [HTMLAnchorElement, HTMLLinkElement],
-    action: [HTMLFormElement],
-    formaction: [HTMLInputElement]
-  }
+const urlAttributes: Record<
+  string,
+  (new (
+    ...args: unknown[]
+  ) => HTMLElement)[]
+> = {
+  src: [
+    HTMLScriptElement,
+    HTMLVideoElement,
+    HTMLImageElement,
+    HTMLAudioElement,
+    HTMLIFrameElement
+  ],
+  href: [HTMLAnchorElement, HTMLLinkElement],
+  action: [HTMLFormElement],
+  formaction: [HTMLInputElement]
+}
 
-for (const [attr, elms] of Object.entries(attributes)) {
+for (const [attr, elms] of Object.entries(urlAttributes)) {
   for (const elm of elms) {
     const descriptors = Object.getOwnPropertyDescriptor(elm.prototype, attr)
     Object.defineProperty(elm.prototype, attr, {

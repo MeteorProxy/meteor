@@ -1,8 +1,8 @@
 window.$location = Object.create(window.location)
 Object.defineProperties(window.$location, {
   toString: {
-    get() {
-      return () => self.$meteor.util.createOrigin().toString()
+    value() {
+      return self.$meteor.util.createOrigin().toString()
     }
   },
   href: {

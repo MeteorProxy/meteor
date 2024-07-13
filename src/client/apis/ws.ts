@@ -15,7 +15,6 @@ globalThis.WebSocket = new Proxy(globalThis.WebSocket, {
         'User-Agent': navigator.userAgent,
         origin: self.$meteor.util.createOrigin().origin
       },
-      // @ts-expect-error
       ArrayBuffer.prototype
     )
   }

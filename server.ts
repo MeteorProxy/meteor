@@ -1,18 +1,18 @@
-import Fastify from 'fastify'
 import fastifyStatic from '@fastify/static'
 import { server as wisp } from '@mercuryworkshop/wisp-js'
+import Fastify from 'fastify'
 
 import { createServer } from 'node:http'
 import type { Socket } from 'node:net'
 import { argv } from 'node:process'
 import { fileURLToPath } from 'node:url'
 
-import { context } from 'esbuild'
-import { rimraf } from 'rimraf'
 import { baremuxPath } from '@mercuryworkshop/bare-mux/node'
 // @ts-expect-error
 import { epoxyPath } from '@mercuryworkshop/epoxy-transport'
 import { consola } from 'consola'
+import { context } from 'esbuild'
+import { rimraf } from 'rimraf'
 
 const port = Number(process.env.PORT) || 9000
 
