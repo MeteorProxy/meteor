@@ -1,5 +1,5 @@
 import fastifyStatic from '@fastify/static'
-import { server as wisp, logging } from '@mercuryworkshop/wisp-js/server'
+import { logging, server as wisp } from '@mercuryworkshop/wisp-js/server'
 import Fastify from 'fastify'
 
 import { createServer } from 'node:http'
