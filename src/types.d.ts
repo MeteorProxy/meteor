@@ -26,7 +26,7 @@ export interface Config {
     client: string
     worker: string
     bundle: string
-    codecs: string
+    codecs?: string
     config: string
   }
 }

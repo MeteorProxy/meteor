@@ -93,6 +93,7 @@ function rewriteElement(element: Element, origin: URL) {
     ]
 
     for (const script of scriptsToPush) {
+      if (!script) continue
       element.children.unshift(
         new Element('script', {
           src: self.$meteor.config.files[script]

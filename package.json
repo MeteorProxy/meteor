@@ -1,6 +1,6 @@
 {
   "name": "meteorproxy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The modern interception proxy you've been waiting for",
   "type": "module",
   "main": "./lib/index.cjs",
