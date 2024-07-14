@@ -1,5 +1,5 @@
 import fastifyStatic from '@fastify/static'
-import { server as wisp } from '@mercuryworkshop/wisp-js'
+import { server as wisp, logging } from '@mercuryworkshop/wisp-js/server'
 import Fastify from 'fastify'
 
 import { createServer } from 'node:http'
@@ -15,6 +15,7 @@ import { context } from 'esbuild'
 import { rimraf } from 'rimraf'
 
 const port = Number(process.env.PORT) || 9000
+logging.set_level(logging.DEBUG)
 
 Fastify({
   serverFactory: (handler) =>

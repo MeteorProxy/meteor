@@ -12,3 +12,15 @@ if ('sendBeacon' in globalThis.navigator) {
     }
   )
 }
+
+if ('clipboard' in globalThis.navigator) {
+  // @ts-expect-error this can be ignored
+  globalThis.navigator.clipboard = patchFunction(
+    // @ts-expect-error this can also be ignored
+    globalThis.navigator.clipboard,
+    (args) => {
+      args[0]
+      return args
+    }
+  )
+}
