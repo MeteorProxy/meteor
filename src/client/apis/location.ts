@@ -76,6 +76,12 @@ Object.defineProperties(window.$location, {
       )
     }
   },
+  port: {
+    get() {
+      return self.$meteor.util.createOrigin().port
+    },
+    set() {}
+  },
   replace: {
     value(url: string) {
       location.replace(
