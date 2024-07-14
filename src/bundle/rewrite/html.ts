@@ -1,3 +1,4 @@
+import type { Config } from '@/types'
 import { render } from 'dom-serializer'
 import DomHandler, { Element } from 'domhandler'
 import { hasAttrib } from 'domutils'
@@ -84,11 +85,12 @@ function rewriteElement(element: Element, origin: URL) {
   }
 
   if (element.name === 'head') {
-    /*
-      !! WARNING !!
-      The bundle script must be listed last, since t order of scripts is inserted in reverse order
-     */
-    const scriptsToPush = ['client', 'config', 'bundle']
+    const scriptsToPush: (keyof Config['files'])[] = [
+      'client',
+      'bundle',
+      'config',
+      'codecs'
+    ]
 
     for (const script of scriptsToPush) {
       element.children.unshift(

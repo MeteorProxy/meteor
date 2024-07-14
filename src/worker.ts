@@ -42,6 +42,7 @@ class MeteorServiceWorker {
         headers: {
           ...request.headers,
           authorization: request.headers.get('authorization'),
+          // this is the only to get discord to work for some reason!?!?!
           'content-type': (await clonedRequest.text()).startsWith('{')
             ? 'application/json'
             : request.headers.get('content-type'),

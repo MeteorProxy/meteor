@@ -1,5 +1,7 @@
-importScripts('/meteor/meteor.bundle.js')
+// this import is not needed if you are using your own encoding method
+importScripts('/meteor/meteor.codecs.js')
 importScripts('/meteor/meteor.config.js')
+importScripts('/meteor/meteor.bundle.js')
 importScripts('/meteor/meteor.worker.js')
 
 const meteor = new MeteorServiceWorker()

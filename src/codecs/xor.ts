@@ -1,8 +1,4 @@
-export interface Codec {
-  encode: (string: string) => string
-  decode: (string: string) => string
-}
-
+import type { Codec } from '.'
 export const xor: Codec = {
   encode(str) {
     if (!str) return str
@@ -28,24 +24,5 @@ export const xor: Codec = {
         )
         .join('') + (search.length ? `?${search.join('?')}` : '')
     )
-  }
-}
-
-export const base64: Codec = {
-  encode(string) {
-    return encodeURIComponent(btoa(string))
-  },
-  decode(string) {
-    return decodeURIComponent(atob(string))
-  }
-}
-
-export const none: Codec = {
-  encode(string) {
-    return encodeURIComponent(string)
-  },
-
-  decode(string) {
-    return decodeURIComponent(string)
   }
 }

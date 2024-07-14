@@ -1,4 +1,4 @@
-import { base64, none, xor } from './codecs'
+import type { Config } from '@/types'
 
 import { rewriteCss } from './rewrite/css'
 import { rewriteHeaders } from './rewrite/headers'
@@ -6,7 +6,6 @@ import { rewriteHtml } from './rewrite/html'
 import { rewriteJs } from './rewrite/js'
 import { decodeURL, encodeURL } from './rewrite/url'
 
-import { config } from '@/config'
 import { createOrigin } from './util/createOrigin'
 import { formatUrl } from './util/formatUrl'
 import { log } from './util/logger'
@@ -14,17 +13,12 @@ import { log } from './util/logger'
 declare global {
   interface Window {
     $meteor: typeof meteorBundle
+    __meteor$config: Config
   }
 }
 
 const meteorBundle = {
-  config,
-  codecs: {
-    none,
-    base64,
-    xor
-  },
-
+  config: self.__meteor$config,
   rewrite: {
     html: rewriteHtml,
     css: rewriteCss,
