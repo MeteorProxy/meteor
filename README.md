@@ -44,7 +44,7 @@ Fastify()
   })
 ```
 
-You can also use the path with Vite, or anything based off Vite, such as Astro. Install the `vite-plugin-static-copy` plugin and use the path in the plugin's configuration.
+You can use this path with the `vite-plugin-static-copy` Vite plugin in your Vite (or Vite-powered) app to copy Meteor scripts into your assets directory. Install `vite-plugin-static-copy` with your favorite package manager and use the path in the plugin's configuration.
 
 ```js
 import { defineConfig } from 'vite'
@@ -53,17 +53,17 @@ import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 export default defineConfig({
   plugins: [
+    // ...
     viteStaticCopy({
       targets: [
         {
           src: `${meteorPath}/meteor.*`.replace(/\\/g, "/"),
-        	dest: "meteor",
-        	overwrite: false,
+          dest: "meteor",
+          overwrite: false,
         },
-			],
+      ],
     })
   ]
-  // other config
 })
 ```
 
@@ -81,10 +81,13 @@ if ('serviceWorker' in navigator) {
 }
 
 // After a button click or other event:
-window.location.href = self.$meteor.config.prefix + self.$meteor.config.codec.encode("https://example.com") // replace url with the (full) url you want to navigate to
+iframe.src = self.$meteor.util.formatUrl("https://google.com"") // replace with a chosen url
 ```
 
-More in-depth usage and configuration can be found in the Wiki.
+> [!IMPORTANT]
+> During our testing, we've found that Meteor only supports being viewed inside iframes due to a limitation with bare-mux.
+
+More in-depth usage and configuration will be coming soon in a Wiki.
 
 ## Testing and development
-Running `pnpm demo` will serve a basic UI to test Meteor, along with a dev server that watches for changes in the source code and re-builds accordingly.
+Running `pnpm demo` will serve a UI to test Meteor, along with a dev server that watches for changes in the source code and re-builds accordingly.
