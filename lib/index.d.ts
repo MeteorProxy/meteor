@@ -1,4 +1,4 @@
-export type { meteorConfig } from '../src/config'
+export * from "../src/types"
 declare const meteorPath: string
 
 export { meteorPath }
