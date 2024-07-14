@@ -19,33 +19,38 @@ const tobeDeleted = [
 
 const directRewrites = ['host', 'origin']
 
-export function rewriteHeaders(headers: Headers, origin: URL) {
-  // // @ts-expect-error this property does exist however
-  // for (const [key, value] of headers.entries())
-  //   headers.set(key.toLowerCase(), value)
-
-  for (const header of tobeDeleted) headers.delete(header)
+export function rewriteHeaders(
+  headers: Headers,
+  origin: URL,
+  HeadersInstance = Headers
+) {
+  const newHeaders = new HeadersInstance()
+  // @ts-expect-error this property does exist however
+  for (const [key, value] of headers.entries()) {
+    newHeaders.set(key.toLowerCase(), value)
+  }
+  for (const header of tobeDeleted) newHeaders.delete(header)
 
   for (const header of ['referer', 'location', 'content-location'])
-    headers.set(
+    newHeaders.set(
       header,
-      self.$meteor.rewrite.url.encode(headers.get(header), origin)
+      self.$meteor.rewrite.url.encode(newHeaders.get(header), origin)
     )
 
   for (const header of directRewrites) {
-    if (headers.has(header)) {
-      headers.set(
+    if (newHeaders.has(header)) {
+      newHeaders.set(
         header,
-        new URL(self.$meteor.rewrite.url.encode(headers.get(header), origin))[
-          header
-        ]
+        new URL(
+          self.$meteor.rewrite.url.encode(newHeaders.get(header), origin)
+        )[header]
       )
     }
   }
-  if (headers.has('link')) {
-    headers.set(
+  if (newHeaders.has('link')) {
+    newHeaders.set(
       'link',
-      headers
+      newHeaders
         .get('link')
         .replace(/<(.*?)>/gi, (match) =>
           self.$meteor.rewrite.url.encode(match, origin)
@@ -53,5 +58,5 @@ export function rewriteHeaders(headers: Headers, origin: URL) {
     )
   }
 
-  return headers
+  return newHeaders
 }

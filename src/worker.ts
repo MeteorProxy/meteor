@@ -34,19 +34,23 @@ class MeteorServiceWorker {
 
         return new Response(response.body)
       }
+      const clonedRequest = request.clone()
       let response = await this.client.fetch(url, {
+        ...request,
         method: request.method,
         body: request.body,
         headers: {
           ...request.headers,
-          'content-type': request.headers.has('content-type')
-            ? request.headers.get('content-type')
-            : url.pathname.endsWith('.js')
-              ? 'application/javascript'
-              : 'text/plain',
+          authorization: request.headers.get('authorization'),
+          'content-type': (await clonedRequest.text()).startsWith('{')
+            ? 'application/json'
+            : request.headers.get('content-type'),
+          host: url.host,
+          origin: url.origin,
+          referer: url.href,
           cookie: (await getCookies(url.host)).join('')
         },
-        credentials: 'omit',
+        credentials: request.credentials,
         mode: request.mode === 'cors' ? request.mode : 'same-origin',
         cache: request.cache,
         redirect: request.redirect,
@@ -120,7 +124,7 @@ class MeteorServiceWorker {
     }
   }
 
-  renderError(error: string, version: string) {
+  renderError(error: Error, version: string) {
     return new Response(
       typeof self.$meteor.config.errorPage === 'string'
         ? self.$meteor.config.errorPage
