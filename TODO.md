@@ -1,10 +1,9 @@
 # Meteor To-Do
 
-- [ ] Add JS Rewriting [In Progress]
+- [x] Add JS Rewriting [In Progress]
 - [ ] Patch more client APIs
 - [x] data: url handling
-- [ ] Custom UA
-- [ ] Module system
+- [x] Module system
 - [ ] More efficient rewriting
 - [x] Fix Iframes
 - [x] Fix weird data problems
@@ -13,5 +12,6 @@
 - [ ] Add Media Element rewriting (video/audio elements etc)
 - [ ] Fix inline styles
 - [ ] Docs pages
+- [ ] Rum rewriters on another thread (maybe)
 - [x] Websocket support
 - [ ] Bootstrapper (future)
