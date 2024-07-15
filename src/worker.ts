@@ -1,4 +1,4 @@
-import { BareClient } from '@mercuryworkshop/bare-mux'
+import { BareClient, type BareResponseFetch } from '@mercuryworkshop/bare-mux'
 import { version } from '../package.json'
 import { getCookies, setCookies } from './bundle/util/cookies'
 
@@ -34,24 +34,11 @@ class MeteorServiceWorker {
 
         return new Response(response.body)
       }
-      const clonedRequest = request.clone()
-      let response = await this.client.fetch(url, {
-        ...request,
+      let response: BareResponseFetch = await this.client.fetch(url, {
         method: request.method,
         body: request.body,
-        headers: {
-          ...request.headers,
-          authorization: request.headers.get('authorization'),
-          // this is the only to get discord to work for some reason!?!?!
-          'content-type': (await clonedRequest.text()).startsWith('{')
-            ? 'application/json'
-            : request.headers.get('content-type'),
-          host: url.host,
-          origin: url.origin,
-          referer: url.href,
-          cookie: (await getCookies(url.host)).join('')
-        },
-        credentials: request.credentials,
+        headers: request.headers,
+        credentials: 'omit',
         mode: request.mode === 'cors' ? request.mode : 'same-origin',
         cache: request.cache,
         redirect: request.redirect,
