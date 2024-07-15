@@ -34,10 +34,14 @@ class MeteorServiceWorker {
 
         return new Response(response.body)
       }
+      const fetchHead = new Headers(request.headers)
+      fetchHead.set('cookie', (await getCookies(url.host)).join('; '))
+      fetchHead.set('host', url.host)
+      fetchHead.set('origin', url.origin)
       let response: BareResponseFetch = await this.client.fetch(url, {
         method: request.method,
         body: request.body,
-        headers: request.headers,
+        headers: fetchHead,
         credentials: 'omit',
         mode: request.mode === 'cors' ? request.mode : 'same-origin',
         cache: request.cache,

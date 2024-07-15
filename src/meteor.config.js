@@ -1,4 +1,4 @@
-/** @type {import('./types').Config} */
+/** @type {import('meteorproxy').Config} */
 const config = {
   prefix: '/route/',
   codec: self.__meteor$codecs.xor,

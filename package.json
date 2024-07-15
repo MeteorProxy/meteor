@@ -1,6 +1,6 @@
 {
   "name": "meteorproxy",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "The modern interception proxy you've been waiting for",
   "type": "module",
   "main": "./lib/index.cjs",
@@ -13,7 +13,7 @@
     "build": "tsx build.ts",
     "demo": "tsx server.ts",
     "demo:lite": "tsx server.ts --no-build",
-    "release": "tsc && biome check . --write npm run build && npm publish --access public",
+    "release": "tsc && biome check . --write && npm run build && npm publish --access public",
     "check": "biome check . --write",
     "typecheck": "tsc"
   },
