@@ -14,7 +14,8 @@ const tobeDeleted = [
   'x-frame-options',
   'x-permitted-cross-domain-policies',
   'x-powered-by',
-  'x-xss-protection'
+  'x-xss-protection',
+  'clear-site-data'
 ]
 
 const directRewrites = ['host', 'origin']
