@@ -33,7 +33,6 @@ export interface Config {
 
 export interface Context {
   injectHead: (content: string) => void
-  injectCSS: (content: string) => void
-  injectJS: (content: string) => void
+  injectTag: (content: string) => void
   getModified: () => string
 }

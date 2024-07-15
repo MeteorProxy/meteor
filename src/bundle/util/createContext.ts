@@ -1,4 +1,5 @@
-export function createContext(html: string) {
+import type { Context } from '@/types'
+export function createContext(html: string): Context {
   let modified = html
 
   function injectAtPosition(content: string, position: number) {
@@ -12,23 +13,28 @@ export function createContext(html: string) {
         modified = injectAtPosition(content, headCloseIndex)
       }
     },
-    injectCSS: (content: string) => {
-      const styleTag = `<style>${content}</style>`
+    injectTag: (tag: string) => {
+      const parser = new DOMParser().parseFromString(tag, 'text/xml')
+      for (const attr of ['src', 'href']) {
+        if (parser.children[0].hasAttribute(attr)) {
+          parser.children[0].setAttribute(
+            attr,
+            self.$meteor.rewrite.url.encode(
+              parser.children[0].getAttribute(attr),
+              self.$meteor.util.createOrigin()
+            )
+          )
+        }
+      }
+      parser.children[0].setAttribute('data-meteor-injected', 'true')
+      const tagString = parser.children[0].outerHTML
       const headCloseIndex = modified.indexOf('</head>')
       if (headCloseIndex !== -1) {
-        modified = injectAtPosition(styleTag, headCloseIndex)
-      }
-    },
-    injectJS: (content: string) => {
-      const scriptTag = `<script>${content}</script>`
-      const bodyCloseIndex = modified.indexOf('</body>')
-      if (bodyCloseIndex !== -1) {
-        modified = injectAtPosition(scriptTag, bodyCloseIndex)
+        modified = injectAtPosition(tagString, headCloseIndex)
       } else {
-        modified += scriptTag
+        modified += tagString
       }
     },
-
     getModified: () => modified
   }
 }
