@@ -37,6 +37,8 @@ export const xor: Codec = {
   }
 }
 
+export * from './locationvariable'
+
 export const plain: Codec = {
   encode(string) {
     return encodeURIComponent(string)

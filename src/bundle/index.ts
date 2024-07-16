@@ -1,12 +1,11 @@
-import type { Config } from '@/types'
-
 import { rewriteCss } from './rewrite/css'
 import { rewriteHeaders } from './rewrite/headers'
 import { rewriteHtml } from './rewrite/html'
 import { rewriteJs } from './rewrite/js'
 import { decodeURL, encodeURL } from './rewrite/url'
 
-import { base64, plain, xor } from './codecs'
+import type { Codec } from '@/types'
+import * as codecs from './codecs'
 import { createOrigin } from './util/createOrigin'
 import { formatUrl } from './util/formatUrl'
 import { log } from './util/logger'
@@ -30,11 +29,7 @@ const meteorBundle = {
     }
   },
 
-  codecs: {
-    base64,
-    xor,
-    plain
-  },
+  codecs: codecs as { [key: string]: Codec },
 
   util: {
     createOrigin,
