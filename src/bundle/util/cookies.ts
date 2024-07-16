@@ -1,11 +1,11 @@
 import IDBMap from '@webreflection/idb-map'
-import { serialize } from 'cookie'
+import { serialize } from 'cookie-es'
 import { parse } from 'set-cookie-parser'
 const cookies = new IDBMap('cookies')
 
 export async function getCookies(host: string) {
   const now = new Date()
-  const result = []
+  const result: Record<string, string>[] = []
   for (const key of await cookies.keys()) {
     if (key.startsWith(`${host}@`)) {
       const cookie = await cookies.get(key)
