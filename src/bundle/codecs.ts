@@ -1,4 +1,14 @@
-import type { Codec } from '.'
+import type { Codec } from '@/types'
+
+export const base64: Codec = {
+  encode(string) {
+    return encodeURIComponent(btoa(string))
+  },
+  decode(string) {
+    return decodeURIComponent(atob(string))
+  }
+}
+
 export const xor: Codec = {
   encode(str) {
     if (!str) return str
@@ -24,5 +34,15 @@ export const xor: Codec = {
         )
         .join('') + (search.length ? `?${search.join('?')}` : '')
     )
+  }
+}
+
+export const plain: Codec = {
+  encode(string) {
+    return encodeURIComponent(string)
+  },
+
+  decode(string) {
+    return decodeURIComponent(string)
   }
 }

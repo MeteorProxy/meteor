@@ -9,11 +9,11 @@ import { decodeURL, encodeURL } from './rewrite/url'
 import { createOrigin } from './util/createOrigin'
 import { formatUrl } from './util/formatUrl'
 import { log } from './util/logger'
+import { base64, xor, plain } from './codecs'
 
 declare global {
   interface Window {
     $meteor: typeof meteorBundle
-    __meteor$config: Config
   }
 }
 
@@ -28,6 +28,12 @@ const meteorBundle = {
       encode: encodeURL,
       decode: decodeURL
     }
+  },
+
+  codecs: {
+    base64,
+    xor,
+    plain
   },
 
   util: {

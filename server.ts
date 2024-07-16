@@ -7,7 +7,7 @@ import type { Socket } from 'node:net'
 import { argv } from 'node:process'
 import { fileURLToPath } from 'node:url'
 
-import { copyFile, mkdir } from 'node:fs/promises'
+import { mkdir } from 'node:fs/promises'
 import { baremuxPath } from '@mercuryworkshop/bare-mux/node'
 // @ts-expect-error
 import { epoxyPath } from '@mercuryworkshop/epoxy-transport'
@@ -59,7 +59,6 @@ Fastify({
 
 await rimraf('dist')
 await mkdir('dist')
-await copyFile('src/meteor.config.js', 'dist/meteor.config.js')
 
 const dev = await context({
   sourcemap: true,
@@ -68,7 +67,7 @@ const dev = await context({
     'meteor.bundle': './src/bundle/index.ts',
     'meteor.client': './src/client/index.ts',
     'meteor.worker': './src/worker.ts',
-    'meteor.codecs': './src/codecs/index.ts'
+    'meteor.config': './src/config.ts'
   },
   bundle: true,
   logLevel: 'info',

@@ -38,6 +38,7 @@ class MeteorServiceWorker {
       fetchHead.set('cookie', (await getCookies(url.host)).join('; '))
       fetchHead.set('host', url.host)
       fetchHead.set('origin', url.origin)
+
       let response: BareResponseFetch = await this.client.fetch(url, {
         method: request.method,
         body: request.body,
@@ -46,7 +47,7 @@ class MeteorServiceWorker {
         mode: request.mode === 'cors' ? request.mode : 'same-origin',
         cache: request.cache,
         redirect: request.redirect,
-        // @ts-expect-error lol
+        // @ts-expect-error
         duplex: 'half'
       })
 
@@ -56,6 +57,7 @@ class MeteorServiceWorker {
         url
       )
       await setCookies(response.rawHeaders['set-cookie'], url.host)
+
       if (response.body) {
         switch (request.destination) {
           case 'iframe':
@@ -79,7 +81,7 @@ class MeteorServiceWorker {
             body = response.body
         }
       }
-      // skidded from uv lol
+      // From Ultraviolet
       if (['document', 'iframe'].includes(request.destination)) {
         const header = response.headers.get('content-disposition')
 

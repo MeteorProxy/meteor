@@ -1,5 +1,4 @@
 import type { BareResponseFetch } from '@mercuryworkshop/bare-mux'
-import type { Codec } from './codecs'
 
 export interface Plugin {
   name: string
@@ -29,6 +28,11 @@ export interface Config {
     codecs?: string
     config: string
   }
+}
+
+export interface Codec {
+  encode: (string: string) => string
+  decode: (string: string) => string
 }
 
 export interface Context {
