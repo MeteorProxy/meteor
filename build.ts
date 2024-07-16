@@ -4,7 +4,6 @@ import { rimraf } from 'rimraf'
 
 await rimraf('dist')
 await mkdir('dist')
-await copyFile('./src/meteor.config.js', './dist/meteor.config.js')
 const buildResult = await build({
   sourcemap: true,
   minify: process.env.NODE_ENV !== 'development',
@@ -18,6 +17,17 @@ const buildResult = await build({
   logLevel: 'info',
   outdir: 'dist/',
   metafile: true
+})
+
+await build({
+  entryPoints: {
+    'meteor.config': './src/config.ts'
+  },
+  minify: false,
+  format: 'esm',
+  bundle: true,
+  logLevel: 'info',
+  outdir: 'dist/'
 })
 
 if (buildResult.metafile)

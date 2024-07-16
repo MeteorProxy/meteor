@@ -1,8 +1,8 @@
 import type { Codec } from '@/types'
-import { locationvariable } from './locationvariable'
+import { locationvariable } from './locvar'
 
-self.__meteor$codecs = {
-  locationvariable,
+export const codecs: Record<string, Codec> = {
+  locvar: locationvariable,
   base64: {
     encode(string) {
       return encodeURIComponent(btoa(string))
@@ -50,3 +50,5 @@ self.__meteor$codecs = {
     }
   }
 }
+
+self.$meteor_codecs = codecs

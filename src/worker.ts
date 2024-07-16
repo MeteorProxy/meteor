@@ -29,11 +29,13 @@ class MeteorServiceWorker {
           )
         }
       }
+
       if (url.href.startsWith('data:')) {
         const response = await fetch(url)
 
         return new Response(response.body)
       }
+
       const fetchHead = new Headers(request.headers)
       fetchHead.set('cookie', (await getCookies(url.host)).join('; '))
       fetchHead.set('host', url.host)

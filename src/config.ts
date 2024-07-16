@@ -1,7 +1,8 @@
-/** @type {import('meteorproxy').Config} */
-const config = {
+import type { Config } from './types'
+
+export const config: Config = {
   prefix: '/route/',
-  codec: self.__meteor$codecs.xor,
+  codec: self.$meteor_codecs.xor,
   debug: true,
 
   plugins: [
@@ -37,4 +38,4 @@ const config = {
   }
 }
 
-self.__meteor$config = config
+self.$meteor_config = config

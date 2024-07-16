@@ -1,3 +1,5 @@
+import { codecs } from '../codecs'
+import { config } from '../config'
 import { rewriteCss } from './rewrite/css'
 import { rewriteHeaders } from './rewrite/headers'
 import { rewriteHtml } from './rewrite/html'
@@ -8,14 +10,8 @@ import { createOrigin } from './util/createOrigin'
 import { formatUrl } from './util/formatUrl'
 import { log } from './util/logger'
 
-declare global {
-  interface Window {
-    $meteor: typeof meteorBundle
-  }
-}
-
 const meteorBundle = {
-  config: self.__meteor$config,
+  config: self.$meteor_config,
   rewrite: {
     html: rewriteHtml,
     css: rewriteCss,
