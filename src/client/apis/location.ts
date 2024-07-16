@@ -7,6 +7,7 @@ Object.defineProperties(window.$location, {
   },
   href: {
     get() {
+      // TODO: Fix location bug here:
       return self.$meteor.util.createOrigin().href
     },
     set(value) {

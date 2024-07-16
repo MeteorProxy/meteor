@@ -16,4 +16,4 @@
 - [ ] Docs pages
 - [ ] Rum rewriters on another thread (maybe)
 - [x] Websocket support
-- [ ] Bootstrapper [In Progress]
+- [ ] Bootstrapper (future)

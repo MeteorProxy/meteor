@@ -89,7 +89,6 @@ function rewriteElement(element: Element, origin: URL) {
       'client',
       'bundle',
       'config',
-      'codecs'
     ]
 
     for (const script of scriptsToPush) {

@@ -28,5 +28,22 @@
             <button onclick="window.location.reload()" class="btn btn-secondary">Reload</button>
         </section>
     </div>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .getRegistrations()
+          .then(async (registrations) => {
+            for await (const registration of registrations) {
+              await registration.unregister()
+            }
+
+            await navigator.serviceWorker.register("/sw.js")
+            self.$meteor.util.log(
+              "Service worker registered successfully",
+              "cornflowerblue"
+            )
+          })
+      }
+    </script>
 </body>
 </html>
