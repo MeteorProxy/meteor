@@ -35,7 +35,10 @@ export interface Codec {
 }
 
 export interface Context {
-  injectHead: (content: string) => void
-  injectTag: (content: string) => void
+  injectHTML: (
+    content: string,
+    location?: 'body' | 'head',
+    rewrite?: boolean
+  ) => void
   getModified: () => string
 }

@@ -6,10 +6,10 @@ import { rewriteHtml } from './rewrite/html'
 import { rewriteJs } from './rewrite/js'
 import { decodeURL, encodeURL } from './rewrite/url'
 
+import { base64, plain, xor } from './codecs'
 import { createOrigin } from './util/createOrigin'
 import { formatUrl } from './util/formatUrl'
 import { log } from './util/logger'
-import { base64, xor, plain } from './codecs'
 
 declare global {
   interface Window {

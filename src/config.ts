@@ -17,7 +17,10 @@ export const config: Config = {
       name: 'exampleplugin',
       filter: /https:\/\/example.com*/g,
       inject(ctx) {
-        ctx.injectHead(`<meta name="meteor" content="meteor - epic proccy">`)
+        ctx.injectHTML(`
+          <meta name="meteor" content="meteor - epic proccy">
+          <script x-inject="true" src="data:application/javascript,console.log('pneis')"></script>
+          `)
       },
       async onRequest(request) {
         request.headers.set('X-Proxy', 'Meteor')

@@ -28,7 +28,7 @@ export function rewriteHtml(content: string, origin: URL) {
   for (const plugin of self.$meteor.config.plugins) {
     if (plugin.filter.test(origin.href)) {
       self.$meteor.util.log(`Running inject for ${plugin.name}`, 'teal')
-      const context = createContext(rendered)
+      const context = createContext(rendered, origin)
       plugin.inject(context)
 
       rendered = context.getModified()
@@ -88,8 +88,7 @@ function rewriteElement(element: Element, origin: URL) {
     const scriptsToPush: (keyof Config['files'])[] = [
       'client',
       'bundle',
-      'config',
-      'codecs'
+      'config'
     ]
 
     for (const script of scriptsToPush) {
