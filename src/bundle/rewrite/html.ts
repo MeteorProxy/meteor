@@ -88,7 +88,8 @@ function rewriteElement(element: Element, origin: URL) {
     const scriptsToPush: (keyof Config['files'])[] = [
       'client',
       'bundle',
-      'config'
+      'config',
+      'codecs'
     ]
 
     for (const script of scriptsToPush) {

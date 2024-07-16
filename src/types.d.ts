@@ -1,5 +1,10 @@
 import type { BareResponseFetch } from '@mercuryworkshop/bare-mux'
-
+declare global {
+  interface Window {
+    __meteor$config: Config
+    __meteor$codecs: { [key: string]: Codec }
+  }
+}
 export interface Plugin {
   name: string
   filter: RegExp
@@ -25,6 +30,7 @@ export interface Config {
     client: string
     worker: string
     bundle: string
+    codecs: string
     config: string
   }
 }

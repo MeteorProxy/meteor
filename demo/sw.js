@@ -1,3 +1,4 @@
+importScripts('/meteor/meteor.codecs.js')
 importScripts('/meteor/meteor.config.js')
 importScripts('/meteor/meteor.bundle.js')
 importScripts('/meteor/meteor.worker.js')

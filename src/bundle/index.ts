@@ -4,8 +4,6 @@ import { rewriteHtml } from './rewrite/html'
 import { rewriteJs } from './rewrite/js'
 import { decodeURL, encodeURL } from './rewrite/url'
 
-import type { Codec } from '@/types'
-import * as codecs from './codecs'
 import { createOrigin } from './util/createOrigin'
 import { formatUrl } from './util/formatUrl'
 import { log } from './util/logger'
@@ -28,8 +26,6 @@ const meteorBundle = {
       decode: decodeURL
     }
   },
-
-  codecs: codecs as { [key: string]: Codec },
 
   util: {
     createOrigin,
