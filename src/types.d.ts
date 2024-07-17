@@ -1,7 +1,8 @@
+import type { MeteorBundle } from '@/bundle'
 import type { BareResponseFetch } from '@mercuryworkshop/bare-mux'
 declare global {
   interface Window {
-    $meteor: typeof meteorBundle
+    $meteor: MeteorBundle
     $meteor_config: Config
     $meteor_codecs: Record<string, Codec>
   }

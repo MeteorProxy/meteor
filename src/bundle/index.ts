@@ -1,5 +1,3 @@
-import { codecs } from '../codecs'
-import { config } from '../config'
 import { rewriteCss } from './rewrite/css'
 import { rewriteHeaders } from './rewrite/headers'
 import { rewriteHtml } from './rewrite/html'
@@ -31,3 +29,4 @@ const meteorBundle = {
 }
 
 self.$meteor = meteorBundle
+export type MeteorBundle = typeof meteorBundle

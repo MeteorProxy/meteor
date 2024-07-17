@@ -3,6 +3,7 @@
 // Things might break intentionally
 
 import './dom'
+import './apis/css'
 import './apis/location'
 import './apis/requests'
 import './apis/workers'

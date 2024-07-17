@@ -8,14 +8,18 @@ export async function getCookies(host: string) {
   const result: Record<string, string>[] = []
   for (const key of await cookies.keys()) {
     if (key.startsWith(`${host}@`)) {
+      let isExpired = false
       const cookie = await cookies.get(key)
-      if (
-        (cookie.maxAge && cookie.set.getTime() + cookie.maxAge * 1e3 < now) ||
-        (cookie.expires && new Date(cookie.expires.toLocaleString()) < now)
-      ) {
-        cookie.set.getTime() + cookie.maxAge * 1e3 < now
+      if (cookie.maxAge) {
+        isExpired = cookie.set.getTime() + cookie.maxAge * 1e3 < now
+      } else if (cookie.expires) {
+        isExpired = new Date(cookie.expires.toLocaleString()) < now
       }
-      result.push(cookie)
+      if (isExpired) {
+        await cookies.delete(key)
+      } else {
+        result.push(cookie)
+      }
     }
   }
   const header = result.map((cookie) =>

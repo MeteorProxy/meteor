@@ -64,7 +64,6 @@ function rewriteElement(element: Element, origin: URL) {
 
   for (const attr of attributes.csp) {
     if (hasAttrib(element, attr)) {
-      self.$meteor.util.log(`${element.attribs[attr]}`, 'blue')
       delete element.attribs[attr]
     }
   }
@@ -102,8 +101,13 @@ function rewriteElement(element: Element, origin: URL) {
     }
   }
 
-  if (element.name === 'video') {
-    self.$meteor.util.log('Vid Detected')
+  if (['video', 'audio'].includes(element.name)) {
+    if (hasAttrib(element, 'src')) {
+      element.attribs.src = self.$meteor.rewrite.url.encode(
+        element.attribs.src,
+        origin
+      )
+    }
   }
 
   for (const child of element.children) {
