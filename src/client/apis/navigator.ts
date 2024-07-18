@@ -24,3 +24,15 @@ if ('clipboard' in globalThis.navigator) {
     }
   )
 }
+
+if ('credentials' in globalThis.navigator) {
+  // @ts-expect-error this can be ignored
+  globalThis.navigator.credentials = patchFunction(
+    // @ts-expect-error this can also be ignored
+    globalThis.navigator.credentials,
+    (args) => {
+      self.$meteor.util.log(`Attempting to patch: ${args}`, 'teal')
+      return args
+    }
+  )
+}
