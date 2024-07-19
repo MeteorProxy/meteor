@@ -7,8 +7,11 @@ Object.defineProperties(window.$location, {
   },
   href: {
     get() {
-      // TODO: Fix location bug here:
-      return self.$meteor.util.createOrigin().href
+      let url: URL | any = new URL(location.href).toString()
+      if (url.includes(location.origin)) {
+        url = url.split(location.origin).join(location.origin);
+      }
+      return url
     },
     set(value) {
       self.$meteor.rewrite.url.encode(value, self.$meteor.util.createOrigin())
