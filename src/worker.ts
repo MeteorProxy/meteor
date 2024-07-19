@@ -1,6 +1,7 @@
 import { BareClient, type BareResponseFetch } from '@mercuryworkshop/bare-mux'
 import { version } from '../package.json'
 import { getCookies, setCookies } from './bundle/util/cookies'
+import errorpagecss from './errorpagecss'
 
 declare global {
   interface Window {
@@ -129,9 +130,9 @@ class MeteorServiceWorker {
           <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <script src="https://cdn.tailwindcss.com"></script>
             <title>Something went wrong</title>
-
+            <!-- generated with https://play.tailwindcss.com/ -->
+            <style>${errorpagecss}</style>
           </head>
           <body>
             <div class="flex min-h-[100dvh] flex-col items-center justify-center bg-white px-4 py-12 sm:px-6 lg:px-8">
@@ -158,7 +159,7 @@ class MeteorServiceWorker {
                 <div class="mt-6 space-y-4">
                   <p class="mt-4 text-gray-500 text-left">URL: <span class="p-1.5 px-2 bg-gray-100 font-mono text-sm rounded-md">${url}</span></p>
                   <p class="mt-4 text-gray-500 text-left">Version: <span class="p-1.5 px-2 bg-gray-100 font-mono text-sm rounded-md">${version}</span></p>
-                  <pre class="rounded-md bg-gray-100 p-4 text-left text-sm text-gray-500">${error}</pre>
+                  <pre class="rounded-md bg-gray-100 p-4 text-left text-sm text-gray-500 overflow-x-scroll">${error}</pre>
                   <div class="flex space-x-2">
                     <button onclick="window.location.reload()" class="rounded-md border border-transparent bg-gray-800 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-900 flex-1 transition-all">
                       Reload Page

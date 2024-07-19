@@ -87,7 +87,7 @@ Element.prototype.setAttribute = patchFunction(
   Element.prototype.setAttribute,
   ([attr, value]) => {
     if (cspAttrs.includes(attr)) {
-      return [attr, ""]
+      return [attr, '']
     }
     if (urlAttributes[attr]) {
       value = self.$meteor.rewrite.url.encode(
