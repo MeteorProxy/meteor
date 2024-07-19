@@ -66,7 +66,7 @@ class MeteorServiceWorker {
           case 'iframe':
           case 'frame':
           case 'document':
-            if (response.headers.get('content-type').includes('text/html')) {
+            if (response.headers.get('content-type')?.includes('text/html')) {
               body = self.$meteor.rewrite.html(await response.text(), url)
             } else {
               body = response.body
