@@ -7,11 +7,12 @@ Object.defineProperties(window.$location, {
   },
   href: {
     get() {
-      let url = new URL(location.href).toString()
-      if (url.includes(location.origin)) {
-        url = url.split(location.origin).join(location.origin)
-      }
-      return url
+      // let url = new URL(location.href).toString()
+      // if (url.includes(location.origin)) {
+      //   url = url.split(location.origin).join(location.origin)
+      // }
+      // return url
+      return self.$meteor.util.createOrigin().href
     },
     set(value) {
       self.$meteor.rewrite.url.encode(value, self.$meteor.util.createOrigin())
