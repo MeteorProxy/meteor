@@ -161,7 +161,7 @@ class MeteorServiceWorker {
                   <p class="mt-4 text-gray-500 text-left">Version: <span class="p-1.5 px-2 bg-gray-100 font-mono text-sm rounded-md">${version}</span></p>
                   <pre class="rounded-md bg-gray-100 p-4 text-left text-sm text-gray-500 overflow-x-scroll">${error}</pre>
                   <div class="flex space-x-2">
-                    <button onclick="window.location.reload()" class="rounded-md border border-transparent bg-gray-800 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-900 flex-1 transition-all">
+                    <button onclick="window.location.reload()" class="rounded-md border border-transparent bg-gray-100 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-900 flex-1 transition-all">
                       Reload Page
                     </button>
                     <a href="https://github.com/meteorproxy/meteor/issues/new" target="_blank" class="rounded-md border-2 border-gray-800 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-800 hover:text-white flex-1 transition-all">

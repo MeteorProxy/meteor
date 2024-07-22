@@ -10,10 +10,10 @@
 - [ ] Add support for raw headers
 - [ ] Fix nextJS sites
 - [ ] Fix links (leaving the proxy and duplicating the origin) [In Progress]
-- [ ] Add Media Element rewriting (video/audio elements etc)
+- [x] Add Media Element rewriting (video/audio elements etc) [Stub] - Implementation notes: Youtube's video player is currently not working. Only elements with `<video>` or `<audio>` work
 - [x] Fix inline styles
 - [ ] Fix inline text functions
 - [ ] Docs pages
-- [ ] Rum rewriters on another thread (maybe)
+- [ ] Run rewriters on another thread (maybe)
 - [x] Websocket support
 - [ ] Bootstrapper (future)
