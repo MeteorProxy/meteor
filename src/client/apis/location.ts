@@ -7,9 +7,9 @@ Object.defineProperties(window.$location, {
   },
   href: {
     get() {
-      let url: URL | any = new URL(location.href).toString()
+      let url = new URL(location.href).toString()
       if (url.includes(location.origin)) {
-        url = url.split(location.origin).join(location.origin);
+        url = url.split(location.origin).join(location.origin)
       }
       return url
     },
