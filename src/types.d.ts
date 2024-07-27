@@ -1,5 +1,8 @@
 import type { MeteorBundle } from '@/bundle'
 import type { BareResponseFetch } from '@mercuryworkshop/bare-mux'
+type OnlyFunctionKeys<T> = {
+  [K in keyof T]: T[K] extends (...args: unknown[]) => unknown ? K : never
+}[keyof T]
 declare global {
   interface Window {
     $meteor: MeteorBundle
@@ -14,7 +17,7 @@ export interface Plugin {
     request: BareResponseFetch
   ) => Promise<undefined | BareResponseFetch>
   handleClient?: (window: globalThis) => void
-  inject?: (ctx: Context) => void
+  inject?: (ctx: Context) => Promise<void>
 }
 
 export interface Config {
@@ -47,6 +50,12 @@ export interface Context {
     content: string,
     location?: 'body' | 'head',
     rewrite?: boolean
-  ) => void
+  ) => Promise<void>
   getModified: () => string
+}
+
+export type PluginEnables = Record<OnlyFunctionKeys<Plugin>, boolean> & {
+  type?: 'meteor-plugin'
+  name: string
+  setAll?: boolean
 }

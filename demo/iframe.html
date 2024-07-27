@@ -37,6 +37,15 @@
       right: "0",
       position: "fixed",
     });
+    navigator.serviceWorker.ready.then((registration) => {
+      registration.active.postMessage(
+        {
+          name: "exampleplugin",
+          setAll: true,
+          type: "meteor-plugin",
+        }
+      );
+    });
 
   </script>
 </body>

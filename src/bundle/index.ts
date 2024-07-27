@@ -7,6 +7,7 @@ import { decodeURL, encodeURL } from './rewrite/url'
 import { createOrigin } from './util/createOrigin'
 import { formatUrl } from './util/formatUrl'
 import { log } from './util/logger'
+import { getEnabledPlugins } from './util/plugins'
 
 const meteorBundle = {
   config: self.$meteor_config,
@@ -24,7 +25,8 @@ const meteorBundle = {
   util: {
     createOrigin,
     formatUrl,
-    log
+    log,
+    getEnabledPlugins
   }
 }
 

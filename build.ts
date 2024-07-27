@@ -24,7 +24,6 @@ await build({
     'meteor.config': './src/config.ts'
   },
   minify: false,
-  format: 'esm',
   bundle: true,
   logLevel: 'info',
   outdir: 'dist/'

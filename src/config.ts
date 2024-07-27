@@ -9,8 +9,8 @@ export const config: Config = {
     {
       name: 'exampleplugin',
       filter: /https:\/\/example.com*/g,
-      inject(ctx) {
-        ctx.injectHTML(`
+      async inject(ctx) {
+        await ctx.injectHTML(`
           <meta name="meteor" content="meteor - epic proccy">
           <script x-inject="true" src="data:application/javascript,console.log('pneis')"></script>
           `)

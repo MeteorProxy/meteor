@@ -22,7 +22,9 @@ class MeteorServiceWorker {
     try {
       const url = new URL(self.$meteor.rewrite.url.decode(request.url))
       self.$meteor.util.log(`Processing request for ${url.href}`)
-      for (const plugin of self.$meteor.config.plugins) {
+      for (const plugin of await self.$meteor.util.getEnabledPlugins(
+        url.href
+      )) {
         if (plugin.filter.test(url.href)) {
           self.$meteor.util.log(
             `Plugin ${plugin.name} loaded for this page`,
@@ -67,7 +69,7 @@ class MeteorServiceWorker {
           case 'frame':
           case 'document':
             if (response.headers.get('content-type')?.includes('text/html')) {
-              body = self.$meteor.rewrite.html(await response.text(), url)
+              body = await self.$meteor.rewrite.html(await response.text(), url)
             } else {
               body = response.body
             }
@@ -98,16 +100,12 @@ class MeteorServiceWorker {
         }
       }
 
-      for (const plugin of self.$meteor.config.plugins) {
-        if (plugin.filter.test(url.href)) {
-          if ('onRequest' in plugin) {
-            self.$meteor.util.log(
-              `Running onRequest for ${plugin.name}`,
-              'teal'
-            )
-            response = await plugin.onRequest(response)
-          }
-        }
+      for (const plugin of await self.$meteor.util.getEnabledPlugins(
+        url.href,
+        'onRequest'
+      )) {
+        self.$meteor.util.log(`Running onRequest for ${plugin.name}`, 'teal')
+        response = await plugin.onRequest(response)
       }
 
       return new Response(body, {

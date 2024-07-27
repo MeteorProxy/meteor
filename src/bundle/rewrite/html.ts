@@ -17,7 +17,7 @@ const attributes = {
   srcset: ['srcset']
 }
 
-export function rewriteHtml(content: string, origin: URL) {
+export async function rewriteHtml(content: string, origin: URL) {
   const dom = new DomHandler()
   const parser = new Parser(dom)
   parser.write(content)
@@ -25,14 +25,14 @@ export function rewriteHtml(content: string, origin: URL) {
 
   let rendered = render(rewriteElement(dom.root as unknown as Element, origin))
 
-  for (const plugin of self.$meteor.config.plugins) {
-    if (plugin.filter.test(origin.href)) {
-      self.$meteor.util.log(`Running inject for ${plugin.name}`, 'teal')
-      const context = createContext(rendered, origin)
-      plugin.inject(context)
-
-      rendered = context.getModified()
-    }
+  for (const plugin of await self.$meteor.util.getEnabledPlugins(
+    origin.href,
+    'inject'
+  )) {
+    self.$meteor.util.log(`Running inject for ${plugin.name}`, 'teal')
+    const context = createContext(rendered, origin)
+    await plugin.inject(context)
+    rendered = context.getModified()
   }
 
   return rendered

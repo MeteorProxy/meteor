@@ -7,8 +7,10 @@ export function createContext(html: string, origin: URL): Context {
   }
 
   return {
-    injectHTML: (tag, location = 'head', rewrite = true) => {
-      const tagString = rewrite ? self.$meteor.rewrite.html(tag, origin) : tag
+    injectHTML: async (tag, location = 'head', rewrite = true) => {
+      const tagString = rewrite
+        ? await self.$meteor.rewrite.html(tag, origin)
+        : tag
       const headCloseIndex = modified.indexOf(`</${location}>`)
       if (headCloseIndex !== -1) {
         modified = injectAtPosition(tagString, headCloseIndex)
