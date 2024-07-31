@@ -18,7 +18,16 @@
     "check": "biome check . --write",
     "typecheck": "tsc"
   },
-  "files": ["dist", "lib", "src/types.d.ts"],
+  "files": [
+    "dist",
+    "lib",
+    "src/types.d.ts"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run check"
+    }
+  },
   "keywords": [],
   "author": "z1g Project",
   "license": "MIT",
@@ -32,6 +41,7 @@
     "consola": "^3.2.3",
     "esbuild-plugin-copy": "^2.1.1",
     "fastify": "^4.28.1",
+    "husky": "^9.1.4",
     "prettier": "^3.3.3",
     "tsx": "^4.16.2",
     "typescript": "^5.5.3",
@@ -51,6 +61,7 @@
     "estraverse": "^5.3.0",
     "htmlparser2": "^9.1.0",
     "meriyah": "^4.5.0",
+    "meteorproxy": "file:",
     "rimraf": "^6.0.1",
     "set-cookie-parser": "^2.6.0"
   }
