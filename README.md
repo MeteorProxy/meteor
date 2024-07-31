@@ -73,9 +73,12 @@ Once you have the scripts served, register your service worker and set your tran
 ```js
 if ('serviceWorker' in navigator) {
     const registration = await navigator.serviceWorker.register('/sw.js')
-    BareMux.SetTransport(
-      "EpxMod.EpoxyClient", // replace with your transport
-      { wisp: `wss://wisp-server-here.com` } // replace with the url of your wisp server
+    let connection = new BareMux.BareMuxConnection("/baremux/worker.js")
+    await connection.setTransport(
+      "/epoxy/index.mjs", // replace with your transport
+      [{
+        wisp: `wss://wisp-server-here.com`, // replace with the url of your wisp server
+      }]
     )
   })
 }

@@ -47,6 +47,9 @@ importers:
       meriyah:
         specifier: ^4.5.0
         version: 4.5.0
+      meteorproxy:
+        specifier: 'file:'
+        version: file:(utf-8-validate@6.0.4)
       rimraf:
         specifier: ^6.0.1
         version: 6.0.1
@@ -93,9 +96,6 @@ importers:
       typescript:
         specifier: ^5.5.3
         version: 5.5.3
-      wisp-server-node:
-        specifier: ^1.1.0
-        version: 1.1.0
 
 packages:
 
@@ -996,6 +996,9 @@ packages:
     resolution: {integrity: sha512-Rbiu0QPIxTXgOXwiIpRVJfZRQ2FWyfzYrOGBs9SN5RbaXg1CN5ELn/plodwWwluX93yzc4qO/bNIen1ThGFCxw==}
     engines: {node: '>=10.4.0'}
 
+  'meteorproxy@file:':
+    resolution: {directory: '', type: directory}
+
   micromatch@4.0.7:
     resolution: {integrity: sha512-LPP/3KorzCwBxfeUuZmaR6bG2kdeHSbe0P2tY3FLRU4vYrjYz5hI4QZwV0njUx3jeuKe67YukQ1LSPZBKDqO/Q==}
     engines: {node: '>=8.6'}
@@ -1294,9 +1297,6 @@ packages:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
     engines: {node: '>= 8'}
     hasBin: true
-
-  wisp-server-node@1.1.0:
-    resolution: {integrity: sha512-kJcuDIZZfV/HOkTepoVLfwzP7IieE0GfU57UTe8z2IwNRp+YbL12q5xsImcMNEYb9QeP/8loXiyBKXdZ+vojow==}
 
   wrap-ansi@7.0.0:
     resolution: {integrity: sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==}
@@ -2105,6 +2105,26 @@ snapshots:
 
   meriyah@4.5.0: {}
 
+  meteorproxy@file:(utf-8-validate@6.0.4):
+    dependencies:
+      '@mercuryworkshop/bare-mux': 2.0.2
+      '@mercuryworkshop/wisp-js': 0.1.0(utf-8-validate@6.0.4)
+      '@types/estree': 1.0.5
+      '@webreflection/idb-map': 0.3.1
+      astring: 1.8.6
+      cookie-es: 1.1.0
+      dom-serializer: 2.0.0
+      domhandler: 5.0.3
+      domutils: 3.1.0
+      esbuild: 0.23.0
+      estraverse: 5.3.0
+      htmlparser2: 9.1.0
+      meriyah: 4.5.0
+      rimraf: 6.0.1
+      set-cookie-parser: 2.6.0
+    transitivePeerDependencies:
+      - utf-8-validate
+
   micromatch@4.0.7:
     dependencies:
       braces: 3.0.3
@@ -2380,16 +2400,11 @@ snapshots:
   utf-8-validate@6.0.4:
     dependencies:
       node-gyp-build: 4.8.1
+    optional: true
 
   which@2.0.2:
     dependencies:
       isexe: 2.0.0
-
-  wisp-server-node@1.1.0:
-    dependencies:
-      bufferutil: 4.0.8
-      utf-8-validate: 6.0.4
-      ws: 8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
   wrap-ansi@7.0.0:
     dependencies:

@@ -110,6 +110,20 @@ function rewriteElement(element: Element, origin: URL) {
     }
   }
 
+  if (['link', 'a'].includes(element.name)) {
+    if (hasAttrib(element, 'href')) {
+      self.$meteor.util.log(element.attribs.href, 'green')
+      /*
+      if (typeof location !== "undefined") {
+        element.attribs.onclick = `
+          ${location.href = element.attribs.href}
+        `
+        delete element.attribs.href
+      }
+      */
+    }
+  }
+
   for (const child of element.children) {
     if (child.type === ElementType.ElementType.Tag) {
       rewriteElement(child, origin)

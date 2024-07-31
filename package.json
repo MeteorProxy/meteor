@@ -1,6 +1,6 @@
 {
   "name": "meteorproxy",
-  "version": "1.0.6-patch.1",
+  "version": "1.0.6-patch.2",
   "description": "The modern interception proxy you've been waiting for",
   "type": "module",
   "main": "./lib/index.cjs",
@@ -44,8 +44,7 @@
     "husky": "^9.1.4",
     "prettier": "^3.3.3",
     "tsx": "^4.16.2",
-    "typescript": "^5.5.3",
-    "wisp-server-node": "^1.1.0"
+    "typescript": "^5.5.3"
   },
   "dependencies": {
     "@mercuryworkshop/bare-mux": "^2.0.2",
