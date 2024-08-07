@@ -1,4 +1,4 @@
-import { rewriteHeaders } from '@/bundle/rewrite/headers'
+import { rewriteHeaders, rewriteRawHeaders } from '@/bundle/rewrite/headers'
 import { patchConstructor, patchFunction } from '../patch'
 import { rewriteStringOrUrl } from '../rewrite'
 const OldHeaders = globalThis.Headers
@@ -56,11 +56,19 @@ window.Request = patchConstructor(Request, (args) => {
   return args
 })
 window.Headers = patchConstructor(Headers, ([arg]) => {
-  arg = rewriteHeaders(
-    new OldHeaders(arg),
-    self.$meteor.util.createOrigin(),
-    OldHeaders
-  )
+  if (arg instanceof Headers) {
+    arg = rewriteHeaders(
+      new OldHeaders(arg),
+      self.$meteor.util.createOrigin(),
+      OldHeaders
+    )
+  } else if (Array.isArray(arg) || typeof arg === 'object') {
+    arg = arg = rewriteRawHeaders(
+      arg,
+      self.$meteor.util.createOrigin(),
+      OldHeaders
+    )
+  }
   return [arg]
 })
 

@@ -61,3 +61,54 @@ export function rewriteHeaders(
 
   return newHeaders
 }
+
+export function rewriteRawHeaders(
+  rawHeaders: Record<string, string> | [string, string][],
+  origin: URL,
+  HeadersInstance = Headers
+) {
+  const newHeaders = new HeadersInstance()
+  const headersEntries = Array.isArray(rawHeaders)
+    ? rawHeaders
+    : Object.entries(rawHeaders)
+
+  for (const [key, value] of headersEntries) {
+    newHeaders.set(key.toLowerCase(), value)
+  }
+
+  for (const header of tobeDeleted) {
+    newHeaders.delete(header)
+  }
+
+  for (const header of ['referer', 'location', 'content-location']) {
+    const headerValue = newHeaders.get(header)
+    if (headerValue) {
+      newHeaders.set(
+        header,
+        self.$meteor.rewrite.url.encode(headerValue, origin)
+      )
+    }
+  }
+
+  for (const header of directRewrites) {
+    const headerValue = newHeaders.get(header)
+    if (headerValue) {
+      newHeaders.set(
+        header,
+        new URL(self.$meteor.rewrite.url.encode(headerValue, origin))[header]
+      )
+    }
+  }
+
+  if (newHeaders.has('link')) {
+    newHeaders.set(
+      'link',
+      newHeaders
+        .get('link')
+        .replace(/<(.*?)>/gi, (match) =>
+          self.$meteor.rewrite.url.encode(match, origin)
+        )
+    )
+  }
+  return newHeaders
+}

@@ -1,6 +1,6 @@
 {
   "name": "meteorproxy",
-  "version": "1.0.6-patch.2",
+  "version": "1.0.7-beta.1",
   "description": "The modern interception proxy you've been waiting for",
   "type": "module",
   "main": "./lib/index.cjs",
@@ -16,6 +16,8 @@
     "rspack:build": "tsx rspack.ts",
     "release": "tsc && biome check . --write && npm run build && npm publish --access public",
     "check": "biome check . --write",
+    "prepare": "npm run check",
+    "prepack": "npm run build",
     "typecheck": "tsc"
   },
   "files": [
@@ -23,32 +25,30 @@
     "lib",
     "src/types.d.ts"
   ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run check"
-    }
-  },
-  "keywords": [],
+  "keywords": [
+    "proxy",
+    "interception",
+    "http-proxy"
+  ],
   "author": "z1g Project",
   "license": "MIT",
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@fastify/static": "^7.0.4",
-    "@mercuryworkshop/epoxy-transport": "^2.1.3",
+    "@mercuryworkshop/epoxy-transport": "^2.1.5",
     "@types/estraverse": "^5.1.7",
-    "@types/node": "^20.14.10",
+    "@types/node": "^22.1.0",
     "@types/set-cookie-parser": "^2.4.10",
     "consola": "^3.2.3",
     "esbuild-plugin-copy": "^2.1.1",
     "fastify": "^4.28.1",
-    "husky": "^9.1.4",
     "prettier": "^3.3.3",
     "tsx": "^4.16.2",
     "typescript": "^5.5.3"
   },
   "dependencies": {
-    "@mercuryworkshop/bare-mux": "^2.0.2",
-    "@mercuryworkshop/wisp-js": "^0.1.0",
+    "@mercuryworkshop/bare-mux": "^2.0.4",
+    "@mercuryworkshop/wisp-js": "^0.1.1",
     "@types/estree": "^1.0.5",
     "@webreflection/idb-map": "^0.3.1",
     "astring": "^1.8.6",
@@ -59,7 +59,7 @@
     "esbuild": "^0.23.0",
     "estraverse": "^5.3.0",
     "htmlparser2": "^9.1.0",
-    "meriyah": "^4.5.0",
+    "meriyah": "^5.0.0",
     "meteorproxy": "file:",
     "rimraf": "^6.0.1",
     "set-cookie-parser": "^2.6.0"

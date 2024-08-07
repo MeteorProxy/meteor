@@ -25,6 +25,13 @@ if ('clipboard' in globalThis.navigator) {
   )
 }
 
+if ('serviceworker' in globalThis.navigator) {
+  // @ts-expect-error this can be ignored
+  globalThis.navigator.serviceWorker = new TypeError(
+    'Service Workers are not supported on proxies'
+  )
+}
+
 if ('credentials' in globalThis.navigator) {
   // @ts-expect-error this can be ignored
   globalThis.navigator.credentials = patchFunction(

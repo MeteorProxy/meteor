@@ -7,7 +7,7 @@
 - [ ] More efficient rewriting
 - [x] Fix Iframes
 - [x] Fix weird data problems
-- [ ] Add support for raw headers
+- [x] Add support for raw headers [Stub] - Implementation notes: Further testing is still needed for raw headers but it should be working
 - [ ] Fix nextJS sites
 - [ ] Fix links (leaving the proxy and duplicating the origin) [In Progress]
 - [x] Add Media Element rewriting (video/audio elements etc) [Stub] - Implementation notes: Youtube's video player is currently not working. Only elements with `<video>` or `<audio>` work
